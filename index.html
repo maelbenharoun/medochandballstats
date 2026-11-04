@@ -1459,9 +1459,17 @@ const catOf = k => k.replace(/-?[12]$/, '');
 const nkey = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
 let _roster = {};
 let SIBINFO = {}; const SIBINFO_ALL = {};   // par équipe affichée
-let GAPS = {}; try { GAPS = JSON.parse(localStorage.getItem('compoGap') || '{}') || {}; } catch (e) { GAPS = {}; }
+// Écart de niveau entre l'équipe 1 et l'équipe 2 : fixé par une règle simple, « l'équipe 1 bat l'équipe 2 dans P % des cas »
+// sur terrain neutre (99 % par défaut), réglable ; le modèle statistique seul donne un écart bien plus faible (affiché pour info).
+const P12_DEFAULT = 0.99;
+let P12 = {}; try { P12 = JSON.parse(localStorage.getItem('compoP12') || '{}') || {}; } catch (e) { P12 = {}; }
+const invPhi = p => { let lo = -8, hi = 8; for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (PHI(mid) < p) lo = mid; else hi = mid; } return (lo + hi) / 2; };
+const fmtP = p => (Math.round(p * 1000) / 10).toFixed(p >= 0.995 || p < 0.6 ? 1 : 0).replace('.', ',').replace(/,0$/, '') + '\u202f%';
+const gapFromP = (p, sign) => sign * (0.5 + D.model.sigma * invPhi(p));          // écart de buts qui donne P % de victoire
+const teamNum = k => { const m = k.match(/(\d)$/); return m && /-?[12]$/.test(k) && k !== 'g18' ? +m[1] : 1; };
 function mePlayers() {
   SIBINFO = SIBINFO_ALL[CUR] || (SIBINFO_ALL[CUR] = {});
+  for (const S of Object.values(SIBINFO)) { const p = typeof P12[S.pkey] === 'number' ? P12[S.pkey] : P12_DEFAULT; if (p !== S.p12 || S.stale) { S.p12 = p; S.gap = gapFromP(p, S.sign); S.stale = false; } }
   if (_roster[CUR]) return _roster[CUR];
   const own = TEAMS[D.club].players, seen = new Set(own.map(p => nkey(p.nom))), extra = [];
   ORDER.filter(k => k !== CUR && catOf(k) === catOf(CUR)).forEach(k => {
@@ -1477,8 +1485,9 @@ function mePlayers() {
     const tot = pl => pl.reduce((a, p) => a + effOf(p) * p.avg_presence, 0);
     const sumAvg = T2.players.reduce((a, p) => a + p.avg_presence, 0) || 1;
     const gbS = gkBase(T2.players), gbO = gkBase(own);
-    const g0 = gap, gk0 = CUR + ':' + k;
-    SIBINFO[k] = {gap: typeof GAPS[gk0] === 'number' ? GAPS[gk0] : g0, gap0: g0, kappa: tot(T2.players) > 0 ? tot(own) / tot(T2.players) : 1, sumAvg,
+    const sign = teamNum(k) > teamNum(CUR) ? -1 : 1, pk = catOf(CUR);
+    const p12 = typeof P12[pk] === 'number' ? P12[pk] : P12_DEFAULT;
+    SIBINFO[k] = {gap: gapFromP(p12, sign), gapModel: gap, sign, p12, pkey: pk, kappa: tot(T2.players) > 0 ? tot(own) / tot(T2.players) : 1, sumAvg,
       kgk: gbS > 0 && gbO > 0 ? gbO / gbS : 1,                       // arrêts convertis : sa gardienne habituelle = la nôtre
       pres: Object.fromEntries(T2.players.map(p => [nkey(p.nom), p.presence])),
       Ts: T2.players.reduce((a, p) => a + effOf(p) * p.avg_presence, 0),
@@ -1565,10 +1574,13 @@ function viewCompo() {
   <div class="cp-sticky" id="cp-sticky" aria-hidden="true"></div>
   <section class="card stack cp-res" id="cp-res" data-keep></section>
   ${(mePlayers(), Object.keys(SIBINFO).map(k => { const S = SIBINFO[k], me = D.team.label.replace(/^Équipe\s*/, '');
-    return `<section class="card stack cp-gapc" data-keep><h3>Écart de niveau ${esc(S.label)} / ${esc(me)}</h3>
-      <div class="cp-gap"><input type="range" id="cp-gap-${k}" data-gap="${k}" min="-20" max="20" step="0.5" value="${S.gap}" aria-label="Écart de niveau de ${esc(S.label)} par rapport à ${esc(me)}, en buts">
-        <b id="cp-gapv-${k}">${sgn(S.gap)} buts</b><button type="button" class="cp-b" data-gapreset="${k}">Valeur du modèle (${sgn(S.gap0)})</button></div>
-      <p class="note">Écart de buts entre ${esc(S.label)} et ${esc(me)} si elles jouaient dans la même poule. Le modèle l’estime à ${sgn(S.gap0)} buts à partir des joueuses qui passent d’une équipe ou d’un championnat à l’autre ; s’il vous paraît trop faible ou trop fort, réglez-le : les renforts et le match simulé suivent.</p></section>`; }).join(''))}
+    const t1 = S.sign < 0 ? me : S.label, t2 = S.sign < 0 ? S.label : me;
+    return `<section class="card stack cp-gapc" data-keep><h3>Écart de niveau entre ${esc(t1)} et ${esc(t2)}</h3>
+      <div class="cp-gap"><span>${esc(t1)} bat ${esc(t2)} dans</span><input type="range" id="cp-gap-${k}" data-gap="${k}" min="50" max="99.9" step="0.1" value="${(S.p12 * 100).toFixed(1)}" aria-label="Pourcentage de victoires de ${esc(t1)} contre ${esc(t2)}">
+        <b id="cp-gapv-${k}">${fmtP(S.p12)} des cas</b></div>
+      <p class="sub" id="cp-gapg-${k}">Soit ${esc(S.label)} ≈ ${sgn(S.gap)} buts par rapport à ${esc(me)} sur un match.</p>
+      <div class="cp-btns"><button type="button" class="cp-b" data-gapreset="${k}">Revenir à 99 %</button></div>
+      <p class="note">Sur terrain neutre, si les deux équipes s’affrontaient. Par défaut, l’équipe 1 gagne 99 fois sur 100. Pour comparaison, le modèle statistique seul n’estime l’écart qu’à ${sgn(S.gapModel)} buts (il compare les championnats à partir des joueuses qui changent d’équipe ou de division, trop peu nombreuses pour être fiable ici). Le réglage vaut pour toute la catégorie, sur cet appareil.</p></section>`; }).join(''))}
   <section class="grid2 cp-grid">${compoListCard('m', t.me)}${compoListCard('o', t.opp)}</section>
   <section class="card stack"><h2>Comment c’est calculé</h2>
     <p class="note">Le point de départ est le pronostic du match (niveau des deux équipes sur trois saisons, avantage du terrain). Chaque ${G('joueuse', 'joueur')} compte pour la moitié de ses buts par match cette saison, plafonnée à 4 buts : ${G('présente', 'présent')} plus souvent que d’habitude, son équipe gagne cet écart ; ${G('absente', 'absent')}, elle le perd. Dans les buts, une seule ${G('gardienne', 'gardien')} joue à la fois : l’équipe vaut les arrêts par match de ${G('sa meilleure gardienne présente', 'son meilleur gardien présent')} (un arrêt = un but évité, compté pour moitié et plafonné à 4 buts, par rapport à d’habitude). ${G('Une gardienne absente', 'Un gardien absent')} ne coûte donc que si ${G('la remplaçante', 'le remplaçant')} fait moins d’arrêts ; sans ${G('aucune gardienne', 'aucun gardien')}, une joueuse de champ va dans les buts et l’équipe perd jusqu’à 4 buts. « Présence » = probabilité d’être sur la prochaine feuille de match, d’après les feuilles déjà publiées. Au départ, ${G('celles', 'ceux')} à 50 % ou plus sont ${G('cochées', 'cochés')}. La défense et l’alchimie du groupe ne sont pas mesurées. Sont ${G('listées', 'listés')} ${G('les joueuses', 'les joueurs')} déjà ${G('passées', 'passés')} cette saison sur une feuille de match de l’équipe ou de l’autre équipe du club dans la catégorie (badge : son équipe). La présence est toujours celle de cette équipe-ci : ${G('une joueuse', 'un joueur')} jamais ${G('venue', 'venu')} ici a 10 % × (1 − sa présence dans son équipe) de chances d’être ${G('appelée', 'appelé')}, ${G('une titulaire', 'un titulaire')} de l’autre équipe presque aucune. Un renfort apporte le niveau de son équipe : le modèle place les deux équipes du club sur la même échelle (${(() => { const k = Object.keys(D.siblings || {})[0]; if (!k) return 'pas d’autre équipe dans la catégorie'; const g = (D.siblings[k] - TEAMS[D.club].rating); return `${esc(ALL.data[k] ? ALL.data[k].team.label.replace(/^Équipe\s*/, '') : k)} ≈ ${sgn(g)} buts par rapport à ${esc(D.team.label.replace(/^Équipe\s*/, ''))}`; })()}), chaque renfort compte pour sa part habituelle de la feuille de match de son équipe, et ses buts sont convertis à l’échelle d’ici. Les renforts ne font que combler le manque laissé par les ${G('absentes', 'absents')} : à effectif complet, ${G('une joueuse', 'un joueur')} de plus ne change rien. ${G('Sa gardienne habituelle vaut la nôtre', 'Son gardien habituel vaut le nôtre')} (l’écart de niveau couvre déjà la différence). Le bouton « … à la place » aligne l’effectif probable de l’autre équipe et redonne à peu près son niveau. « ${G('Toutes présentes', 'Tous présents')} » coche l’effectif de l’équipe, sans les renforts. Chez l’adversaire, prénom et initiale seulement.</p></section>`;
@@ -1612,13 +1624,20 @@ function compoPaint() {
   for (const side of ['m', 'o']) { const el = document.getElementById('cp-list-' + side); if (el) el.innerHTML = compoRows(m, st, side, cur); }
   try { localStorage.setItem('compo2', JSON.stringify(COMPO)); } catch (e) {}
 }
+function setP12(k, p) {
+  const S = SIBINFO[k]; if (!S) return;
+  S.p12 = p; S.gap = gapFromP(p, S.sign); P12[S.pkey] = p;
+  for (const c in SIBINFO_ALL) for (const k2 in SIBINFO_ALL[c]) { const S2 = SIBINFO_ALL[c][k2]; if (S2.pkey === S.pkey && S2 !== S) S2.stale = true; }
+  try { localStorage.setItem('compoP12', JSON.stringify(P12)); } catch (err) {}
+  const v = document.getElementById('cp-gapv-' + k), g = document.getElementById('cp-gapg-' + k);
+  if (v) v.textContent = fmtP(p) + ' des cas';
+  if (g) g.textContent = `Soit ${S.label} ≈ ${sgn(S.gap)} buts par rapport à ${D.team.label.replace(/^Équipe\s*/, '')} sur un match.`;
+  compoPaint();
+}
 app.addEventListener('input', e => {
   const t = e.target; if (!t.dataset || !t.dataset.gap) return;
   const S = SIBINFO[t.dataset.gap]; if (!S) return;
-  S.gap = +t.value; GAPS[CUR + ':' + t.dataset.gap] = S.gap;
-  try { localStorage.setItem('compoGap', JSON.stringify(GAPS)); } catch (err) {}
-  const v = document.getElementById('cp-gapv-' + t.dataset.gap); if (v) v.textContent = sgn(S.gap) + ' buts';
-  compoPaint();
+  setP12(t.dataset.gap, +t.value / 100);
 });
 app.addEventListener('change', e => {
   const t = e.target;
@@ -1628,10 +1647,7 @@ app.addEventListener('change', e => {
 app.addEventListener('click', e => {
   const b = e.target.closest('.cp-b'), a = e.target.closest('[data-compo]');
   if (a) { compoRid = a.dataset.compo; return; }
-  if (b && b.dataset.gapreset) { const k = b.dataset.gapreset, S = SIBINFO[k]; if (!S) return; S.gap = S.gap0; delete GAPS[CUR + ':' + k];
-    try { localStorage.setItem('compoGap', JSON.stringify(GAPS)); } catch (err) {}
-    const r = document.getElementById('cp-gap-' + k), v = document.getElementById('cp-gapv-' + k); if (r) r.value = S.gap; if (v) v.textContent = sgn(S.gap) + ' buts';
-    compoPaint(); return; }
+  if (b && b.dataset.gapreset) { const k = b.dataset.gapreset; setP12(k, P12_DEFAULT); const r = document.getElementById('cp-gap-' + k); if (r) r.value = (P12_DEFAULT * 100).toFixed(1); return; }
   if (!b) return;
   const m = futClub().find(x => x.rid === compoRid); if (!m) return;
   const st = compoState(m), side = b.dataset.side, t = compoTeams(m);
