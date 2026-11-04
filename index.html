@@ -851,7 +851,7 @@ function presList(tid, n = 8) {
   const pl = TEAMS[tid].players.slice().sort((a, b) => b.bpm * b.mj - a.bpm * a.mj).slice(0, n);
   if (!pl.length) return '<p class="sub">Feuilles de match non disponibles.</p>';
   return `<div class="pres">${pl.map(p => `<div class="row" data-tip="${esc(p.nom)} · sur ${p.feuilles} feuilles · ${f1(p.bpm)} buts/match${p.serie_abs >= 2 ? '<br>' + p.serie_abs + ' absences de suite' : ''}" tabindex="0">
-    <span class="n">${esc(p.nom)} <span class="sub">${f1(p.bpm)} b/m</span> ${brulBadge(tid, p)}</span>
+    <span class="n">${esc(p.nom)} <span class="sub">${f1(p.bpm)} b/m</span> ${brulBadge(tid, p)}${isClub(tid) ? coachLinks(p.nom) : ''}</span>
     <span class="meter ${p.presence < 0.6 ? 'low' : ''}"><i style="width:${Math.round(p.presence * 100)}%"></i></span>
     <span class="v">${pct(p.presence)}</span></div>`).join('')}</div>`;
 }
@@ -1390,7 +1390,7 @@ function viewTeam(tid) {
   <section class="card stack" data-keep><h2>${G('Les joueuses', 'Les joueurs')}</h2>
     ${T.hidden ? '<p class="note">Buts masqués sur les feuilles de cette compétition.</p>' : ''}
     <div class="scroll"><table data-m="0,3r" data-c="0,1,2,3"><thead><tr><th>${G('Joueuse', 'Joueur')}</th><th>MJ</th><th>Buts</th><th data-s="B/m">Buts/m</th><th>3 derniers</th><th>Dom</th><th>Ext</th><th>Part</th><th>Arrêts</th><th>2025-26</th><th>Présence</th></tr></thead><tbody>
-    ${pl.map(p => `<tr><td>${esc(p.nom)}${p.recrue ? ' <span class="badge">recrue</span>' : ''}</td><td>${p.mj}</td><td>${p.buts}</td><td><b>${f1(p.bpm)}</b></td><td>${p.last3.join('·') || '–'}</td><td>${f1(p.dom)}</td><td>${f1(p.ext)}</td><td>${pct(p.part)}</td><td>${p.arrets || '–'}</td><td>${p.n1 == null ? '–' : f1(p.n1) + ' b/m'}</td><td>${pct(p.presence)}</td></tr>`).join('')}
+    ${pl.map(p => `<tr><td>${esc(p.nom)}${p.recrue ? ' <span class="badge">recrue</span>' : ''}${isClub(tid) ? coachLinks(p.nom) : ''}</td><td>${p.mj}</td><td>${p.buts}</td><td><b>${f1(p.bpm)}</b></td><td>${p.last3.join('·') || '–'}</td><td>${f1(p.dom)}</td><td>${f1(p.ext)}</td><td>${pct(p.part)}</td><td>${p.arrets || '–'}</td><td>${p.n1 == null ? '–' : f1(p.n1) + ' b/m'}</td><td>${pct(p.presence)}</td></tr>`).join('')}
     </tbody></table></div>
     <p class="note">MJ = matchs joués dans cette poule. Présence = probabilité d’être sur la feuille du prochain match. 2025-26 = buts par match la saison dernière, toutes équipes du club.</p></section>
   <section class="grid2">
