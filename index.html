@@ -1378,6 +1378,7 @@ function render() {
   else if (h === 'calendrier') { html = viewCalendar(); v = h; }
   else html = viewHome();
   app.innerHTML = html;
+  document.getElementById('foot').style.display = h === 'accueil' ? '' : 'none';   // sources et méthode : accueil seulement
   document.querySelectorAll('#nav a').forEach(a => a.toggleAttribute('aria-current', a.dataset.v === v) || (a.dataset.v === v && a.setAttribute('aria-current', 'page')));
   document.querySelectorAll('#nav a[aria-current]').forEach(a => a.setAttribute('aria-current', 'page'));
   { const cur = document.querySelector('#nav a[aria-current]'); document.getElementById('navbtn-l').textContent = cur ? cur.textContent : (h.startsWith('equipe-') ? 'Fiche équipe' : 'Menu'); }
