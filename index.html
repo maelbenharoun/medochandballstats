@@ -1432,23 +1432,45 @@ try { COMPO = JSON.parse(localStorage.getItem('compo2') || '{}') || {}; } catch 
 const effOf = p => Math.min(ABS_F * (p.bpm || 0), ABS_CAP);
 const compoKey = rid => CUR + ':' + rid;
 const compoTeams = m => { const home = m.home === D.club; return {me: D.club, opp: home ? m.away : m.home, home}; };
+// Joueuses de toute la catégorie : l'effectif de l'équipe + celles de l'autre équipe du club dans la catégorie
+// (SF1↔SF2, SG1↔SG2, -18F1↔-18F2). Présence toujours indexée sur CETTE équipe : une joueuse jamais venue ici
+// a d'autant moins de chances d'être appelée qu'elle joue souvent dans son équipe (10 % × (1 − sa présence là-bas)).
+const CALL_UP = 0.10;
+const catOf = k => k.replace(/-?[12]$/, '');
+const nkey = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+let _roster = {};
+function mePlayers() {
+  if (_roster[CUR]) return _roster[CUR];
+  const own = TEAMS[D.club].players, seen = new Set(own.map(p => nkey(p.nom))), extra = [];
+  ORDER.filter(k => k !== CUR && catOf(k) === catOf(CUR)).forEach(k => {
+    const X = ALL.data[k], T2 = X && X.teams[X.club];
+    if (!T2) return;
+    T2.players.forEach(p => {
+      const n = nkey(p.nom); if (seen.has(n)) return; seen.add(n);
+      extra.push(Object.assign({}, p, {presence: Math.round(CALL_UP * (1 - p.presence) * 1000) / 1000, avg_presence: 0,
+        from: X.team.label.replace(/^Équipe\s*/, ''), from_presence: p.presence}));
+    });
+  });
+  return (_roster[CUR] = own.concat(extra));
+}
+const roster = (m, side) => side === 'm' ? mePlayers() : TEAMS[compoTeams(m).opp].players;
 const byPresence = pl => pl.slice().sort((a, b) => b.presence - a.presence || b.bpm - a.bpm || a.nom.localeCompare(b.nom));
 function compoState(m) {
   // {m: nom -> présente pour Médoc, o: nom -> présente pour l'adversaire} ; au départ, l'effectif probable (présence ≥ 50 %)
   const k = compoKey(m.rid), t = compoTeams(m);
   const st = COMPO[k] || (COMPO[k] = {m: {}, o: {}});
-  TEAMS[t.me].players.forEach(p => { if (!(p.nom in st.m)) st.m[p.nom] = p.presence >= 0.5; });
-  TEAMS[t.opp].players.forEach(p => { if (!(p.nom in st.o)) st.o[p.nom] = p.presence >= 0.5; });
+  roster(m, 'm').forEach(p => { if (!(p.nom in st.m)) st.m[p.nom] = p.presence >= 0.5; });
+  roster(m, 'o').forEach(p => { if (!(p.nom in st.o)) st.o[p.nom] = p.presence >= 0.5; });
   return st;
 }
 function compoProbable(m) {
   const t = compoTeams(m), pr = pl => Object.fromEntries(pl.map(p => [p.nom, p.presence >= 0.5]));
-  return {m: pr(TEAMS[t.me].players), o: pr(TEAMS[t.opp].players)};
+  return {m: pr(roster(m, 'm')), o: pr(roster(m, 'o'))};
 }
 function compoCalc(m, st) {
   const t = compoTeams(m);
-  const d = (tid, pres) => TEAMS[tid].players.reduce((a, p) => a + effOf(p) * ((pres[p.nom] ? 1 : 0) - p.avg_presence), 0);
-  const dM = d(t.me, st.m), dO = d(t.opp, st.o);
+  const d = (pl, pres) => pl.reduce((a, p) => a + effOf(p) * ((pres[p.nom] ? 1 : 0) - p.avg_presence), 0);
+  const dM = d(roster(m, 'm'), st.m), dO = d(roster(m, 'o'), st.o);
   const muH = m.mu + (t.home ? dM - dO : dO - dM), sg = D.model.sigma;
   const ph = 1 - PHI((0.5 - muH) / sg), pa = PHI((-0.5 - muH) / sg);
   const w = t.home ? ph : pa, l = t.home ? pa : ph;
@@ -1457,7 +1479,7 @@ function compoCalc(m, st) {
 function compoMatchLabel(m) { const home = m.home === D.club; return `J${m.j} · ${m.estimee ? '≈ ' : ''}${fdate(m.date)} · ${home ? '' : 'à '}${name(home ? m.away : m.home)} (${home ? 'domicile' : 'extérieur'})`; }
 function compoListCard(side, tid) {
   return `<div class="card stack" data-keep><h2>${side === 'm' ? G('Les joueuses', 'Les joueurs') + ' de ' : 'En face : '}${esc(name(tid))}</h2>
-    <p class="sub">${side === 'm' ? '' : 'Adversaire. '}Classement de ${G('la plus probable à la moins probable', 'le plus probable au moins probable')} sur la feuille de match.</p>
+    <p class="sub">${side === 'm' ? `${G('Toutes celles', 'Tous ceux')} qui peuvent jouer dans la catégorie, ${G('classées de la plus probable à la moins probable', 'classés du plus probable au moins probable')} sur la feuille de match de ${esc(D.team ? D.team.label.replace(/^Équipe\s*/, '') : '')}.` : `Adversaire, ${G('classées de la plus probable à la moins probable', 'classés du plus probable au moins probable')} sur la feuille de match.`}</p>
     <div class="cp-btns"><button type="button" class="cp-b" data-side="${side}" data-act="prob">Effectif probable</button><button type="button" class="cp-b" data-side="${side}" data-act="all">${G('Toutes présentes', 'Tous présents')}</button></div>
     <div class="cp-list" id="cp-list-${side}"></div></div>`;
 }
@@ -1473,15 +1495,15 @@ function viewCompo() {
   <section class="card stack cp-res" id="cp-res" data-keep></section>
   <section class="grid2 cp-grid">${compoListCard('m', t.me)}${compoListCard('o', t.opp)}</section>
   <section class="card stack"><h2>Comment c’est calculé</h2>
-    <p class="note">Le point de départ est le pronostic du match (niveau des deux équipes sur trois saisons, avantage du terrain). Chaque ${G('joueuse', 'joueur')} compte pour la moitié de ses buts par match cette saison, plafonnée à 4 buts : ${G('présente', 'présent')} plus souvent que d’habitude, son équipe gagne cet écart ; ${G('absente', 'absent')}, elle le perd. « Présence » = probabilité d’être sur la prochaine feuille de match, d’après les feuilles déjà publiées. Au départ, ${G('celles', 'ceux')} à 50 % ou plus sont ${G('cochées', 'cochés')}. Les arrêts ${G('des gardiennes', 'des gardiens')}, la défense et l’alchimie du groupe ne sont pas mesurés : ${G('une gardienne décochée', 'un gardien décoché')} ne change donc rien au calcul. Seuls ${G('les joueuses déjà passées', 'les joueurs déjà passés')} sur une feuille de match de cette poule sont listés ; chez l’adversaire, prénom et initiale seulement.</p></section>`;
+    <p class="note">Le point de départ est le pronostic du match (niveau des deux équipes sur trois saisons, avantage du terrain). Chaque ${G('joueuse', 'joueur')} compte pour la moitié de ses buts par match cette saison, plafonnée à 4 buts : ${G('présente', 'présent')} plus souvent que d’habitude, son équipe gagne cet écart ; ${G('absente', 'absent')}, elle le perd. « Présence » = probabilité d’être sur la prochaine feuille de match, d’après les feuilles déjà publiées. Au départ, ${G('celles', 'ceux')} à 50 % ou plus sont ${G('cochées', 'cochés')}. Les arrêts ${G('des gardiennes', 'des gardiens')}, la défense et l’alchimie du groupe ne sont pas mesurés : ${G('une gardienne décochée', 'un gardien décoché')} ne change donc rien au calcul. Sont ${G('listées', 'listés')} ${G('les joueuses', 'les joueurs')} déjà ${G('passées', 'passés')} cette saison sur une feuille de match de l’équipe ou de l’autre équipe du club dans la catégorie (badge : son équipe). La présence est toujours celle de cette équipe-ci : ${G('une joueuse', 'un joueur')} jamais ${G('venue', 'venu')} ici a 10 % × (1 − sa présence dans son équipe) de chances d’être ${G('appelée', 'appelé')}, ${G('une titulaire', 'un titulaire')} de l’autre équipe presque aucune. Ses buts par match sont ceux de son équipe, sans correction de niveau. « ${G('Toutes présentes', 'Tous présents')} » coche l’effectif de l’équipe, sans les renforts. Chez l’adversaire, prénom et initiale seulement.</p></section>`;
 }
 function compoRows(m, st, side, cur) {
   const t = compoTeams(m), tid = side === 'm' ? t.me : t.opp, map = st[side];
-  return byPresence(TEAMS[tid].players).map(p => {
+  return byPresence(roster(m, side)).map(p => {
     const alt = {m: Object.assign({}, st.m), o: Object.assign({}, st.o)}; alt[side][p.nom] = !map[p.nom];
     const d = Math.round((compoCalc(m, alt).w - cur.w) * 100);
     return `<label class="cp-row${map[p.nom] ? ' on' : ''}"><input type="checkbox" data-side="${side}" data-pl="${esc(p.nom)}"${map[p.nom] ? ' checked' : ''}><span class="cp-sw" aria-hidden="true"></span>
-      <span class="cp-n"><b>${esc(p.nom)}</b><small>présence ${pct(p.presence)} · ${p.mj} m · ${f1(p.bpm)} b/m${p.arrets_pm >= 3 ? ` · ${f1(p.arrets_pm)} arrêts/m` : ''}</small></span>
+      <span class="cp-n"><b>${esc(p.nom)}${p.from ? ` <span class="badge">${esc(p.from)}</span>` : ''}</b><small>présence ${pct1(p.presence)}${p.from ? ` · en ${esc(p.from)} : ${p.mj} m · ${f1(p.bpm)} b/m` : ` · ${p.mj} m · ${f1(p.bpm)} b/m`}${p.arrets_pm >= 3 ? ` · ${f1(p.arrets_pm)} arrêts/m` : ''}</small></span>
       <span class="cp-i ${d > 0 ? 'ok' : d < 0 ? 'ko' : ''}" title="Chance de victoire de ${esc(name(D.club))} si ${G('elle', 'il')} change">${d === 0 ? '±0' : (d > 0 ? '+' : '−') + Math.abs(d)} pt${Math.abs(d) > 1 ? 's' : ''}</span></label>`;
   }).join('') || `<p class="sub">Feuilles de match non disponibles.</p>`;
 }
@@ -1521,7 +1543,7 @@ app.addEventListener('click', e => {
   if (!b) return;
   const m = futClub().find(x => x.rid === compoRid); if (!m) return;
   const st = compoState(m), side = b.dataset.side, t = compoTeams(m);
-  TEAMS[side === 'm' ? t.me : t.opp].players.forEach(p => { st[side][p.nom] = b.dataset.act === 'all' ? true : p.presence >= 0.5; });
+  roster(m, side).forEach(p => { st[side][p.nom] = b.dataset.act === 'all' ? (!p.from) : p.presence >= 0.5; });
   compoPaint();
 });
 
