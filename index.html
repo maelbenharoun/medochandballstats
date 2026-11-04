@@ -435,6 +435,64 @@ h2.sec { margin-top: 8px; }
   .tlx b { font-weight: 600; color: var(--ink); }
   .tl .nbar { display: none !important; }
 }
+/* ══ téléphone : police et couleurs façon appli de sport (FotMob, SofaScore) ══
+   police du système (San Francisco sur iPhone, Roboto sur Android) : nette, instantanée, chiffres alignés ;
+   plus de petites capitales espacées en machine à écrire ; fonds un cran plus clairs, textes gris plus contrastés ;
+   panneaux tous sombres (plus de blocs blancs ou gris clair qui éblouissent). */
+@media (max-width: 720px) {
+  :root {
+    --page: #08090b; --panel: #17191d; --panel-2: #22252a; --edge: rgba(255, 255, 255, .06);
+    --ink: #f2f3f5; --ink-2: #c9cdd3; --muted: #9ba1aa; --line: rgba(255, 255, 255, .09);
+    --court-1: #262a31; --court-2: #131519; --navy: #17191d;
+    --gray-p: #17191d; --gray-ink: #f2f3f5;
+    --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, "Segoe UI", Inter, system-ui, "Helvetica Neue", Arial, sans-serif;
+    --f-pixel: var(--f-display); --f-mono: var(--f-display);
+    --r-xl: 18px; --r-lg: 16px; --r-md: 12px;
+  }
+  body { font-size: 15px; line-height: 1.45; }
+  .tlt .tv, .tlx, .kpi b, .fun .fig, .up em { font-variant-numeric: tabular-nums; }
+  .top { background: rgba(8, 9, 11, .9); }
+  .eyebrow, h3, th, .badge, .scoreboard .sb-t, .fun .title, .filters label, .ctamenu .hd, .fx .lieu, footer .sign, .plegend, .teammenu small { text-transform: none; letter-spacing: 0; }
+  .eyebrow { font: 600 .8rem/1.3 var(--f-display); color: var(--muted) !important; }
+  .court .eyebrow { color: var(--ink-2) !important; }
+  h1 { font-weight: 700; letter-spacing: -.025em; }
+  h2 { font-weight: 700; letter-spacing: -.015em; font-size: 1.22rem; }
+  h3 { font: 600 .82rem/1.3 var(--f-display); color: var(--muted); }
+  th { font: 600 .75rem/1.2 var(--f-display); }
+  .lead { font-weight: 400; color: var(--ink-2); }
+  .sub, .note { color: var(--muted); }
+  .badge { font: 600 .72rem/1 var(--f-display); }
+  .card { border-color: var(--edge); }
+  /* hero : lignes du terrain discrètes pour ne plus barrer le texte */
+  .court > svg.lines { opacity: .35; }
+  .court .side { color: var(--ink-2); }
+  .scoreboard { background: #0c0d10; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .07); }
+  .scoreboard .sb-t { font: 500 .74rem/1.2 var(--f-display); color: var(--muted); }
+  .scoreboard .sb-t b { font: 700 1.02rem/1.15 var(--f-display); letter-spacing: 0; }
+  .scoreboard .sb-s { font-weight: 800; letter-spacing: -.04em; }
+  .score { font-weight: 800; letter-spacing: -.03em; }
+  .pbar div { font: 700 .8rem/1 var(--f-display); }
+  .plegend { font: 500 .74rem/1.3 var(--f-display); color: var(--muted); }
+  .kpi b { font-weight: 800; letter-spacing: -.02em; }
+  .kpi span { color: var(--muted); }
+  .marquee span { font-weight: 600; letter-spacing: -.02em; }
+  .marquee span em { font-weight: 800; }
+  .more { background: rgba(255, 255, 255, .08) !important; color: var(--ink) !important; font-weight: 600; }
+  .p-blue .pres .n a { color: var(--ink) !important; }
+  /* stats rigolotes : tous les panneaux sombres, le chiffre en blanc */
+  .grid3 > .fun.fun:nth-child(n) { background: var(--panel); color: var(--ink); border: 1px solid var(--edge); }
+  .grid3 > .fun.fun:nth-child(n) .title { color: var(--muted); font: 600 .8rem/1.2 var(--f-display); }
+  .grid3 > .fun.fun:nth-child(n) .what { color: var(--ink-2); }
+  .grid3 > .fun.fun:nth-child(n) ol { color: var(--ink-2); }
+  .grid3 > .fun.fun:nth-child(n) .fig { color: var(--ink); font-weight: 800; letter-spacing: -.035em; }
+  .fx .d, .fx .fh small, .teams .t small { font-family: var(--f-display); letter-spacing: 0; }
+  .fx .s, .fx .w, .jour > header b, .fx .d b, .key .kh .v, .up em, .msum .ms { font-weight: 800; }
+  .vs .vh { font: 600 .74rem/1.2 var(--f-display); text-transform: none; letter-spacing: 0; }
+  .vs .vr b, .scen .v, .pres .v, .res-list b, .ctamenu .j, .ctamenu .p, .ctamenu .o small { font-family: var(--f-display); }
+  .tabbar { background: rgba(14, 15, 18, .94); }
+  a.s::after { content: none; }
+  a.s { outline-color: rgba(255, 255, 255, .3); }
+}
 @media (max-width: 389px) {
   .cta-m .lg { display: none; }
   .tabbar a { font-size: .58rem; }
