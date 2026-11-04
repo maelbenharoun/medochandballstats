@@ -361,8 +361,8 @@ const name = id => TEAMS[id].short || SHORT[TEAMS[id].nom] || titleCase(TEAMS[id
 const shortClub = s => { const k = Object.keys(SHORT).find(k => k === (s || '').toUpperCase()); return k ? SHORT[k] : titleCase(s || ''); };
 const titleCase = s => s.toLowerCase().replace(/(^|[\s\-'(])([a-zà-ÿ])/g, (m, a, b) => a + b.toUpperCase());
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const pct = x => Math.round(x * 100) + ' %';
-const pct1 = x => (x < 0.005 && x > 0 ? '<1' : Math.round(x * 100)) + ' %';
+const pct = x => (x >= 0.995 && x < 1 ? '>99' : x > 0 && x < 0.005 ? '<1' : Math.round(x * 100)) + ' %';
+const pct1 = x => (x < 0.005 && x > 0 ? '<1' : x >= 0.995 && x < 1 ? '>99' : Math.round(x * 100)) + ' %';
 const sgn = x => (x > 0 ? '+' : x < 0 ? '−' : '±') + Math.abs(x).toFixed(1).replace('.', ',');
 const f1 = x => x == null ? '–' : x.toFixed(1).replace('.', ',');
 const MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
