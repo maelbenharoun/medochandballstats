@@ -86,7 +86,23 @@ nav a[aria-current="page"] { background: #16181c; color: #fff; }
 .back:hover { background: rgba(255, 255, 255, .12); }
 .back:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 @media (max-width: 1360px) { .back-l { display: none; } .back { width: 42px; padding: 0; justify-content: center; } }
-@media (max-width: 900px) { .top .wrap { flex-wrap: nowrap; justify-content: flex-start; } .top .cta { display: none; } }
+button.cta { border: 0; cursor: pointer; font-family: var(--f-display); }
+button.cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cta .caret { font-size: .7rem; opacity: .6; }
+.ctasel { position: relative; }
+.ctamenu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 20; width: 380px; max-width: calc(100vw - 32px); max-height: min(70vh, 560px); overflow-y: auto; background: #16181c; border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 6px; box-shadow: 0 18px 50px rgba(0, 0, 0, .55); }
+.ctamenu[hidden] { display: none; }
+.ctamenu .hd { font: 500 .68rem/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding: 10px 12px 6px; }
+.ctamenu a { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--r-md); color: var(--ink); text-decoration: none; }
+.ctamenu a:hover, .ctamenu a:focus-visible { background: rgba(255, 255, 255, .08); outline: none; text-decoration: none; }
+.ctamenu a.next { background: rgba(255, 255, 255, .06); }
+.ctamenu .j { font: 600 .8rem/1 var(--f-mono); color: var(--muted); }
+.ctamenu .o { min-width: 0; }
+.ctamenu .o b { display: block; font-weight: 600; font-size: .92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ctamenu .o small { font: 400 .72rem/1.3 var(--f-mono); color: var(--muted); }
+.ctamenu .p { font: 600 .9rem/1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.ctamenu .all { display: block; text-align: center; padding: 10px; color: var(--ink-2); font-size: .88rem; }
+@media (max-width: 900px) { .top .wrap { flex-wrap: nowrap; justify-content: flex-start; } .ctasel { display: none; } }
 @media (max-width: 1360px) and (min-width: 721px) { nav a { padding: 7px 9px; font-size: .86rem; } }
 /* menu des pages : liste déroulante sur téléphone */
 .navbtn { display: none; }
@@ -330,7 +346,8 @@ h2.sec { margin-top: 8px; }
       <a href="#pronos" data-v="pronos">Bilan des pronos</a>
       <a href="#medoc" data-v="medoc">Médoc depuis 2023</a>
     </nav>
-    <a class="cta" id="cta" href="#accueil">J6</a>
+    <div class="ctasel"><button class="cta" id="cta" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="ctamenu">J6</button>
+      <div class="ctamenu" id="ctamenu" role="menu" hidden></div></div>
   </div>
 </header>
 
@@ -382,7 +399,19 @@ document.getElementById('foot').innerHTML = `<p class="sign">Médoc Handball · 
   Noms complets affichés pour ${esc(name(D.club))} uniquement ; prénom et initiale pour les autres clubs.</p>
   <p>Modèle 3 saisons : ${D.model.n_matchs.toLocaleString('fr-FR')} matchs de ${D.model.n_poules} poules (2023-24 à 2026-27), un niveau par équipe et par saison, relié d’une saison à l’autre selon ${G('les joueuses conservées', 'les joueurs conservés')}, avec un niveau propre à chaque championnat. Matchs de la saison en cours pondérés par la récence (demi-vie ${D.model.half_life} jours). Avantage du terrain ${sgn(D.model.home)} buts, erreur de prévision mesurée ± ${f1(D.model.sigma)} buts. Simulation de fin de saison : ${D.n_sim.toLocaleString('fr-FR')} saisons tirées au sort.</p>`;
 const c = document.getElementById('cta'), cm = D.next.find(m => isClub(m.home) || isClub(m.away));
-if (cm) { c.hidden = false; c.href = '#match-' + cm.rid; c.innerHTML = `J${D.next_journee}<span class="cta-long"> · ${esc(name(cm.home === D.club ? cm.away : cm.home))}</span> →`; } else c.hidden = true;
+const fut = (D.calendar || []).filter(m => isClub(m.home) || isClub(m.away)).sort((a, b) => a.date.localeCompare(b.date) || a.j - b.j);
+document.querySelector('.ctasel').hidden = !fut.length;
+if (fut.length) {
+  const f0 = cm || fut[0], adv0 = f0.home === D.club ? f0.away : f0.home;
+  c.innerHTML = `J${f0.j || D.next_journee}<span class="cta-long"> · ${esc(name(adv0))}</span><span class="caret" aria-hidden="true">▾</span>`;
+  c.setAttribute('aria-label', `Matchs à venir de ${name(D.club)} : prochain J${f0.j || D.next_journee} contre ${name(adv0)}`);
+  document.getElementById('ctamenu').innerHTML = `<div class="hd">Les ${fut.length} prochains matchs de ${esc(name(D.club))}</div>` + fut.map(m => {
+    const home = m.home === D.club, pw = home ? m.p[0] : m.p[2], adv = home ? m.away : m.home, isNext = D.next.some(x => x.rid === m.rid);
+    return `<a role="menuitem" class="${isNext ? 'next' : ''}" href="${isNext ? '#match-' + m.rid : '#calendrier'}" data-cal="${isNext ? '' : '1'}">
+      <span class="j">J${m.j}</span>
+      <span class="o"><b>${home ? '' : 'à '}${esc(name(adv))}</b><small>${m.estimee ? '≈ ' : ''}${fdate(m.date)} · ${home ? 'domicile' : 'extérieur'}${isNext ? ' · détail du match' : ''}</small></span>
+      <span class="p ${pw >= 0.5 ? 'sw' : 'sl'}" title="Chance de victoire">${pct1(pw)}</span></a>`; }).join('') + `<a class="all" href="#calendrier" data-cal="1">Tout le calendrier →</a>`;
+}
 buildMenu();
 }
 function buildMenu() {
@@ -396,9 +425,15 @@ navBtn.addEventListener('click', e => { e.stopPropagation(); const open = !navEl
 navEl.addEventListener('click', e => { if (e.target.closest('a')) closeNav(); });
 document.addEventListener('click', e => { if (navEl.classList.contains('open') && !navEl.contains(e.target)) closeNav(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && navEl.classList.contains('open')) { closeNav(); navBtn.focus(); } });
+const ctaBtn = document.getElementById('cta'), ctaMenu = document.getElementById('ctamenu');
+function closeCta() { ctaMenu.hidden = true; ctaBtn.setAttribute('aria-expanded', 'false'); }
+ctaBtn.addEventListener('click', e => { e.stopPropagation(); const open = ctaMenu.hidden; closeMenu(); closeNav(); ctaMenu.hidden = !open; ctaBtn.setAttribute('aria-expanded', String(open)); if (open) { const f = ctaMenu.querySelector('a'); if (f) f.focus(); } });
+ctaMenu.addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; if (a.dataset.cal) { calTeam = D.club; try { localStorage.setItem('calTeam', calTeam); } catch (err) {} if (location.hash === '#calendrier') render(); } closeCta(); });
+document.addEventListener('click', e => { if (!ctaMenu.hidden && !ctaMenu.contains(e.target)) closeCta(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !ctaMenu.hidden) { closeCta(); ctaBtn.focus(); } });
 const brandBtn = document.getElementById('brand'), menuEl = document.getElementById('teammenu');
 function closeMenu() { menuEl.hidden = true; brandBtn.setAttribute('aria-expanded', 'false'); }
-brandBtn.addEventListener('click', e => { e.stopPropagation(); if (typeof closeNav === 'function') closeNav(); const open = menuEl.hidden; menuEl.hidden = !open; brandBtn.setAttribute('aria-expanded', String(open)); if (open) { const cur = menuEl.querySelector('[aria-checked="true"]'); if (cur) cur.focus(); } });
+brandBtn.addEventListener('click', e => { e.stopPropagation(); closeNav(); closeCta(); const open = menuEl.hidden; menuEl.hidden = !open; brandBtn.setAttribute('aria-expanded', String(open)); if (open) { const cur = menuEl.querySelector('[aria-checked="true"]'); if (cur) cur.focus(); } });
 document.addEventListener('click', e => { if (!menuEl.hidden && !menuEl.contains(e.target)) closeMenu(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menuEl.hidden) { closeMenu(); brandBtn.focus(); } });
 function switchTeam(k, nav) {
