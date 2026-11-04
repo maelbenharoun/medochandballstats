@@ -492,6 +492,23 @@ h2.sec { margin-top: 8px; }
   .vs .vr b, .scen .v, .pres .v, .res-list b, .ctamenu .j, .ctamenu .p, .ctamenu .o small { font-family: var(--f-display); }
   .tabbar { background: rgba(14, 15, 18, .94); }
   a.s::after { content: none; }
+  /* accueil : le week-end dans la poule, une ligne par match */
+  .wklist { padding: 6px 16px 12px; display: grid; }
+  .wkd { font: 600 .8rem/1.2 var(--f-display); color: var(--muted); padding: 12px 0 4px; }
+  .wk { display: grid; gap: 7px; padding: 11px 0; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+  .wkd + .wk { border-top: 0; }
+  .wk, .wk * { text-decoration: none !important; }
+  .wk .wp b { color: var(--muted); } .wk .wp b.fav { color: var(--ink); }
+  .wk .wt { display: grid; grid-template-columns: minmax(0, 1fr) 62px minmax(0, 1fr); align-items: center; gap: 10px; }
+  .wk .h, .wk .a { font-size: .95rem; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); }
+  .wk .h { text-align: right; } .wk .fav { color: var(--ink); font-weight: 600; }
+  .wk .s { font: 800 1rem/1 var(--f-display); text-align: center; background: #0c0d10; border-radius: 9px; padding: 7px 0; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1); font-variant-numeric: tabular-nums; }
+  .wk .s i { font-style: normal; color: #5b616b; padding: 0 1px; }
+  .wk .wp { display: grid; grid-template-columns: 40px minmax(0, 1fr) 40px; align-items: center; gap: 8px; font: 700 .78rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+  .wk .wp b:last-child { text-align: right; }
+  .wk .pbar { height: 6px; gap: 2px; }
+  .wk .pbar div { font-size: 0; }
+  .wkn { padding-top: 10px; border-top: 1px solid var(--line); font-size: .8rem; }
   /* tableau compact */
   .cthint { font-size: .8rem; margin-bottom: -4px; }
   table.ct { width: 100%; font-size: .92rem; }
@@ -832,11 +849,19 @@ function viewHome() {
     return `<span>${esc(name(r.home))} <em>${sc2(r.hs, r.as, '<span style="color:#5b616b">-</span>')}</em> ${esc(name(r.away))}<b class="sep">·</b></span>`;
   }).join('');
   const cards = nx.filter(m => m !== club).map(m => matchCard(m, m === tight)).join('');
+  // téléphone : une ligne par match, groupés par jour, toute la ligne ouvre l'analyse
+  const others = nx.filter(m => m !== club), oDates = [...new Set(others.map(m => m.date))].sort();
+  const wkRow = m => { const o = orient(m), w = o.p[0], l = o.p[2];
+    return `<a class="wk" href="#match-${m.rid}" aria-label="${esc(name(o.L))} contre ${esc(name(o.R))}, score probable ${o.s[0]}-${o.s[1]}, voir l’analyse">
+      <span class="wt"><span class="h${w >= l ? ' fav' : ''}">${esc(name(o.L))}</span><span class="s">${sc2(o.s[0], o.s[1], '<i>:</i>')}</span><span class="a${l > w ? ' fav' : ''}">${esc(name(o.R))}</span></span>
+      <span class="wp"><b class="${w >= l ? 'fav' : ''}">${pct(w)}</b>${pbarMini(o.p, o.L, o.R)}<b class="${l > w ? 'fav' : ''}">${pct(l)}</b></span></a>`; };
+  const wkList = others.length ? `<section class="card wklist mob-only">${oDates.map(d => `<p class="wkd">${fdate(d)}</p>` + others.filter(m => m.date === d).map(wkRow).join('')).join('')}
+    ${tight && tight !== club ? `<p class="sub wkn">Le plus indécis : ${esc(name(orient(tight).L))} – ${esc(name(orient(tight).R))}. Toucher un match pour l’analyse complète.</p>` : '<p class="sub wkn">Toucher un match pour l’analyse complète.</p>'}</section>` : '';
   const race = Object.values(TEAMS).sort((a, b) => b.sim.p1 - a.sim.p1).slice(0, 5);
   return `${hero}${strip}
   <div class="marquee" aria-label="Résultats de la dernière journée"><div class="track" aria-hidden="true">${ticker}${ticker}</div></div>
   <section class="stack" style="padding-top:0"><p class="eyebrow">Les autres matchs de la J${D.next_journee}</p><h2>Le week-end dans la poule</h2><a class="more" href="#calendrier">Tous les matchs jusqu’en mai</a></section>
-  <section class="grid2">${cards}</section>
+  ${wkList}<section class="grid2 desk-only">${cards}</section>
   <section class="grid2">
     <div class="card stack p-blue" style="background:radial-gradient(120% 100% at 80% 0%, var(--court-1), var(--navy));border-color:transparent;border-radius:var(--r-xl)">
       <p class="eyebrow" style="color:rgba(255,255,255,.7)">${D.n_sim.toLocaleString('fr-FR')} fins de saison simulées</p><h2>Course à la 1re place</h2>
