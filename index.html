@@ -84,7 +84,7 @@ button.brand { cursor: pointer; font: inherit; }
 .teammenu small { grid-column: 1; font: 400 .74rem/1.3 var(--f-mono); color: var(--muted); }
 .teammenu .ck { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-size: .9rem; }
 .teammenu .ck:empty { width: 1em; }
-@media (max-width: 1180px) { .cta-long { display: none; } }
+@media (max-width: 1500px) { .cta-long { display: none; } }
 @media (max-width: 520px) { .brand b { font-size: .85rem; } .brand { padding: 5px 10px 5px 5px; } }
 nav { display: flex; gap: 2px; background: rgba(236, 238, 242, .82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 5px; border-radius: var(--r-pill); overflow-x: auto; max-width: 100%; scrollbar-width: none; }
 nav::-webkit-scrollbar { display: none; }
@@ -118,6 +118,7 @@ button.cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .ctamenu .all { display: block; text-align: center; padding: 10px; color: var(--ink-2); font-size: .88rem; }
 @media (max-width: 900px) { .top .wrap { flex-wrap: nowrap; justify-content: flex-start; } .ctasel { display: none; } }
 @media (max-width: 1360px) and (min-width: 721px) { nav a { padding: 7px 9px; font-size: .86rem; } }
+@media (max-width: 1180px) and (min-width: 721px) { nav a { padding: 7px 7px; font-size: .8rem; } .brand b { font-size: .85rem; } }
 /* menu des pages : liste déroulante sur téléphone */
 .navbtn { display: none; }
 @media (max-width: 720px) {
@@ -342,6 +343,33 @@ a.s { text-decoration: none; outline: 1px solid rgba(255, 255, 255, .18); } a.s:
 h2.sec { margin-top: 8px; }
 @media (max-width: 640px) { .scen .row { grid-template-columns: minmax(0, 1fr) 48px; } .scen .n { white-space: normal; grid-column: 1 / -1; } .vs .vr span { font-size: .78rem; } }
 
+/* ── gérer mon équipe */
+main > * { min-width: 0; }
+#cp-match { flex: 1 1 260px; min-width: 0; width: 100%; max-width: 560px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-grid { align-items: start; }
+@media (min-width: 721px) { .cp-res { position: sticky; top: 84px; } }
+.cp-big { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.cp-big b { font: 700 clamp(3rem, 7vw, 4.4rem)/.95 var(--f-pixel); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.cp-big span { color: var(--ink-2); }
+.cp-delta { color: var(--ink-2); font-size: .95rem; }
+.cp-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.cp-b { font: 600 .86rem/1 var(--f-display); color: var(--ink); background: rgba(255, 255, 255, .08); border: 1px solid var(--edge); border-radius: var(--r-pill); padding: 9px 14px; cursor: pointer; }
+.cp-b:hover { background: rgba(255, 255, 255, .14); }
+.cp-list { display: grid; }
+.cp-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 2px; border-top: 1px solid var(--line); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.cp-row input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.cp-sw { width: 40px; height: 24px; border-radius: 99px; background: rgba(255, 255, 255, .14); position: relative; transition: background .15s ease; }
+.cp-sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--ink-2); transition: transform .15s ease, background .15s ease; }
+.cp-row.on .cp-sw, .cp-row input:checked + .cp-sw { background: var(--win); }
+.cp-row input:checked + .cp-sw::after { transform: translateX(16px); background: #fff; }
+.cp-row input:focus-visible + .cp-sw { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cp-row:not(.on) .cp-n b { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(255, 255, 255, .3); }
+.cp-n { min-width: 0; display: grid; gap: 2px; }
+.cp-n b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp-n small { font: 400 .76rem/1.3 var(--f-mono); color: var(--muted); }
+.cp-i { font: 600 .86rem/1 var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted); }
+.cp-cta .more { justify-self: start; }
+
 /* ══ téléphone : barre d'onglets, résumé collant, sections repliables, tableaux en cartes ══ */
 .tabbar, .msum, .cta-m, .cta-m .sm { display: none; }
 @media (min-width: 721px) { .mob-only { display: none !important; } }
@@ -358,7 +386,7 @@ h2.sec { margin-top: 8px; }
   .teammenu, .ctamenu { position: fixed; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 62px); width: auto; min-width: 0; max-width: none; max-height: calc(100vh - 62px - 96px); max-height: calc(100dvh - 62px - 96px); overflow-y: auto; overscroll-behavior: contain; }
   .teammenu button { padding: 13px 14px; }
   .ctamenu a { padding: 12px; }
-  .tabbar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: rgba(12, 13, 15, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--edge); padding: 5px max(4px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px)); }
+  .tabbar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: rgba(12, 13, 15, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--edge); padding: 5px max(4px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px)); }
   .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 52px; color: var(--muted); font: 500 .63rem/1 var(--f-display); letter-spacing: -.01em; text-decoration: none; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
   .tabbar .ic { display: grid; place-items: center; width: 46px; height: 28px; border-radius: var(--r-pill); }
   .tabbar svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -492,6 +520,18 @@ h2.sec { margin-top: 8px; }
   .vs .vr b, .scen .v, .pres .v, .res-list b, .ctamenu .j, .ctamenu .p, .ctamenu .o small { font-family: var(--f-display); }
   .tabbar { background: rgba(14, 15, 18, .94); }
   a.s::after { content: none; }
+  /* gérer mon équipe */
+  .cp-sticky { display: flex; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 62px); z-index: 5; align-items: center; gap: 10px; padding: 9px 16px; border-radius: var(--r-pill); background: rgba(22, 24, 28, .94); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--edge); font-size: .86rem; }
+  .cp-sticky .mn { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); }
+  .cp-sticky b { font: 800 1.15rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+  .cp-sticky span:last-child:not(.mn) { font: 700 .86rem/1 var(--f-display); }
+  .cp-big b { font-size: 3rem; }
+  .cp-res .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cp-res .kpi:last-child:nth-child(odd) { grid-column: auto; }
+  .cp-n small, .cp-i { font-family: var(--f-display); }
+  .cp-row { grid-template-columns: 42px minmax(0, 1fr) auto; padding: 11px 0; }
+  .tabbar a { font-size: .58rem; }
+  .tabbar .ic { width: 40px; }
   /* accueil : le week-end dans la poule, une ligne par match */
   .wklist { padding: 6px 16px 12px; display: grid; }
   .wkd { font: 600 .8rem/1.2 var(--f-display); color: var(--muted); padding: 12px 0 4px; }
@@ -568,6 +608,7 @@ h2.sec { margin-top: 8px; }
       <a href="#accueil" data-v="accueil">Accueil</a>
       <a href="#calendrier" data-v="calendrier">Matchs à venir</a>
       <a href="#classement" data-v="classement">Classement</a>
+      <a href="#compo" data-v="compo">Gérer mon équipe</a>
       <a href="#stats" data-v="stats">Stats rigolotes</a>
       <a href="#pronos" data-v="pronos">Bilan des pronos</a>
       <a href="#medoc" data-v="medoc">Médoc depuis 2023</a>
@@ -583,6 +624,7 @@ h2.sec { margin-top: 8px; }
   <a href="#accueil" data-v="accueil"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></span>Accueil</a>
   <a href="#calendrier" data-v="calendrier"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>Calendrier</a>
   <a href="#classement" data-v="classement"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V4M19 20v-5"/></svg></span>Classement</a>
+  <a href="#compo" data-v="compo"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3.5 4.5 5.8 6 10l2-.9V20h8V9.1l2 .9 1.5-4.2L15 3.5a3 3 0 0 1-6 0z"/></svg></span>Mon équipe</a>
   <a href="#stats" data-v="stats"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z"/></svg></span>Stats</a>
   <a href="#pronos" data-v="pronos"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/></svg></span>Pronos</a>
   <a href="#medoc" data-v="medoc"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8-7 10-4-2-7-5.4-7-10V6z"/></svg></span>Historique</a>
@@ -1124,6 +1166,7 @@ function viewMatch(rid) {
       <a class="more" href="#equipe-${tid}">Fiche de l’équipe</a></div>`; }).join('')}
   </section>
   <section class="card stack"><h2>Confrontations depuis 2023</h2>${h2hHtml(m, o)}</section>
+  ${isClub(m.home) || isClub(m.away) ? `<section class="card stack cp-cta" data-keep><h2>Et avec une autre composition ?</h2><p class="sub">Cochez ${G('les joueuses présentes', 'les joueurs présents')} pour ce match et voyez la chance de victoire changer.</p><a class="more" href="#compo" data-compo="${m.rid}">Gérer mon équipe pour ce match</a></section>` : ''}
   <section class="card stack"><h2>Comment lire l’effectif probable</h2>
     <p class="note">La probabilité de présence vient des feuilles de match déjà publiées : présence ${G('de la joueuse', 'du joueur')} depuis son premier match, rapprochée de la moyenne de l’équipe tant ${G('qu’elle', 'qu’il')} a peu de matchs, et baissée après deux absences de suite. Le site ne sait pas pourquoi ${G('une joueuse', 'un joueur')} manque (blessure, travail, choix du coach, équipe réserve). Les ${D.n_sim / 2 | 0} effectifs tirés au sort retirent à chaque ${G('absente', 'absent')} la moitié de ses buts par match.</p>
   </section>`;
@@ -1376,6 +1419,97 @@ function pbarMini(p, lid, rid) {
     <div class="${cR}" style="flex:${l}" data-tip="Défaite ${esc(name(lid))} : <b>${pct1(l)}</b>">${lab(l)}</div></div>`;
 }
 
+/* ── gérer mon équipe : composition et chance de victoire ── */
+// même calcul que les effectifs probables : une absente « coûte » la moitié de ses buts par match, plafonné à 4 buts
+const ABS_F = 0.5, ABS_CAP = 4;
+let compoRid = null, COMPO = {};
+try { COMPO = JSON.parse(localStorage.getItem('compo') || '{}') || {}; } catch (e) { COMPO = {}; }
+const effOf = p => Math.min(ABS_F * (p.bpm || 0), ABS_CAP);
+const compoKey = rid => CUR + ':' + rid;
+function compoState(m) {
+  const pl = TEAMS[D.club].players, k = compoKey(m.rid);
+  const st = COMPO[k] || {};
+  pl.forEach(p => { if (!(p.nom in st)) st[p.nom] = p.presence >= 0.5; });
+  COMPO[k] = st; return st;
+}
+function compoCalc(m, pres) {
+  // pres : nom -> présente (true/false) pour Médoc ; adversaire avec son effectif probable
+  const me = D.club, home = m.home === me, opp = home ? m.away : m.home;
+  const dM = TEAMS[me].players.reduce((a, p) => a + effOf(p) * ((pres[p.nom] ? 1 : 0) - p.avg_presence), 0);
+  const dO = TEAMS[opp].players.reduce((a, p) => a + effOf(p) * (p.presence - p.avg_presence), 0);
+  const muH = m.mu + (home ? dM - dO : dO - dM), sg = D.model.sigma;
+  const ph = 1 - PHI((0.5 - muH) / sg), pa = PHI((-0.5 - muH) / sg);
+  const w = home ? ph : pa, l = home ? pa : ph;
+  return {w, n: Math.max(0, 1 - w - l), l, diff: home ? muH : -muH, home, opp};
+}
+function compoProbable() { return Object.fromEntries(TEAMS[D.club].players.map(p => [p.nom, p.presence >= 0.5])); }
+function compoMatchLabel(m) { const home = m.home === D.club; return `J${m.j} · ${m.estimee ? '≈ ' : ''}${fdate(m.date)} · ${home ? '' : 'à '}${name(home ? m.away : m.home)} (${home ? 'domicile' : 'extérieur'})`; }
+function viewCompo() {
+  const fut = futClub();
+  const head = `<section class="stack"><p class="eyebrow">Simulateur de composition · ${esc(D.team ? D.team.label : '')}</p><h1>Gérer mon équipe</h1>`;
+  if (!fut.length) return head + `<p class="lead">Plus aucun match à venir cette saison pour ${esc(name(D.club))}.</p></section>`;
+  if (!fut.some(x => x.rid === compoRid)) compoRid = fut[0].rid;
+  const m = fut.find(x => x.rid === compoRid);
+  return head + `<p class="lead">Choisissez un match à venir, puis ${G('cochez les joueuses présentes', 'cochez les joueurs présents')} : la chance de victoire se recalcule aussitôt.</p>
+    <div class="filters"><label for="cp-match">Match</label><select id="cp-match">${fut.map(x => `<option value="${x.rid}"${x.rid === m.rid ? ' selected' : ''}>${esc(compoMatchLabel(x))}</option>`).join('')}</select></div></section>
+  <div class="cp-sticky mob-only" id="cp-sticky" aria-hidden="true"></div>
+  <section class="grid2 cp-grid">
+    <div class="card stack cp-res" id="cp-res" data-keep></div>
+    <div class="card stack" data-keep><h2>${G('Les joueuses', 'Les joueurs')} de ${esc(name(D.club))}</h2>
+      <div class="cp-btns"><button type="button" class="cp-b" data-act="prob">Effectif probable</button><button type="button" class="cp-b" data-act="all">${G('Toutes présentes', 'Tous présents')}</button></div>
+      <div class="cp-list" id="cp-list"></div>
+      <p class="note">« Si ${G('elle', 'il')} change » : chance de victoire en plus ou en moins si l’on coche ou décoche ${G('cette joueuse', 'ce joueur')}. ${esc(name(m.home === D.club ? m.away : m.home))} est ${G('prise', 'pris')} avec son effectif probable.</p></div>
+  </section>
+  <section class="card stack"><h2>Comment c’est calculé</h2>
+    <p class="note">Le point de départ est le pronostic du match (niveau des deux équipes sur trois saisons, avantage du terrain). Chaque ${G('joueuse', 'joueur')} compte pour la moitié de ses buts par match cette saison, plafonnée à 4 buts : ${G('présente', 'présent')} plus souvent que d’habitude, l’équipe gagne cet écart ; ${G('absente', 'absent')}, elle le perd. Les arrêts ${G('des gardiennes', 'des gardiens')}, la défense et l’alchimie du groupe ne sont pas mesurés : une ${G('gardienne', 'gardien')} décochée ne change donc rien au calcul. Seuls ${G('les joueuses déjà passées', 'les joueurs déjà passés')} sur une feuille de match de cette poule sont listés.</p></section>`;
+}
+function compoPaint() {
+  const fut = futClub(), m = fut.find(x => x.rid === compoRid);
+  const res = document.getElementById('cp-res'), list = document.getElementById('cp-list');
+  if (!m || !res || !list) return;
+  const st = compoState(m), me = D.club;
+  const cur = compoCalc(m, st), ref = compoCalc(m, compoProbable());
+  const dpt = Math.round((cur.w - ref.w) * 100);
+  const mt = (m.score[0] + m.score[1]) / 2, gM = Math.round(mt + cur.diff / 2), gO = Math.round(mt - cur.diff / 2);
+  const nOn = Object.values(st).filter(Boolean).length;
+  const pArr = [cur.w, cur.n, cur.l];
+  res.innerHTML = `<p class="eyebrow">${esc(compoMatchLabel(m))}</p>
+    <div class="cp-big"><b class="${cur.w >= cur.l ? 'sw' : 'sl'}">${pct(cur.w)}</b><span>de chances de victoire</span></div>
+    <p class="cp-delta">${dpt === 0 ? 'Comme avec l’effectif probable' : `<b class="${dpt > 0 ? 'ok' : 'ko'}">${dpt > 0 ? '+' : '−'}${Math.abs(dpt)} pt${Math.abs(dpt) > 1 ? 's' : ''}</b> par rapport à l’effectif probable`} (${pct(ref.w)})</p>
+    ${pbar(pArr, me, cur.opp, true, cur.home)}
+    <div class="kpis">
+      <div class="kpi"><b>${sgn(cur.diff)}</b><span>écart de buts attendu</span></div>
+      <div class="kpi"><b>${gM}-${gO}</b><span>score probable</span></div>
+      <div class="kpi"><b>${nOn}</b><span>${G('joueuses cochées', 'joueurs cochés')}</span></div>
+    </div>
+    ${nOn < 7 ? `<p class="note ko">Moins de 7 ${G('joueuses', 'joueurs')} : le match ne pourrait pas se jouer.</p>` : nOn > 16 ? `<p class="note">Une feuille de match compte au plus 16 ${G('joueuses', 'joueurs')}.</p>` : ''}
+    ${findMatch(m.rid) ? `<a class="more" href="#match-${m.rid}">Analyse complète du match</a>` : ''}`;
+  const sticky = document.getElementById('cp-sticky');
+  if (sticky) sticky.innerHTML = `<span class="mn">${esc(name(cur.opp))} · ${nOn} ${G('cochées', 'cochés')}</span><b class="${cur.w >= cur.l ? 'sw' : 'sl'}">${pct(cur.w)}</b>${dpt ? `<span class="${dpt > 0 ? 'ok' : 'ko'}">${dpt > 0 ? '+' : '−'}${Math.abs(dpt)}</span>` : ''}`;
+  const pl = TEAMS[me].players.slice().sort((a, b) => effOf(b) - effOf(a) || b.presence - a.presence);
+  list.innerHTML = pl.map(p => {
+    const alt = Object.assign({}, st, {[p.nom]: !st[p.nom]}), d = Math.round((compoCalc(m, alt).w - cur.w) * 100);
+    return `<label class="cp-row${st[p.nom] ? ' on' : ''}"><input type="checkbox" data-pl="${esc(p.nom)}"${st[p.nom] ? ' checked' : ''}><span class="cp-sw" aria-hidden="true"></span>
+      <span class="cp-n"><b>${esc(p.nom)}</b><small>${p.mj} m · ${f1(p.bpm)} b/m${p.arrets_pm >= 3 ? ` · ${f1(p.arrets_pm)} arrêts/m` : ''} · présence ${pct(p.presence)}</small></span>
+      <span class="cp-i ${d > 0 ? 'ok' : d < 0 ? 'ko' : ''}" title="Si ${G('elle', 'il')} change">${d === 0 ? '±0' : (d > 0 ? '+' : '−') + Math.abs(d)} pt${Math.abs(d) > 1 ? 's' : ''}</span></label>`;
+  }).join('') || `<p class="sub">Feuilles de match non disponibles.</p>`;
+  try { localStorage.setItem('compo', JSON.stringify(COMPO)); } catch (e) {}
+}
+app.addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'cp-match') { compoRid = t.value; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (t.dataset && t.dataset.pl != null) { const m = futClub().find(x => x.rid === compoRid); if (!m) return; compoState(m)[t.dataset.pl] = t.checked; compoPaint(); }
+});
+app.addEventListener('click', e => {
+  const b = e.target.closest('.cp-b'); const a = e.target.closest('[data-compo]');
+  if (a) { compoRid = a.dataset.compo; return; }
+  if (!b) return;
+  const m = futClub().find(x => x.rid === compoRid); if (!m) return;
+  const st = compoState(m);
+  TEAMS[D.club].players.forEach(p => { st[p.nom] = b.dataset.act === 'all' ? true : p.presence >= 0.5; });
+  compoPaint();
+});
+
 /* ── téléphone : tableaux trop larges en cartes, sections secondaires repliées, résumé collant ── */
 function compactTable(t, heads) {
   // une ligne par élément avec les colonnes essentielles ; toucher la ligne ouvre le reste
@@ -1458,6 +1592,7 @@ function render() {
   else if (h === 'pronos') { html = viewPronos(); v = h; }
   else if (h === 'medoc') { html = viewMedoc(); v = h; }
   else if (h === 'calendrier') { html = viewCalendar(); v = h; }
+  else if (h === 'compo') { html = viewCompo(); v = h; }
   else html = viewHome();
   app.innerHTML = html;
   document.getElementById('foot').style.display = h === 'accueil' ? '' : 'none';   // sources et méthode : accueil seulement
@@ -1466,6 +1601,7 @@ function render() {
   { const cur = document.querySelector('#nav a[aria-current]'); document.getElementById('navbtn-l').textContent = cur ? cur.textContent : (h.startsWith('equipe-') ? 'Fiche équipe' : 'Menu'); }
   document.querySelectorAll('#tabbar a').forEach(a => { if (a.dataset.v === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   if (MQ.matches) { mobTables(); mobFold(); }
+  if (h === 'compo') compoPaint();
   bindTips(app);
   setupMsum();
   const cs = document.getElementById('cal-team');
