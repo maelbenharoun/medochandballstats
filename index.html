@@ -1152,7 +1152,7 @@ function render() {
 let depth = 0;
 try { if (history.state && typeof history.state.d === 'number') depth = history.state.d; else history.replaceState({d: 0, t: CUR}, ''); } catch (e) {}
 const back = document.getElementById('back');
-const syncBack = () => { const h = (location.hash || '#accueil').slice(1); back.hidden = depth <= 0 && h === 'accueil'; };
+const syncBack = () => { const h = (location.hash || '#accueil').slice(1); back.hidden = h === 'accueil'; /* jamais de bouton retour sur l'accueil */ };
 back.addEventListener('click', () => { if (depth > 0) history.back(); else location.hash = '#accueil'; });
 window.addEventListener('hashchange', () => {
   try { if (history.state && typeof history.state.d === 'number') { depth = history.state.d; if (history.state.t && history.state.t !== CUR && ALL.data[history.state.t]) { switchTeam(history.state.t, false); syncBack(); return; } } else { depth += 1; history.replaceState({d: depth, t: CUR}, ''); } } catch (e) { depth += 1; }
