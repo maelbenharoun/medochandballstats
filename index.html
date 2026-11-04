@@ -1757,7 +1757,7 @@ function compoPaint() {
   const nM = Object.values(st.m).filter(Boolean).length, nO = Object.values(st.o).filter(Boolean).length;
   const warn = (n, tid) => n < 7 ? `<p class="note ko">${esc(name(tid))} : moins de 7 ${G('joueuses', 'joueurs')} cochées, le match ne pourrait pas se jouer.</p>` : '';
   res.innerHTML = onMatch ? `<div class="cp-big"><b class="${cur.w >= cur.l ? 'sw' : 'sl'}">${pct(cur.w)}</b><span>de chances de victoire pour ${esc(name(t.me))} avec cette composition</span></div>
-    <p class="cp-delta">${dpt === 0 ? 'Comme avec les effectifs probables' : `<b class="${dpt > 0 ? 'ok' : 'ko'}">${dpt > 0 ? '+' : '−'}${Math.abs(dpt)} pt${Math.abs(dpt) > 1 ? 's' : ''}</b> par rapport au prono de base`} (${pct(ref.w)}) · ${nM} ${G('joueuses', 'joueurs')} contre ${nO} sur 12</p>
+    <p class="cp-delta">${dpt === 0 ? 'Comme au prono de base' : `<b class="${dpt > 0 ? 'ok' : 'ko'}">${dpt > 0 ? '+' : '−'}${Math.abs(dpt)} pt${Math.abs(dpt) > 1 ? 's' : ''}</b> par rapport au prono de base`} (${pct(ref.w)}) · ${nM} ${G('joueuses', 'joueurs')} contre ${nO} sur 12</p>
     ${compoMsg ? `<p class="note ko" role="status">${compoMsg}</p>` : ''}${warn(nM, t.me)}${warn(nO, t.opp)}
     ${Object.keys(SIBINFO).length ? `<div class="cp-sim"><h3>Matchs simulés contre ${esc(name(t.opp))}</h3>
       ${[[D.team.label.replace(/^Équipe\s*/, ''), clubP(m, compoCalc(m, compoProbable(m)))], ...Object.keys(SIBINFO).map(k => [SIBINFO[k].label, clubP(m, compoCalc(m, swapState(m, k)))])].map(([lab, r]) =>
