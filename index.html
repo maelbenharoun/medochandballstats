@@ -2415,7 +2415,10 @@ window.addEventListener('hashchange', () => {
   render(); syncBack();
 });
 /* vidéo Rematch : le lecteur remplace la vignette */
+// le lecteur ne s'intègre que sur les sites publics (l'aperçu claude.ai bloque les vidéos d'autres sites) : ailleurs, nouvel onglet
+const EMBED_OK = /(^|\.)(medochandballstats|bechandballstats)\.com$/.test(location.hostname) || location.protocol === 'file:';
 app.addEventListener('click', e => { const b = e.target.closest('.rmv'); if (!b) return;
+  if (!EMBED_OK) { window.open(RMURL(b.dataset.v) + '&autoplay=1', '_blank', 'noopener'); return; }
   const f = document.createElement('iframe'); f.src = RMURL(b.dataset.v) + '&autoplay=1'; f.title = 'Vidéo Rematch'; f.className = 'rmf';
   f.allow = 'autoplay; fullscreen; picture-in-picture'; f.allowFullscreen = true; f.setAttribute('scrolling', 'no'); b.replaceWith(f); });
 /* onglet « Plus » du téléphone */
