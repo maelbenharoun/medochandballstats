@@ -396,6 +396,14 @@ main > * { min-width: 0; }
 .cp-zone .cp-big b { font-size: clamp(2.2rem, 5vw, 3rem); }
 .cp-grid .cp-list { max-height: 520px; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; }
 .cp-live { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0; font-size: .9rem; color: var(--ink-2); }
+.cp-desc, .rf-d { border-top: 1px solid var(--line); }
+.cp-desc > summary, .rf-d > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 12px 2px; font: 600 .92rem/1.2 var(--f-display); color: var(--ink); -webkit-tap-highlight-color: transparent; }
+.cp-desc > summary::-webkit-details-marker, .rf-d > summary::-webkit-details-marker { display: none; }
+.cp-desc > summary::after, .rf-d > summary::after { content: "▾"; color: var(--muted); margin-left: auto; transition: transform .15s ease; }
+.cp-desc[open] > summary::after, .rf-d[open] > summary::after { transform: rotate(180deg); }
+.cp-desc > summary small, .rf-d > summary small { font: 400 .78rem/1.2 var(--f-mono); color: var(--muted); }
+.rf-d { margin-top: 6px; }
+.rf-d > .sub { margin: 0 0 8px; }
 .subnav { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 4px; margin-top: 2px; }
 .subnav::-webkit-scrollbar { display: none; }
 .subn { flex: 0 0 auto; font: 600 .86rem/1 var(--f-display); color: var(--ink-2); background: rgba(255, 255, 255, .06); border: 1px solid var(--edge); border-radius: var(--r-pill); padding: 9px 14px; cursor: pointer; white-space: nowrap; }
@@ -1288,23 +1296,23 @@ function renfortBlock(m) {
       .sort((a, b) => b.r.p - a.r.p).slice(0, 6);
     if (!rows.length) return '';
     const base = rows[0].r.base;
-    return `<h3>Renforts possibles de ${esc(lab)}</h3>
+    return `<details class="rf-d"><summary>Descentes possibles de ${esc(lab)} <small>${up ? 'joue aussi ce week-end' : 'ne joue pas ce week-end'}</small></summary>
       <p class="sub">${up ? `${esc(lab)} joue aussi ce week-end (${fdate(up.date)}${up.heure ? ' à ' + up.heure.replace(':', ' h ').replace(' h 00', ' h') : ''})` : `${esc(lab)} ne joue pas ce week-end`}. Depuis 2023, dans ce cas, ${G('une joueuse', 'un joueur')} de l’équipe du dessus vient renforcer ${pct(base)} du temps en moyenne ; chaque probabilité ci-dessous part de ce taux et suit son propre historique.</p>
       <div class="pres">${rows.map(({p, r}) => `<div class="row" data-tip="${esc(p.nom)} · ${r.n ? `${r.on} match${r.on > 1 ? 's' : ''} sur ${r.n} avec l’équipe du dessous ${r.conflit ? 'quand l’équipe du dessus jouait le même week-end' : 'quand l’équipe du dessus ne jouait pas'}` : 'pas encore d’historique : taux moyen'}<br>en ${esc(lab)} : ${f1(p.bpm)} buts/match, présence ${pct(p.presence)}" tabindex="0">
         <span class="n">${esc(p.nom)} <span class="sub">${f1(p.bpm)} b/m en ${esc(lab)}</span></span>
         <span class="meter low"><i style="width:${Math.round(r.p * 100)}%"></i></span>
-        <span class="v">${pct(r.p)}</span></div>`).join('')}</div>`;
+        <span class="v">${pct(r.p)}</span></div>`).join('')}</div></details>`;
   }).join('');
 }
 function renfortBlockOpp(m, tid) {
   const X = oppRf(m, tid); if (!X || !X.rows.length) return '';
   const lab = X.B.short, rows = X.rows.slice(0, 6);
-  return `<h3>Renforts possibles de ${esc(lab)}</h3>
+  return `<details class="rf-d"><summary>Descentes possibles de ${esc(lab)} <small>${X.conf ? 'joue aussi ce week-end' : 'ne joue pas ce week-end'}</small></summary>
     <p class="sub">${esc(lab)}${X.B.comp ? ` (${esc(X.B.comp)}, ${sgn(X.B.gap).replace(',0', '')} buts de niveau)` : ''} ${X.conf ? `joue aussi ce week-end (${fdate(X.conf)})` : 'ne joue pas ce week-end'}. Cette saison, dans ce cas, ${G('une joueuse', 'un joueur')} de ${esc(lab)} est venu${G('e', '')} renforcer ${esc(name(tid))} ${pct(X.base)} du temps en moyenne. Leurs buts comptent plus ici, où le niveau est plus faible.</p>
     <div class="pres">${rows.map(p => `<div class="row" data-tip="${esc(p.nom)} · ${p.rfo.n ? `${p.rfo.on} match${p.rfo.on > 1 ? 's' : ''} sur ${p.rfo.n} avec ${esc(name(tid))} ${X.conf ? 'quand ' + esc(lab) + ' jouait le même week-end' : 'quand ' + esc(lab) + ' ne jouait pas'}` : 'pas encore d’historique'}<br>en ${esc(lab)} : ${p.mj} matchs, ${f1(p.bpm_up)} buts/match" tabindex="0">
       <span class="n">${esc(p.nom)} <span class="sub">${f1(p.bpm_up)} b/m en ${esc(lab)}</span></span>
       <span class="meter low"><i style="width:${Math.round(p.presence * 100)}%"></i></span>
-      <span class="v">${pct(p.presence)}</span></div>`).join('')}</div>`;
+      <span class="v">${pct(p.presence)}</span></div>`).join('')}</div></details>`;
 }
 function viewMatch(rid) {
   const m0 = findMatch(rid);
@@ -1796,14 +1804,24 @@ function viewCompo() {
 function compoRows(m, st, side, cur) {
   const t = compoTeams(m), tid = side === 'm' ? t.me : t.opp, map = st[side];
   const cur0 = compoCalc(m, st);
-  return byPresence(roster(m, side)).map(p => {
+  const row = p => {
     const alt = {m: Object.assign({}, st.m), o: Object.assign({}, st.o)}; alt[side][p.nom] = !map[p.nom];
     const W = c => document.getElementById('mx-head') ? clubP(m, c).w : c.w, d = Math.round((W(compoCalc(m, alt)) - W(cur0)) * 100);
     return `<label class="cp-row${map[p.nom] ? ' on' : ''}"><input type="checkbox" data-side="${side}" data-pl="${esc(p.nom)}"${map[p.nom] ? ' checked' : ''}><span class="cp-sw" aria-hidden="true"></span>
       <span class="cp-n"><b>${esc(p.nom)}${p.from ? ` <span class="badge">${esc(p.from)}</span>` : ''}${p.up ? ` <span class="badge">${esc(p.up)}</span>` : ''}</b><small>${p.up ? `renfort ${pct1(p.presence)}${p.rfo.n ? ` (${p.rfo.on} fois sur ${p.rfo.n})` : ''} · en ${esc(p.up)} : ${p.mj} m · ${f1(p.bpm_up)} b/m` : p.rf ? `renfort ${pct1(p.presence)}${p.rf.n ? ` (${p.rf.on} fois sur ${p.rf.n})` : ''}` : `présence ${pct1(p.presence)}`}${p.up ? '' : p.from ? ` · en ${esc(p.from)} : ${p.mj} m · ${f1(p.bpm)} b/m` : ` · ${p.mj} m · ${f1(p.bpm)} b/m`}${p.arrets_pm >= 3 ? ` · ${G('gardienne', 'gardien')} ${f1(p.arrets_pm)} arrêts/m` : ''}</small></span>
       <span class="cp-i ${d > 0 ? 'ok' : d < 0 ? 'ko' : ''}" title="Chance de victoire de ${esc(name(D.club))} si ${G('elle', 'il')} change">${d === 0 ? '±0' : (d > 0 ? '+' : '−') + Math.abs(d)} pt${Math.abs(d) > 1 ? 's' : ''}</span></label>`;
-  }).join('') || `<p class="sub">Feuilles de match non disponibles.</p>`;
+  };
+  // l'effectif d'abord ; les joueuses d'une autre équipe du club dans une partie repliable (descentes / montées possibles)
+  const all = byPresence(roster(m, side));
+  const main = all.filter(p => !p.from && !p.up), desc = all.filter(p => p.up || (p.from && p.rf)), mont = all.filter(p => p.from && !p.rf);
+  const grp = (list, kind, lab) => { if (!list.length) return ''; const on = list.filter(p => map[p.nom]).length, key = side + ':' + kind;
+    return `<details class="cp-desc" data-k="${key}"${CP_OPEN[key] ? ' open' : ''}><summary><span>${lab}</span><small>${list.length} ${G('joueuse', 'joueur')}${list.length > 1 ? 's' : ''}${on ? ` · ${on} ${G('cochée', 'coché')}${on > 1 ? 's' : ''}` : ''}</small></summary>${list.map(row).join('')}</details>`; };
+  const srcOf = l => [...new Set(l.map(p => p.up || p.from))].join(', ');
+  return (main.map(row).join('') || `<p class="sub">Feuilles de match non disponibles.</p>`)
+    + grp(desc, 'd', `Descentes possibles${desc.length ? ' de ' + esc(srcOf(desc)) : ''}`) + grp(mont, 'u', `Montées possibles${mont.length ? ' de ' + esc(srcOf(mont)) : ''}`);
 }
+const CP_OPEN = {};
+app.addEventListener('toggle', e => { const d = e.target; if (d && d.classList && d.classList.contains('cp-desc')) CP_OPEN[d.dataset.k] = d.open; }, true);
 function compoPaint() {
   const m = findMatch(compoRid) || futClub().find(x => x.rid === compoRid);
   const res = document.getElementById('cp-res');
