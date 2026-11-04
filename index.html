@@ -419,6 +419,8 @@ main > * { min-width: 0; }
 
 /* ══ téléphone : barre d'onglets, résumé collant, sections repliables, tableaux en cartes ══ */
 .tabbar, .msum, .cta-m, .cta-m .sm { display: none; }
+.tabbar .ts { display: none; }
+@media (max-width: 360px) { .tabbar .tl { display: none; } .tabbar .ts { display: inline; } .tabbar .ic { width: 38px; } }
 @media (min-width: 721px) { .mob-only { display: none !important; } }
 @media (max-width: 720px) {
   .desk-only { display: none !important; }
@@ -433,7 +435,7 @@ main > * { min-width: 0; }
   .teammenu, .ctamenu { position: fixed; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 62px); width: auto; min-width: 0; max-width: none; max-height: calc(100vh - 62px - 96px); max-height: calc(100dvh - 62px - 96px); overflow-y: auto; overscroll-behavior: contain; }
   .teammenu button { padding: 13px 14px; }
   .ctamenu a { padding: 12px; }
-  .tabbar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: rgba(12, 13, 15, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--edge); padding: 5px max(4px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px)); }
+  .tabbar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: rgba(12, 13, 15, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--edge); padding: 5px max(4px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px)); }
   .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 52px; color: var(--muted); font: 500 .63rem/1 var(--f-display); letter-spacing: -.01em; text-decoration: none; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
   .tabbar .ic { display: grid; place-items: center; width: 46px; height: 28px; border-radius: var(--r-pill); }
   .tabbar svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -655,6 +657,7 @@ main > * { min-width: 0; }
       <a href="#accueil" data-v="accueil">Accueil</a>
       <a href="#calendrier" data-v="calendrier">Calendrier</a>
       <a href="#classement" data-v="classement">Classement</a>
+      <a href="#equipe" data-v="equipe">Mon équipe</a>
       <a href="#stats" data-v="stats">Stats</a>
       <a href="#pronos" data-v="pronos">Pronos</a>
       <a href="#medoc" data-v="medoc">Historique</a>
@@ -668,11 +671,12 @@ main > * { min-width: 0; }
 <footer class="wrap" id="foot"></footer>
 <div class="tabbar" id="tabbar" role="navigation" aria-label="Pages du site">
   <a href="#accueil" data-v="accueil"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></span>Accueil</a>
-  <a href="#calendrier" data-v="calendrier"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>Calendrier</a>
-  <a href="#classement" data-v="classement"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V4M19 20v-5"/></svg></span>Classement</a>
+  <a href="#calendrier" data-v="calendrier"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span><span class="tl">Calendrier</span><span class="ts">Agenda</span></a>
+  <a href="#classement" data-v="classement"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V4M19 20v-5"/></svg></span><span class="tl">Classement</span><span class="ts">Classmt</span></a>
+  <a href="#equipe" data-v="equipe"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.3 2.8-5 5.5-5s4.9 1.7 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 14.3c2.3.1 4 1.6 4.6 4.6"/></svg></span><span class="tl">Mon équipe</span><span class="ts">Équipe</span></a>
   <a href="#stats" data-v="stats"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z"/></svg></span>Stats</a>
   <a href="#pronos" data-v="pronos"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/></svg></span>Pronos</a>
-  <a href="#medoc" data-v="medoc"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8-7 10-4-2-7-5.4-7-10V6z"/></svg></span>Historique</a>
+  <a href="#medoc" data-v="medoc"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8-7 10-4-2-7-5.4-7-10V6z"/></svg></span><span class="tl">Historique</span><span class="ts">Histo</span></a>
 </div>
 <div class="tip" id="tip" hidden></div>
 
@@ -722,6 +726,7 @@ document.getElementById('foot').innerHTML = `<p class="sign">Médoc Handball · 
   <p>Données publiques <a href="${esc(D.source)}" target="_blank" rel="noopener">ffhandball.fr</a> arrêtées au ${fdate(D.generated, false)} ${D.generated.slice(0, 4)}, ${lastJ}.
   Noms complets affichés pour ${esc(name(D.club))} uniquement ; prénom et initiale pour les autres clubs.</p>
   <p>Modèle 3 saisons : ${D.model.n_matchs.toLocaleString('fr-FR')} matchs de ${D.model.n_poules} poules (2023-24 à 2026-27), un niveau par équipe et par saison, relié d’une saison à l’autre selon ${G('les joueuses conservées', 'les joueurs conservés')}, avec un niveau propre à chaque championnat. Matchs de la saison en cours pondérés par la récence (demi-vie ${D.model.half_life} jours). Avantage du terrain ${sgn(D.model.home)} buts, erreur de prévision mesurée ± ${f1(D.model.sigma)} buts. Simulation de fin de saison : ${D.n_sim.toLocaleString('fr-FR')} saisons tirées au sort.</p>`;
+document.querySelectorAll('a[data-v="equipe"]').forEach(a => a.setAttribute('href', '#equipe-' + D.club));
 const c = document.getElementById('cta'), cm = D.next.find(m => isClub(m.home) || isClub(m.away));
 const fut = futClub();
 document.querySelector('.ctasel').hidden = !fut.length;
@@ -1382,6 +1387,12 @@ function viewTeam(tid) {
     ${T.forfaits ? `<p class="note">${T.forfaits} match(s) décidé(s) par forfait : compté(s) au classement, pas dans le niveau estimé.</p>` : ''}
     ${T.penalite ? `<p class="note">Le classement officiel affiche ${T.penalite} point(s) de moins que les résultats : probable pénalité administrative, sans lien avec le niveau de jeu.</p>` : ''}
   </section>
+  <section class="card stack" data-keep><h2>${G('Les joueuses', 'Les joueurs')}</h2>
+    ${T.hidden ? '<p class="note">Buts masqués sur les feuilles de cette compétition.</p>' : ''}
+    <div class="scroll"><table data-m="0,3r" data-c="0,1,2,3"><thead><tr><th>${G('Joueuse', 'Joueur')}</th><th>MJ</th><th>Buts</th><th data-s="B/m">Buts/m</th><th>3 derniers</th><th>Dom</th><th>Ext</th><th>Part</th><th>Arrêts</th><th>2025-26</th><th>Présence</th></tr></thead><tbody>
+    ${pl.map(p => `<tr><td>${esc(p.nom)}${p.recrue ? ' <span class="badge">recrue</span>' : ''}</td><td>${p.mj}</td><td>${p.buts}</td><td><b>${f1(p.bpm)}</b></td><td>${p.last3.join('·') || '–'}</td><td>${f1(p.dom)}</td><td>${f1(p.ext)}</td><td>${pct(p.part)}</td><td>${p.arrets || '–'}</td><td>${p.n1 == null ? '–' : f1(p.n1) + ' b/m'}</td><td>${pct(p.presence)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="note">MJ = matchs joués dans cette poule. Présence = probabilité d’être sur la feuille du prochain match. 2025-26 = buts par match la saison dernière, toutes équipes du club.</p></section>
   <section class="grid2">
     <div class="card stack" data-keep><h2>Niveau journée après journée</h2><p class="sub">Écart de buts attendu face à une équipe moyenne de la poule.</p>${lineChart(T.hist, labels, 'Niveau estimé de ' + name(tid))}</div>
     <div class="card stack" data-keep><h2>Où va-t-elle finir ?</h2><p class="sub">Probabilité de chaque place finale, en %.</p>${placeChart(s.places, tid)}</div>
@@ -1399,12 +1410,7 @@ function viewTeam(tid) {
     <p class="note">Niveau ici = écart de buts attendu face à une équipe moyenne de la poule actuelle, quel que soit le championnat joué cette saison-là. Effectif conservé = part du temps de jeu assurée par des ${G('joueuses déjà présentes', 'joueurs déjà présents')} la saison suivante : plus il est élevé, plus la saison passée compte dans le pronostic. Avant la J1, le modèle partait de ${sgn(T.depart)}.</p>`
     : '<p class="note">Aucune saison précédente retrouvée pour cette équipe : elle part de la moyenne de la poule.</p>'}
   </section>
-  <section class="card stack"><h2>${G('Les joueuses', 'Les joueurs')}</h2>
-    ${T.hidden ? '<p class="note">Buts masqués sur les feuilles de cette compétition.</p>' : ''}
-    <div class="scroll"><table data-m="0,3r" data-c="0,1,2,3"><thead><tr><th>${G('Joueuse', 'Joueur')}</th><th>MJ</th><th>Buts</th><th data-s="B/m">Buts/m</th><th>3 derniers</th><th>Dom</th><th>Ext</th><th>Part</th><th>Arrêts</th><th>2025-26</th><th>Présence</th></tr></thead><tbody>
-    ${pl.map(p => `<tr><td>${esc(p.nom)}${p.recrue ? ' <span class="badge">recrue</span>' : ''}</td><td>${p.mj}</td><td>${p.buts}</td><td><b>${f1(p.bpm)}</b></td><td>${p.last3.join('·') || '–'}</td><td>${f1(p.dom)}</td><td>${f1(p.ext)}</td><td>${pct(p.part)}</td><td>${p.arrets || '–'}</td><td>${p.n1 == null ? '–' : f1(p.n1) + ' b/m'}</td><td>${pct(p.presence)}</td></tr>`).join('')}
-    </tbody></table></div>
-    <p class="note">MJ = matchs joués dans cette poule. Présence = probabilité d’être sur la feuille du prochain match. 2025-26 = buts par match la saison dernière, toutes équipes du club.</p></section>
+
   <section class="card stack"><h2>Mercato 2025-26 → 2026-27</h2>
     ${m ? `<div class="grid2"><div class="stack"><h3>Arrivées (${m.arrivees.length})</h3>${m.arrivees.length ? `<div class="res-list">${m.arrivees.map(a => `<div><span>${esc(a.nom)}${a.de ? ` <span class="sub">de ${esc(shortClub(a.de))}</span>` : ''}</span><b>${a.buts} buts / ${a.mj} m</b></div>`).join('')}</div>` : `<p class="sub">${G('Aucune nouvelle joueuse', 'Aucun nouveau joueur')} sur les feuilles.</p>`}</div>
       <div class="stack"><h3>Plus vues cette saison (${m.departs.length})</h3>${m.departs.length ? `<div class="res-list">${m.departs.map(d => `<div><span>${esc(d.nom)}${d.vers ? ` <span class="sub">joue à ${esc(shortClub(d.vers))}</span>` : ''}</span><b>${d.buts_n1} buts / ${d.mj_n1} m en 25-26</b></div>`).join('')}</div>` : '<p class="sub">Aucune.</p>'}</div></div>
@@ -2136,7 +2142,8 @@ function render() {
   let v = 'accueil', html;
   if (h === 'compo') { const fut = futClub().filter(x => findMatch(x.rid)), r = fut.find(x => x.rid === compoRid) || fut[0]; if (r) { location.replace('#match-' + r.rid); return; } }
   if (h.startsWith('match-')) { html = viewMatch(h.slice(6)); v = 'accueil'; }
-  else if (h.startsWith('equipe-')) { html = viewTeam(h.slice(7)); v = ''; }
+  else if (h === 'equipe') { location.replace('#equipe-' + D.club); return; }
+  else if (h.startsWith('equipe-')) { html = viewTeam(h.slice(7)); v = h.slice(7) === String(D.club) ? 'equipe' : ''; }
   else if (h.startsWith('joueur-')) { html = viewPlayer(h.slice(7)); v = ''; }
   else if (h === 'classement') { html = viewClassement(); v = h; }
   else if (h === 'stats') { html = viewStats(); v = h; }
