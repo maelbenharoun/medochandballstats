@@ -391,6 +391,11 @@ main > * { min-width: 0; }
 .cp-zone .cp-big b { font-size: clamp(2.2rem, 5vw, 3rem); }
 .cp-grid .cp-list { max-height: 520px; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; }
 .cp-live { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0; font-size: .9rem; color: var(--ink-2); }
+.subnav { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 4px; margin-top: 2px; }
+.subnav::-webkit-scrollbar { display: none; }
+.subn { flex: 0 0 auto; font: 600 .86rem/1 var(--f-display); color: var(--ink-2); background: rgba(255, 255, 255, .06); border: 1px solid var(--edge); border-radius: var(--r-pill); padding: 9px 14px; cursor: pointer; white-space: nowrap; }
+.subn:hover { color: var(--ink); background: rgba(255, 255, 255, .12); }
+.subn.on { color: #16181c; background: var(--ink); border-color: var(--ink); }
 .lnk { font: inherit; color: var(--ink); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 
 /* ══ téléphone : barre d'onglets, résumé collant, sections repliables, tableaux en cartes ══ */
@@ -409,7 +414,7 @@ main > * { min-width: 0; }
   .teammenu, .ctamenu { position: fixed; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 62px); width: auto; min-width: 0; max-width: none; max-height: calc(100vh - 62px - 96px); max-height: calc(100dvh - 62px - 96px); overflow-y: auto; overscroll-behavior: contain; }
   .teammenu button { padding: 13px 14px; }
   .ctamenu a { padding: 12px; }
-  .tabbar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: rgba(12, 13, 15, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--edge); padding: 5px max(4px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px)); }
+  .tabbar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: rgba(12, 13, 15, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--edge); padding: 5px max(4px, env(safe-area-inset-right, 0px)) calc(5px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px)); }
   .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 52px; color: var(--muted); font: 500 .63rem/1 var(--f-display); letter-spacing: -.01em; text-decoration: none; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
   .tabbar .ic { display: grid; place-items: center; width: 46px; height: 28px; border-radius: var(--r-pill); }
   .tabbar svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -631,7 +636,6 @@ main > * { min-width: 0; }
       <a href="#accueil" data-v="accueil">Accueil</a>
       <a href="#calendrier" data-v="calendrier">Calendrier</a>
       <a href="#classement" data-v="classement">Classement</a>
-      <a href="#compo" data-v="compo">Gérer mon équipe</a>
       <a href="#stats" data-v="stats">Stats</a>
       <a href="#pronos" data-v="pronos">Pronos</a>
       <a href="#medoc" data-v="medoc">Historique</a>
@@ -647,7 +651,6 @@ main > * { min-width: 0; }
   <a href="#accueil" data-v="accueil"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></span>Accueil</a>
   <a href="#calendrier" data-v="calendrier"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>Calendrier</a>
   <a href="#classement" data-v="classement"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V4M19 20v-5"/></svg></span>Classement</a>
-  <a href="#compo" data-v="compo"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3.5 4.5 5.8 6 10l2-.9V20h8V9.1l2 .9 1.5-4.2L15 3.5a3 3 0 0 1-6 0z"/></svg></span>Mon équipe</a>
   <a href="#stats" data-v="stats"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z"/></svg></span>Stats</a>
   <a href="#pronos" data-v="pronos"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/></svg></span>Pronos</a>
   <a href="#medoc" data-v="medoc"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8-7 10-4-2-7-5.4-7-10V6z"/></svg></span>Historique</a>
@@ -737,6 +740,8 @@ const brandBtn = document.getElementById('brand'), menuEl = document.getElementB
 function closeMenu() { menuEl.hidden = true; brandBtn.setAttribute('aria-expanded', 'false'); }
 brandBtn.addEventListener('click', e => { e.stopPropagation(); closeNav(); closeCta(); const open = menuEl.hidden; menuEl.hidden = !open; brandBtn.setAttribute('aria-expanded', String(open)); if (open) { const cur = menuEl.querySelector('[aria-checked="true"]'); if (cur) cur.focus(); } });
 document.addEventListener('click', e => { if (!menuEl.hidden && !menuEl.contains(e.target)) closeMenu(); });
+let goCompo = false;
+document.addEventListener('click', e => { if (e.target.closest('[data-gocompo]')) goCompo = true; }, true);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menuEl.hidden) { closeMenu(); brandBtn.focus(); } });
 function switchTeam(k, nav) {
   if (!ALL.data[k]) return;
@@ -900,7 +905,7 @@ function viewHome() {
           <div class="sb-t r">${lieu(!o.dom)}<b>${esc(name(o.R))}</b></div>
           <div class="sb-p">${pbar(o.p, o.L, o.R, false, o.dom)}</div>
         </div></div>
-        <div class="foot"><a class="pillbar" href="#match-${club.rid}"><span class="desk-only">Effectifs probables et détail</span><span class="mob-only">Analyse complète du match</span> <span class="cta">${pct(pw)} →</span></a></div>
+        <div class="foot"><a class="pillbar" href="#match-${club.rid}"><span class="desk-only">Effectifs probables et détail</span><span class="mob-only">Analyse complète du match</span> <span class="cta">${pct(pw)} →</span></a><a class="more" href="#match-${club.rid}" data-gocompo style="margin-top:10px">Gérer mon équipe pour ce match</a></div>
       </div></section>`;
   }
   const rest = futClub().filter(m => !club || m.rid !== club.rid);
@@ -951,7 +956,7 @@ function matchCard(m, tight) {
       <div class="score" aria-label="Score probable">${sc2(o.s[0], o.s[1], '<span class="dash">:</span>')}</div>
       <div class="t r">${tlink(o.R)}<small>${lieu(!o.dom)} · ${TEAMS[o.R].classement.place}e · ${TEAMS[o.R].classement.pts} pts</small></div></div>
     ${pbar(o.p, o.L, o.R, false, o.dom)}
-    <a class="more" href="#match-${m.rid}">Détail et effectifs probables</a></article>`;
+    ${club ? `<div class="cp-btns"><a class="more" href="#match-${m.rid}">Détail et effectifs probables</a><a class="more" href="#match-${m.rid}" data-gocompo>Gérer mon équipe</a></div>` : `<a class="more" href="#match-${m.rid}">Détail et effectifs probables</a>`}</article>`;
 }
 /* ── analyse détaillée d'un match ───────── */
 const PHI = x => { const t = 1 / (1 + 0.2316419 * Math.abs(x)), d = 0.3989423 * Math.exp(-x * x / 2);
@@ -1254,15 +1259,17 @@ function viewMatch(rid) {
   if (club) compoRid = rid;
   const X = matchDyn(m0), m = X.m, o = X.o, H = TEAMS[o.L], A = TEAMS[o.R];
   const labels = D.journees_jouees.map(j => 'J' + j);
-  return `<section class="stack"><p class="eyebrow">Journée ${m.j || D.next_journee} · ${m.estimee ? 'date de journée, horaire à venir : ' : ''}${fdate(m.date)}${m.heure ? ' à ' + m.heure.replace(':', ' h ').replace(' h 00', ' h') : ''} · ${esc(name(o.L))} ${o.dom ? 'à domicile' : 'à l’extérieur'}</p>
-    <h1>${esc(name(o.L))} – ${esc(name(o.R))}</h1></section>
+  const sub = [['mx-top', 'Pronostic'], ...(club ? [['cp-zone', 'Gérer mon équipe']] : []), ['mx-ana-h', 'Analyse'], ['mx-scen-h', 'Scénarios'], ['mx-cles-h', G('Joueuses clés', 'Joueurs clés')], ['mx-eff-h', 'Effectifs']];
+  return `<section class="stack" id="mx-top"><p class="eyebrow">Journée ${m.j || D.next_journee} · ${m.estimee ? 'date de journée, horaire à venir : ' : ''}${fdate(m.date)}${m.heure ? ' à ' + m.heure.replace(':', ' h ').replace(' h 00', ' h') : ''} · ${esc(name(o.L))} ${o.dom ? 'à domicile' : 'à l’extérieur'}</p>
+    <h1>${esc(name(o.L))} – ${esc(name(o.R))}</h1>
+    <div class="subnav" role="tablist" aria-label="Sections du match">${sub.map(([id, l]) => `<button type="button" class="subn${id === 'cp-zone' ? ' on' : ''}" data-goto="${id}">${l}</button>`).join('')}</div></section>
   <div class="msum" id="mx-msum" aria-hidden="true">${X.msum}</div>
   <section class="card stack mhead"><div class="stack" id="mx-head" data-rid="${m0.rid}">${X.head}</div></section>
   ${club ? compoZone(m0) : ''}
-  <section class="card stack" data-keep><h2>L’analyse du match</h2>
+  <section class="card stack" data-keep><h2 id="mx-ana-h">L’analyse du match</h2>
     <ul class="ana" id="mx-ana">${X.ana}</ul></section>
   <section class="grid2">
-    <div class="card stack"><h2>Les scénarios</h2><p class="sub">Probabilité de chaque écart final.</p><div id="mx-scen">${X.scen}</div></div>
+    <div class="card stack"><h2 id="mx-scen-h">Les scénarios</h2><p class="sub">Probabilité de chaque écart final.</p><div id="mx-scen">${X.scen}</div></div>
     <div class="card stack"><h2>Face-à-face en chiffres</h2>${versus(m, o)}</div>
   </section>
   <section class="grid2">
@@ -1270,12 +1277,12 @@ function viewMatch(rid) {
     <div class="card stack"><h2>Adversaires communs</h2><p class="sub">Les résultats des deux équipes contre les mêmes adversaires cette saison.</p>${communs(o)}</div>
   </section>
   ${hourBlock(m0, orient(m0))}
-  <h2 class="sec">${G('Les joueuses clés', 'Les joueurs clés')}</h2>
+  <h2 class="sec" id="mx-cles-h">${G('Les joueuses clés', 'Les joueurs clés')}</h2>
   <section class="grid2" id="mx-cles">${X.cles}</section>
   <p class="note">« ${G('Sans elle', 'Sans lui')} » : probabilité de victoire si ${G('la joueuse', 'le joueur')} manque à coup sûr, en retirant la moitié de ses buts par match (plafonné à 4) ; pour ${G('une gardienne', 'un gardien')}, ${G('la remplaçante habituelle', 'le remplaçant habituel')} prend sa place dans les buts, avec ses propres arrêts. Même calcul que les effectifs probables. Record = plus de buts sur un match cette saison.</p>
   <section class="grid2">
     ${[o.L, o.R].map(tid => { const T = TEAMS[tid], hm = tid === m.home, r = hm ? T.rec.dom : T.rec.ext; return `<div class="card stack">
-      <h2>${esc(name(tid))}<span class="mob-only"> · effectif probable</span></h2>
+      <h2${tid === o.L ? ' id="mx-eff-h"' : ''}>${esc(name(tid))}<span class="mob-only"> · effectif probable</span></h2>
       <p class="sub">${hm ? 'À domicile' : 'À l’extérieur'} cette saison : ${r.j ? `${r.g}V ${r.n}N ${r.p}D, ${pct(r.g / r.j)} de victoires` : 'aucun match'}.</p>
       <h3>Probabilité d’être sur la feuille de match</h3>${presList(tid)}
       <h3>Derniers résultats</h3>${resList(T.forme)}
@@ -1770,8 +1777,10 @@ app.addEventListener('click', e => {
   const b = e.target.closest('.cp-b'), a = e.target.closest('[data-compo]');
   if (a) { if (a.dataset.team && a.dataset.team !== CUR) switchTeam(a.dataset.team, false); compoRid = a.dataset.compo; return; }
   if (b && b.dataset.gapreset) { const k = b.dataset.gapreset; setP12(k, P12_DEFAULT); const r = document.getElementById('cp-gap-' + k); if (r) r.value = (P12_DEFAULT * 100).toFixed(1); return; }
+  const sn = e.target.closest('[data-goto]');
+  if (sn) { const z = document.getElementById(sn.dataset.goto); if (z) { const d = z.closest('details'); if (d) d.open = true; const y = z.getBoundingClientRect().top + window.scrollY - (MQ.matches ? 120 : 90); window.scrollTo({top: Math.max(0, y), behavior: 'smooth'}); } return; }
   const lk = e.target.closest('.lnk[data-act]');
-  if (lk && lk.dataset.act === 'goto-compo') { const z = document.getElementById('cp-zone'); if (z) z.scrollIntoView({behavior: 'smooth', block: 'start'}); return; }
+  if (lk && lk.dataset.act === 'goto-compo') { const z = document.getElementById('cp-zone'); if (z) window.scrollTo({top: z.getBoundingClientRect().top + window.scrollY - (MQ.matches ? 120 : 90), behavior: 'smooth'}); return; }
   if (lk && lk.dataset.act === 'reset-compo') { const mm = findMatch(compoRid); if (mm) { delete COMPO[compoKey(mm.rid)]; compoMsg = ''; compoPaint(); } return; }
   if (!b) return;
   const m = findMatch(compoRid) || futClub().find(x => x.rid === compoRid); if (!m) return;
@@ -1934,7 +1943,7 @@ function viewPlayer(id) {
         ${p ? `<div class="kpi"><b>${pct(p.part || 0)}</b><span>des buts de l’équipe (${f1(p.bpm)} par match)</span></div>` : ''}
         ${sl ? `<div class="kpi"><b class="${sl.d < 0 ? 'ko' : ''}">${sl.d === 0 ? '±0' : (sl.d > 0 ? '+' : '−') + Math.abs(sl.d)} pt${Math.abs(sl.d) > 1 ? 's' : ''}</b><span>sur la victoire ${sl.home ? 'contre' : 'à'} ${e(sl.adv)} (${fdate(sl.date, false)}) si ${g('elle', 'il')} manque : ${pct1(sl.base)} → ${pct1(sl.wo)}</span></div>` : ''}
         ${s.gd_avec != null && s.gd_sans != null && s.n_sans >= 2 ? `<div class="kpi"><b>${f1s(s.gd_avec - s.gd_sans)}</b><span>buts d’écart par match avec ${g('elle', 'lui')} (${f1s(s.gd_avec)}) que sans (${f1s(s.gd_sans)}, ${nb(s.n_sans, 'match')})</span></div>` : ''}
-      </div>${sl ? `<a class="more" href="#match-${sl.rid}" data-team="${k}" data-compo="${sl.rid}">Gérer l’équipe pour le prochain match</a>` : ''}</div>`; }).join('');
+      </div>${sl ? `<a class="more" href="#match-${sl.rid}" data-team="${k}" data-compo="${sl.rid}" data-gocompo>Gérer l’équipe pour le prochain match</a>` : ''}</div>`; }).join('');
   const co = J.coach || [];
   const nj = (ALL.joueurs || {}).n_fdm_jeunes || 0;
   return `<section class="stack"><p class="eyebrow">Fiche ${g('joueuse', 'joueur')}${fd && fd.num ? ` · n° ${e(fd.num)}` : ''} · ${[...new Set(cur.map(s => s.equipe))].join(' + ') || last.equipe}</p>
@@ -1960,7 +1969,7 @@ function render() {
   const h = (location.hash || '#accueil').slice(1);
   let v = 'accueil', html;
   if (h === 'compo') { const fut = futClub().filter(x => findMatch(x.rid)), r = fut.find(x => x.rid === compoRid) || fut[0]; if (r) { location.replace('#match-' + r.rid); return; } }
-  if (h.startsWith('match-')) { html = viewMatch(h.slice(6)); const mm = findMatch(h.slice(6)); v = mm && (isClub(mm.home) || isClub(mm.away)) ? 'compo' : 'accueil'; }
+  if (h.startsWith('match-')) { html = viewMatch(h.slice(6)); v = 'accueil'; }
   else if (h.startsWith('equipe-')) { html = viewTeam(h.slice(7)); v = ''; }
   else if (h.startsWith('joueur-')) { html = viewPlayer(h.slice(7)); v = ''; }
   else if (h === 'classement') { html = viewClassement(); v = h; }
@@ -1985,6 +1994,7 @@ function render() {
   if (cs) cs.addEventListener('change', () => { calTeam = cs.value; try { localStorage.setItem('calTeam', calTeam); } catch (e) {} const y = window.scrollY; render(); window.scrollTo(0, y); });
   tip.hidden = true;
   if (h !== 'accueil') window.scrollTo(0, 0);
+  if (goCompo) { goCompo = false; const z = document.getElementById('cp-zone'); if (z) setTimeout(() => window.scrollTo({top: z.getBoundingClientRect().top + window.scrollY - (MQ.matches ? 120 : 90)}), 30); }
 }
 /* bouton retour : profondeur de navigation dans le site gardée dans l'historique */
 let depth = 0;
