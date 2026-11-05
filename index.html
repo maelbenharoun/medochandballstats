@@ -3194,11 +3194,11 @@ function sansLui(k, J) {
   // probabilité de victoire au prochain match de l'équipe k si le joueur manque à coup sûr (même calcul que « Sans elle »)
   const T = ALL.data[k]; if (!T) return null;
   const club = T.club, m = (T.next || []).find(x => x.home === club || x.away === club); if (!m) return null;
-  const p = (T.teams[club].players || []).find(q => q.nom === J.nom); if (!p) return null;
+  const p = (T.teams[club].players || []).find(q => nmK(q.nom) === nmK(J.nom)); if (!p) return null;
   const home = m.home === club, sg = T.model.sigma, sign = home ? 1 : -1;
   const win = mu => home ? 1 - PHI((0.5 - mu) / sg) : PHI((-0.5 - mu) / sg);
   const cg = (m.cles_gk || {})[club];
-  const eff = cg && cg.nom === J.nom ? cg.eff : effP(p) * (p.avg_presence ?? p.presence);
+  const eff = cg && nmK(cg.nom) === nmK(J.nom) ? cg.eff : effP(p) * (p.avg_presence ?? p.presence);
   const b0 = home ? m.p[0] : m.p[2], base = b0, wo = Math.max(0, Math.min(1, b0 + win(m.mu - sign * eff) - win(m.mu)));
   const adv = T.teams[home ? m.away : m.home];
   return {base, wo, d: Math.round((wo - base) * 100), adv: adv.short || SHORT[adv.nom] || titleCase(adv.nom), home, date: m.date, rid: m.rid, p};
@@ -3212,6 +3212,8 @@ const BADGE_TIP = (b, g) => ({
   'Gâchette': '5 buts par match ou plus', 'Fidèle': '50 matchs ou plus avec le club', 'Navette': 'Joue dans plusieurs équipes du club cette saison',
   'Coach aussi': 'Officiel d’une équipe jeune du club sur plus de la moitié de ses feuilles'
 })[b] || b;
+const nmK = x => String(x || '').replace(/--+/g, '-');   // même nom avec ou sans double tiret (v29)
+const cardOf = (X, nom) => { const c = (X && X.cartes) || {}; return c[nom] || c[Object.keys(c).find(k => nmK(k) === nmK(nom))] || null; };
 function viewPlayer(id) {
   const J = JW[id];
   if (!J) return `<section class="stack"><h1>Fiche introuvable</h1><p class="lead">Aucune feuille de match trouvée pour cette personne.</p></section>`;
@@ -3261,7 +3263,7 @@ function viewPlayer(id) {
   if (J.coach) B.push(g('Coach aussi', 'Coach aussi'));
   const tot = J.saisons.reduce((a, s) => [a[0] + s.mj, a[1] + s.n_eq], [0, 0]);
   // impact dans les équipes de cette saison
-  const imp = (J.equipes || []).map(k => { const T = ALL.data[k]; const p = (T.teams[T.club].players || []).find(q => q.nom === J.nom); const sl = sansLui(k, J);
+  const imp = (J.equipes || []).map(k => { const T = ALL.data[k]; const p = (T.teams[T.club].players || []).find(q => nmK(q.nom) === nmK(J.nom)); const sl = sansLui(k, J);
     const s = cur.find(x => x.team_key === k) || {};
     return `<div class="card stack" data-keep><h2>${e(T.team.label)} <span class="sub">· ${e(compAff(typeof T.competition === 'string' ? T.competition : (T.competition || {}).nom || ''))}</span></h2>
       <div class="kpis">
@@ -3276,11 +3278,10 @@ function viewPlayer(id) {
     <h1>${e(J.nom)}</h1>
     <p class="lead">${nb(J.n, 'match')} et ${nb(J.buts, 'but')} avec le club depuis ${MOIS[dt(J.debut).getUTCMonth()]} ${J.debut.slice(0, 4)}, ${f1(J.bpm)} par match. Présent${g('e', '')} sur ${pct(tot[0] / Math.max(1, tot[1]))} des matchs de ses équipes depuis son arrivée.</p>
     ${B.length ? `<p class="pbadges">${[...new Set(B)].map(b => { const t = BADGE_TIP(b, g); return `<span class="badge" title="${e(t)}" data-tip="${e(t)}" tabindex="0">${e(b)}</span>`; }).join(' ')}</p>` : ''}</section>
-  ${(() => { const k = (J.equipes || []).find(k2 => ALL.data[k2] && (ALL.data[k2].teams[ALL.data[k2].club].players || []).some(q => q.nom === J.nom)); const ck = k ? null : ORDER.find(k2 => ALL.data[k2] && (ALL.data[k2].cartes || {})[J.nom]); if (!k && !ck) return '';
-    const T = ALL.data[k || ck], C = ck ? T.cartes[J.nom] : null, p = C ? {nom: J.nom, mj: 0, bpm: C.bpm, n3: C.n3, n3d: C.n3d, gb3: C.gb3, arrets_pm: 0, presence: null, tir: C.tir} : T.teams[T.club].players.find(q => q.nom === J.nom), f = FUT(p), tir = p.tir && p.tir[1] ? p.tir[0] / p.tir[1] : null;
-    const st = f.kind === 'gb' ? [[f1(f.arr), 'ARR', 'arrêts par match dans les buts'], [p.presence == null ? '–' : Math.round(p.presence * 100), 'PRÉ', 'présence attendue en %'], [C ? C.mj : p.mj, 'MJ', C ? 'matchs joués sur ces saisons' : 'matchs joués']]
-      : [[f.att, 'ATT', 'attaque'], [f.def, 'DÉF', 'défense'], [tir == null ? '–' : Math.round(tir * 100), 'TIR', 'réussite au tir en %'],
-      [f1(p.bpm), 'BUT', 'buts par match'], [p.presence == null ? '–' : Math.round(p.presence * 100), 'PRÉ', 'présence attendue en %'], [C ? C.mj : p.mj, 'MJ', C ? 'matchs joués sur ces saisons' : 'matchs joués'], ...(f.kind === 'mix' ? [[f.gb, 'GB', 'note de gardienne'], [f1(f.arr), 'ARR', 'arrêts par match dans les buts']] : [])];
+  ${(() => { const k = (J.equipes || []).find(k2 => ALL.data[k2] && (ALL.data[k2].teams[ALL.data[k2].club].players || []).some(q => nmK(q.nom) === nmK(J.nom))); const ck = k ? null : ORDER.find(k2 => ALL.data[k2] && cardOf(ALL.data[k2], J.nom)); if (!k && !ck) return '';
+    const T = ALL.data[k || ck], C = ck ? cardOf(T, J.nom) : null, p = C ? {nom: J.nom, mj: 0, bpm: C.bpm, n3: C.n3, n3d: C.n3d, gb3: C.gb3, arrets_pm: 0, presence: null, tir: C.tir} : T.teams[T.club].players.find(q => nmK(q.nom) === nmK(J.nom)), f = FUT(p), tir = p.tir && p.tir[1] ? p.tir[0] / p.tir[1] : null;
+    const st = f.kind === 'gb' ? [[f1(f.arr), 'ARR', 'arrêts par match dans les buts']]
+      : [[f.att, 'ATT', 'attaque'], [f.def, 'DÉF', 'défense'], [tir == null ? '–' : Math.round(tir * 100), 'TIR', 'réussite au tir en %'], ...(f.kind === 'mix' ? [[f.gb, 'GB', 'note de gardienne'], [f1(f.arr), 'ARR', 'arrêts par match dans les buts']] : [])];
     return `<section class="fut-w"><div class="fut no-plk" role="img" aria-label="Carte ${esc(J.nom)} : note ${f.ovr}, ${st.map(x => x[2] + ' ' + x[0]).join(', ')}">
       <div class="fut-top"><b class="fut-ovr">${f.ovr}</b><span class="fut-pos">${f.kind === 'gb' ? 'GB' : f.kind === 'mix' ? 'JDC · GB' : 'JDC'}</span><span class="fut-team">${esc(T.team.label.replace(/^Équipe\s*/, ''))}</span></div>
       <div class="fut-name">${esc(J.nom)}</div>
