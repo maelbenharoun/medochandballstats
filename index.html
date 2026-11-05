@@ -1031,6 +1031,19 @@ tr.cm.tot td { font-weight: 600; }
 @media (max-width: 720px) { .fut-w { grid-template-columns: minmax(0, 1fr); justify-items: center; } .fut-w .note { justify-self: stretch; } }
 .st-add { max-width: 560px; margin-top: 4px; }
 .st-del { font-size: .8125rem; color: var(--ink-2); margin-left: 4px; }
+/* v31 : tableau compact trop large, défile dans sa carte, rang et nom figés */
+.scroll { position: relative; }   /* les textes .sr (position absolue) restent dans la boîte qui défile */
+.ctw.ok { overflow: visible; }
+.ctw.wide { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ctw.wide table.ct { width: max-content; min-width: 100%; }
+.ctw.wide .stk { position: sticky; z-index: 1; background: var(--panel); }
+.ctw.wide .stk-l { box-shadow: 1px 0 0 var(--line); }
+.ctw.wide tr.me .stk { background: #1f2124; }
+.ctw.wide td.nm { width: auto; min-width: 9em; max-width: 14em; }
+table.ct.fitnm td.nm { width: auto; }
+table.ct.tight { font-size: .92rem; }
+table.ct.tight th, table.ct.tight td { padding-left: 3px; padding-right: 3px; }
+table.ct.tight .badge { font-size: .72rem; }
 </style>
 </head>
 <body>
@@ -3001,6 +3014,23 @@ app.addEventListener('click', e => {
   if (a) { const q = document.getElementById('cp-q'); if (q) q.focus(); }
 });
 /* ── téléphone : tableaux trop larges en cartes, sections secondaires repliées, résumé collant ── */
+// tableau compact posé dans une boîte qui défile ; trop large : colonnes jusqu'au nom figées à gauche (v31)
+function ctWrap(box, ct) {
+  const w = document.createElement('div'); w.className = 'scroll ctw'; w.appendChild(ct); box.replaceWith(w);
+  const fits = () => ct.offsetWidth <= w.clientWidth + 1;      // le tableau lui-même (le chevron peut déborder de 4 px)
+  if (fits()) { w.classList.add('ok'); return w; }
+  ct.classList.add('fitnm');                                  // le nom ne réclame plus toute la largeur
+  if (fits()) { w.classList.add('ok'); return w; }
+  ct.classList.add('tight');                                  // presque : texte et marges un peu resserrés
+  if (fits()) { w.classList.add('ok'); return w; }
+  ct.classList.remove('tight', 'fitnm'); w.classList.add('wide');
+  const first = ct.querySelector('tbody tr.cm'), pos = first ? [...first.children].findIndex(td => td.classList.contains('nm')) : 0;
+  const ths = [...ct.querySelectorAll('thead th')], left = ths.map(th => th.offsetLeft);
+  if (pos >= 0) ct.querySelectorAll('thead tr, tbody tr.cm').forEach(tr => [...tr.children].slice(0, pos + 1).forEach((c, i) => {
+    c.classList.add('stk'); c.style.left = (left[i] || 0) + 'px'; if (i === pos) c.classList.add('stk-l'); }));
+  w.insertAdjacentHTML('beforebegin', '<p class="sub cthint">Faire glisser le tableau →</p>');
+  return w;
+}
 function compactTable(t, heads) {
   // une ligne par élément avec les colonnes essentielles ; toucher la ligne ouvre le reste
   const keep = t.dataset.c.split(',').map(Number);
@@ -3033,7 +3063,7 @@ function mobTables() {
     if (t.scrollWidth <= box.clientWidth + 2) return;           // le tableau tient : on le garde
     const heads = [...t.querySelectorAll('thead th')].map(th => th.dataset.s ?? th.textContent.trim());
     if (FULLT) { box.classList.add('full'); box.insertAdjacentHTML('beforebegin', `<p class="sub cthint">Faire glisser le tableau → · <button type="button" class="lnk" data-fullt="0">Vue compacte</button></p>`); return; }
-    if (t.dataset.c) { const ct = compactTable(t, heads); box.replaceWith(ct); ct.insertAdjacentHTML('beforebegin', `<p class="sub cthint">${ct.querySelector('tr.x') ? 'Toucher une ligne pour le détail · ' : ''}<button type="button" class="lnk" data-fullt="1">Voir tout le tableau</button></p>`); return; }
+    if (t.dataset.c) { const ct = compactTable(t, heads), cw = ctWrap(box, ct); cw.insertAdjacentHTML('beforebegin', `<p class="sub cthint">${ct.querySelector('tr.x') ? 'Toucher une ligne pour le détail · ' : ''}<button type="button" class="lnk" data-fullt="1">Voir tout le tableau</button></p>`); return; }
     const spec = (t.dataset.m || '0').split(',');
     const prim = spec.map(s => parseInt(s, 10)), right = (spec.find(s => s.endsWith('r')) || '').replace('r', '');
     const list = document.createElement('div'); list.className = 'tl';
@@ -3057,8 +3087,8 @@ function mobTables() {
 function deskTables() {
   app.querySelectorAll('.scroll > table[data-cd]').forEach(t => {
     const heads = [...t.querySelectorAll('thead th')].map(th => th.dataset.s ?? th.textContent.trim());
-    t.dataset.c = t.dataset.cd; const ct = compactTable(t, heads); t.parentElement.replaceWith(ct);
-    if (ct.querySelector('tr.x')) ct.insertAdjacentHTML('beforebegin', `<p class="sub cthint">${t.dataset.hint || 'Cliquer sur une ligne pour le détail (domicile, extérieur, part des buts, arrêts, saison passée).'}</p>`);
+    t.dataset.c = t.dataset.cd; const ct = compactTable(t, heads), cw = ctWrap(t.parentElement, ct);
+    if (ct.querySelector('tr.x')) cw.insertAdjacentHTML('beforebegin', `<p class="sub cthint">${t.dataset.hint || 'Cliquer sur une ligne pour le détail (domicile, extérieur, part des buts, arrêts, saison passée).'}</p>`);
   });
 }
 // sous-menu du match : la puce active suit la section lue
