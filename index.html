@@ -764,6 +764,19 @@ button.more { border: 0; cursor: pointer; font-family: var(--f-display); }
 .adm-b::after { display: none; }
 .adm-b { padding: 8px 16px; }
 @media (max-width: 720px) { .adm-r { grid-template-columns: minmax(0, 1fr); } }
+/* vue « comme un … » de l'admin */
+.vue-bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 9; display: flex; align-items: center; gap: 12px;
+  max-width: calc(100vw - 24px); padding: 8px 8px 8px 16px; border-radius: var(--r-pill); background: var(--accent); color: var(--accent-ink); font-weight: 500; box-shadow: 0 8px 30px rgba(0, 0, 0, .5); }
+.vue-bar > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.vue-bar a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.vue-bar button { font: 600 .95rem/1 var(--f-display); border: 0; cursor: pointer; background: var(--accent-ink); color: var(--accent); padding: 9px 14px; border-radius: var(--r-pill); white-space: nowrap; }
+.vue-bar button:focus-visible, .vue-bar a:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+body.vue-on { padding-bottom: 72px; }
+@media (max-width: 720px) {
+  .vue-bar { bottom: calc(82px + env(safe-area-inset-bottom, 0px)); gap: 10px; }
+  .vue-x { display: none; }
+  body.vue-on { padding-bottom: calc(136px + env(safe-area-inset-bottom, 0px)); }
+}
 </style>
 </head>
 <body>
@@ -853,11 +866,12 @@ const app = document.getElementById('app');
 const MQ = window.matchMedia('(max-width: 720px)');   // téléphone
 /* ── comptes : niveau d'accès (sans comptes configurés : tout est visible) ── */
 const CPT = COMPTE, ON = !!CPT, LV = ON ? CPT.lv : 4;
+const ADMIN = ON && CPT.reel === 4, VUE = ON && CPT.vue != null ? CPT.vue : null;   // vue « comme un … » de l'admin
 const NIV = ['Invité', 'Joueur', 'Entraîneur', 'VIP', 'Admin'];
 const ok = n => LV >= n;
 const LOCK = '<svg class="lk" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 function lockCard(n, titre) {
-  const p = CPT && CPT.profil;
+  const p = CPT && VUE !== 0 && CPT.profil;
   const why = !p ? `<p class="acc-btns"><a class="cta" href="#compte">Se connecter</a><a class="more" href="#compte-creer">Créer un compte</a></p>`
     : p.statut === 'attente' ? '<p class="sub">Ton compte attend la validation de l’administrateur.</p>'
     : p.statut === 'refuse' ? '<p class="sub">Ton inscription n’a pas été validée.</p>'
@@ -876,7 +890,7 @@ document.getElementById('foot').innerHTML = `<p class="sign">Médoc Handball · 
   <p>Modèle 3 saisons : ${D.model.n_matchs.toLocaleString('fr-FR')} matchs de ${D.model.n_poules} poules (2023-24 à 2026-27), un niveau par équipe et par saison, relié d’une saison à l’autre selon ${G('les joueuses conservées', 'les joueurs conservés')}, avec un niveau propre à chaque championnat. Matchs de la saison en cours pondérés par la récence (demi-vie ${D.model.half_life} jours). Avantage du terrain ${sgn(D.model.home)} buts, erreur de prévision mesurée ± ${f1(D.model.sigma)} buts. Simulation de fin de saison : ${D.n_sim.toLocaleString('fr-FR')} saisons tirées au sort.</p>`;
 document.querySelectorAll('a[data-v="equipe"]').forEach(a => a.setAttribute('href', '#equipe-' + D.club));
 document.querySelectorAll('[data-acc]').forEach(a => {
-  a.style.display = ON && (a.dataset.acc === 'compte' || ok(4)) ? '' : 'none';
+  a.style.display = ON && (a.dataset.acc === 'compte' || ADMIN) ? '' : 'none';
   if (a.dataset.acc === 'compte') { const l = a.querySelector('.acc-l') || a; l.textContent = CPT && CPT.profil ? 'Mon compte' : 'Connexion'; }
 });
 const c = document.getElementById('cta'), cm = D.next.find(m => isClub(m.home) || isClub(m.away));
@@ -2525,7 +2539,7 @@ function render() {
   else if (h.startsWith('equipe-')) { html = viewTeam(h.slice(7)); v = h.slice(7) === String(D.club) ? 'equipe' : ''; }
   else if (h.startsWith('joueur-')) { html = ok(1) ? viewPlayer(h.slice(7)) : lockPage(1, G('Fiche joueuse', 'Fiche joueur')); v = ''; }
   else if (ON && (h === 'compte' || h.startsWith('compte-'))) { html = viewCompte(h.slice(7)); v = 'compte'; }
-  else if (ON && h === 'admin') { html = ok(4) ? viewAdmin() : lockPage(4, 'Panneau de contrôle'); v = 'admin'; }
+  else if (ON && h === 'admin') { html = ADMIN ? viewAdmin() : lockPage(4, 'Panneau de contrôle'); v = 'admin'; }
   else if (h === 'classement') { html = viewClassement(); v = h; }
   else if (h === 'stats') { html = ok(1) ? viewStats() : lockPage(1, 'Stats de la poule'); v = h; }
   else if (h === 'pronos') { html = viewPronos(); v = h; }
@@ -2580,7 +2594,7 @@ function viewCompte(sub) {
       ${CPT.maj ? '<section class="card stack" data-keep><p class="sub">Le site vient d’être mis à jour : tes données réservées arrivent dans quelques minutes. Recharge la page un peu plus tard.</p></section>' : ''}
       <section class="card stack" data-keep><h2>Mon accès</h2><p class="lead">${st}</p>
         <p class="sub">${eq ? `Équipe : ${esc(eq)}` : ''}${p.joueur ? ` · fiche : ${esc(p.joueur)}` : ''}</p>
-        <p class="acc-btns">${ok(4) ? '<a class="cta" href="#admin">Panneau de contrôle</a>' : ''}<button type="button" class="more acc-out-b" data-acc-act="logout">Se déconnecter</button></p></section>
+        <p class="acc-btns">${ADMIN ? '<a class="cta" href="#admin">Panneau de contrôle</a>' : ''}<button type="button" class="more acc-out-b" data-acc-act="logout">Se déconnecter</button></p></section>
       <section class="card stack" data-keep>${pw}</section>`;
   }
   if (sub === 'oubli') return `<section class="stack"><h1>Mot de passe oublié</h1></section>
@@ -2648,6 +2662,9 @@ const DEM = () => ({joueur: G('Joueuse', 'Joueur'), entraineur: 'Entraîneur', p
 function viewAdmin() {
   return `<section class="stack"><p class="eyebrow">Réservé à l’admin</p><h1>Panneau de contrôle</h1></section>
     <section class="card stack" data-keep><div id="adm" aria-live="polite"><p class="sub">Chargement des comptes…</p></div></section>
+    <section class="card stack" data-keep><h2>Voir le site comme…</h2>
+      <p class="sub">Le site se recharge avec seulement ce que voit ce niveau. Un bandeau en bas de l’écran permet de revenir à la vue admin.</p>
+      <div class="adm-f" role="group" aria-label="Voir le site comme">${[0, 1, 2, 3].map(n => `<button type="button" class="subn${VUE === n ? ' on' : ''}" data-vue="${n}" aria-pressed="${VUE === n}">${NIV[n]}</button>`).join('')}<button type="button" class="subn${VUE == null ? ' on' : ''}" data-vue="admin" aria-pressed="${VUE == null}">Admin</button></div></section>
     <section class="card stack" data-keep><h2>Les niveaux</h2><ul class="ana">
       <li><b>Invité</b> (sans compte, ou compte en attente) : accueil, pronos, classement, calendrier, bilan des pronos, historique, pages des équipes.</li>
       <li><b>Joueur</b> : en plus, fiches ${G('joueuses', 'joueurs')}, onglet Stats, matchs joués (analyse, film, feuille de match), ${G('joueuses clés', 'joueurs clés')} et effectifs probables, vidéos Rematch.</li>
@@ -2680,6 +2697,9 @@ function admPaint(note) {
       : `<p class="sub">${ADF === 'attente' ? 'Aucune inscription en attente.' : 'Aucun compte ici.'}</p>`}`;
 }
 app.addEventListener('click', async e => {
+  const vb = e.target.closest('[data-vue]');
+  if (vb) { try { if (vb.dataset.vue === 'admin') sessionStorage.removeItem('hb-vue'); else sessionStorage.setItem('hb-vue', vb.dataset.vue); } catch (err) {}
+    accReload(vb.dataset.vue === 'admin' ? '#admin' : '#accueil'); return; }
   const f = e.target.closest('[data-adf]'); if (f) { ADF = f.dataset.adf; admPaint(); return; }
   const b = e.target.closest('[data-adm]'); if (!b) return;
   const r = b.closest('.adm-r'), id = r.dataset.id, p = ADM.find(x => x.id === id); if (!p) return;
@@ -2693,6 +2713,13 @@ app.addEventListener('click', async e => {
     admPaint({t: act === 'valide' ? `${p.nom || p.email} : accès ${NIV[niv]}.` : `Inscription de ${p.nom || p.email} refusée.`});
   } catch (err) { b.disabled = false; admPaint({t: err.message, ko: true}); }
 });
+if (VUE != null) {
+  const vbar = document.createElement('div');
+  vbar.className = 'vue-bar'; vbar.setAttribute('role', 'status');
+  vbar.innerHTML = `<span>Vue <b>${NIV[VUE]}</b><span class="vue-x"> : le site tel que le voit ce niveau</span></span><a href="#admin">Changer</a><button type="button" data-vue="admin">Vue admin</button>`;
+  vbar.addEventListener('click', e => { const b = e.target.closest('[data-vue]'); if (!b) return; try { sessionStorage.removeItem('hb-vue'); } catch (err) {} accReload('#admin'); });
+  document.body.appendChild(vbar); document.body.classList.add('vue-on');
+}
 /* bouton retour : profondeur de navigation dans le site gardée dans l'historique */
 let depth = 0;
 try { if (history.state && typeof history.state.d === 'number') depth = history.state.d; else history.replaceState({d: 0, t: CUR}, ''); } catch (e) {}
@@ -2814,7 +2841,9 @@ const API = {
       if (fini) return;
       const p = (pr || [])[0] || null;
       acc.profil = p; acc.etat = p ? 'connecte' : 'sans-profil';
-      acc.lv = p && p.statut === 'valide' ? p.niveau : 0;
+      acc.lv = acc.reel = p && p.statut === 'valide' ? p.niveau : 0;
+      let vue = null; try { vue = sessionStorage.getItem('hb-vue'); } catch (e) {}
+      if (acc.reel === 4 && /^[0-3]$/.test(vue || '')) acc.lv = acc.vue = +vue;
       for (const r of rows || []) if (r.niveau <= acc.lv) for (const [path, val] of r.contenu) put(ALL, path, val);
       acc.maj = acc.lv > 0 && !(rows || []).length;     // site mis à jour, données réservées pas encore envoyées
     })();
