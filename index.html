@@ -842,8 +842,9 @@ body.vue-on { padding-bottom: 72px; }
 nav a[aria-current] { background: #16181c; color: #fff; }
 nav a[aria-current="true"] { background: #3a3d44; }
 .cta-ps { display: none; }
-@media (max-width: 1360px) { .cta-p { display: none; } .cta-ps { display: inline; } }
+@media (max-width: 1360px) { .cta-p { display: none; } }
 .crumbs { margin: 6px 6px -4px; }
+.nc { text-transform: none; letter-spacing: 0; }
 /* score probable : marqué comme tel */
 .sc-w { display: grid; justify-items: center; gap: 5px; }
 .sc-w > small { font: 500 .6875rem/1 var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); white-space: nowrap; }
@@ -922,6 +923,69 @@ th.srt { color: var(--ink); }
 .pw input { flex: 1; min-width: 0; }
 .pw-t { flex: none; font: 600 .875rem/1 var(--f-display); color: var(--ink); background: transparent; border: 1px solid var(--edge); border-radius: var(--r-pill); padding: 10px 14px; }
 .adm-a .adm-del { margin-left: auto; color: var(--ink-2); background: transparent; border-style: dashed; }
+/* en-tête du téléphone caché en descendant */
+@media (max-width: 720px) {
+  .top { transition: transform .2s ease; }
+  body.top-off .top { transform: translateY(-100%); }
+  body.top-off .subnav { top: env(safe-area-inset-top, 0px); }
+  main.has-msum { padding-bottom: 86px; }
+  /* calendrier : pourcentages lisibles, case « Ne pas compter » nommée et assez grande, filtres groupés */
+  .fx:not(.focus) .pb .pbar { height: 22px; gap: 2px; }
+  .fx:not(.focus) .pb .pbar div { font-size: .75rem; }
+  .fx .ray { min-height: 44px; padding: 0 2px 0 8px; }
+  .fx .ray span { font-size: .75rem; }
+  .fx .ray input { width: 20px; height: 20px; }
+  .fx.focus .d .ray span { display: inline; }
+}
+.msp { font: 500 .625rem/1 var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.fgrp { display: inline-flex; align-items: center; gap: 10px; flex-wrap: nowrap; max-width: 100%; min-width: 0; }
+.fgrp .jsel { min-width: 0; } .fgrp .jsel select { min-width: 0; max-width: 52vw; text-overflow: ellipsis; }
+.fx .hr { display: block; }
+.fx .dt { white-space: nowrap; }
+@media (min-width: 721px) {
+  .fx, .fx.focus { grid-template-columns: 124px minmax(0, 1fr) 70px minmax(0, 1fr) 190px; }
+  .fx.rk { grid-template-columns: 124px minmax(0, 1fr) 70px minmax(0, 1fr) 190px 128px; }
+  .fx.played .pb { justify-self: stretch; }
+}
+.fx-bye { margin: 0; padding: 10px 6px; border-top: 1px solid var(--line); color: var(--muted); font-size: .875rem; }
+details.jfut > summary b, details.jsingle > header b { min-width: 2.2em; }
+.jjump .subn.on { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+/* écriture */
+tr.me td { font-weight: 600; }
+.lnk { text-align: left; }
+footer .sign { line-height: 1.5; flex-wrap: wrap; }
+.res-list b { white-space: nowrap; font-family: var(--f-display); }
+.vs .vr b { font-family: var(--f-display); }
+.form.nc2 .V { background: var(--ink-2); color: var(--accent-ink); }
+.form.nc2 .D { background: transparent; box-shadow: inset 0 0 0 1.5px var(--muted); color: var(--ink); }
+.form.nc2 .N { background: var(--raised); color: var(--ink); }
+/* cartes : chiffres clés sur toute la largeur, première stat rigolote sombre (moins éblouissante) */
+@media (min-width: 721px) { .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } }
+.grid3 > .fun:first-child { background: var(--panel-2); color: var(--ink); border: 1px solid rgba(255, 255, 255, .45); }
+.grid3 > .fun:first-child .title, .grid3 > .fun:first-child .what, .grid3 > .fun:first-child ol, .grid3 > .fun:first-child .ol-h { color: var(--ink-2); }
+.grid3 > .fun:first-child .fig { color: var(--ink); }
+.grid2.al-s { align-items: start; }
+.match .meta { min-height: 30px; }
+.nbar { vertical-align: middle; } td .bar { min-width: 3px; }
+.rrow { -webkit-mask-image: linear-gradient(90deg, #000 90%, transparent); mask-image: linear-gradient(90deg, #000 90%, transparent); padding-right: 40px; }
+#hx-res, #mx-scen { display: grid; gap: 12px; }
+.cp-leg { font-size: .8125rem; }
+/* feuille de match : noms sur deux lignes au besoin, colonnes resserrées */
+table.fdm th, table.fdm td { padding-left: 7px; padding-right: 7px; }
+table.fdm td:first-child { white-space: normal; min-width: 120px; }
+table.ct.fdm td:not(:first-child), table.ct.fdm th:not(:first-child) { width: 64px; }
+tr.cm.tot td { font-weight: 600; }
+/* barre d'onglets : « Plus » allumé pendant que sa feuille est ouverte, onglet parent plus discret */
+@media (max-width: 720px) {
+  .tabbar #tb-more[aria-expanded="true"] { color: var(--ink); }
+  .tabbar #tb-more[aria-expanded="true"] .ic { background: rgba(255, 255, 255, .14); }
+  .tabbar [aria-current="true"] .ic { background: rgba(255, 255, 255, .08); }
+}
+.cta.off { opacity: .55; }
+/* ══ seconde revue (v24) ══ */
+.hx-face { gap: 28px; align-items: start; }
+.hx-face .hx-tab td.l { cursor: help; }
+.hx-peu { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -991,28 +1055,33 @@ const SHORT = {
   'AL AGEN HB': 'Agen', 'HBC MARMANDAIS 2': 'Marmande 2', 'CLUB ATHLETIQUE BRIVE CORREZE HANDBALL': 'Brive',
   'MEDOC HANDBALL': 'Médoc Handball'
 };
-const name = id => TEAMS[id].short || SHORT[TEAMS[id].nom] || titleCase(TEAMS[id].nom);
+const name = id => (TEAMS[id].short || SHORT[TEAMS[id].nom] || titleCase(TEAMS[id].nom)).replace(/-/g, '\u2011');
 const shortClub = s => clubAff(s);
 // nom d'équipe affiché : nom court du site, sinon nom FFHB accentué sans les sigles (« AL AGEN HB » → « Agen »)
-const clubAff = s => { const u = String(s || '').toUpperCase().trim(); if (SHORT[u]) return SHORT[u];
+const SHN = {}; for (const k in SHORT) SHN[k.replace(/[^A-Z0-9]/g, '')] = SHORT[k];
+const clubAff = s => { const u = String(s || '').toUpperCase().trim(), u2 = u.normalize('NFD').replace(/[^A-Z0-9]/g, ''); if (SHORT[u]) return SHORT[u]; if (SHN[u2]) return SHN[u2];
   const t0 = titleCase(String(s || '')).replace(/\s*\((?:Er ?[fm]|Erf|Erm)\)$/i, '').trim();
   const t = t0.replace(/^(?:Hbc|Hb|Al|Es|Co|As|Asc|Us|Sa|Club Athletique|Club Athlétique|Handball Club|Handball|Hand Ball)\s+(?=\S)/i, '')
-    .replace(/\s+(?:Handball|Hand Ball|Hbc|Hb)(?=(?:\s+\d+)?$)/i, '').trim();
-  return t || t0; };
+    .replace(/\s+(?:Handball|Hand Ball|Hbc|Hb)(?=(?:\s+\d+)?$)/i, '').replace(/\s+(?:Handball Club|Hand Ball Club|Union Club)(?=(?:\s+\d+)?$)/i, '').replace(/\s+(?:Erf|Erm|Er F|Er M)$/i, '').replace(/\s+1$/, '').trim();
+  const t2 = (t || t0).replace(/\b(\w*\d\w*)\b/g, w => /^\d+$/.test(w) ? w : w.toUpperCase()).replace(/(\S)\s+(De|Du|Des|La|Le|Les|Sur|En|Et)\b/g, (m, a, w) => a + ' ' + w.toLowerCase());
+  return t2; };
 // championnat affiché : « EXCELLENCE REGIONALE FEMININE » → « Excellence régionale féminine »
-const compAff = s => titleCase(String(s || '')).replace(/(\s)(Excellence|Honneur|Régionale|Régional|Féminine|Féminines|Féminin|Masculine|Masculins|Masculin|Départementale|Départemental|Territoriale|Nationale|Prénationale|Poule|Division|Championnat|Coupe|Filles|Garçons|Seniors|Senior|Phase|Niveau|Brassage|Promotion|Élite)\b/g, (m, a, w) => a + w.toLowerCase());
+const compAff = s => titleCase(String(s || '')).replace(/Pré[ -]?Régionale/gi, 'Pré-régionale').replace(/(\s)(Excellence|Honneur|Régionale|Régional|Féminine|Féminines|Féminin|Masculine|Masculins|Masculin|Départementale|Départemental|Territoriale|Nationale|Prénationale|Poule|Division|Championnat|Coupe|Filles|Garçons|Seniors|Senior|Phase|Niveau|Brassage|Promotion|Élite)\b/g, (m, a, w) => a + w.toLowerCase());
 const homeL = m => ({L: m.home, R: m.away, p: m.p, s: m.score, dom: true});            // affichage : l'équipe qui reçoit à gauche
 const clubRes = r => { const h = isClub(r.home), a = isClub(r.away); if (!h && !a) return undefined;
   if (r.forfait) return (r.forfait === 'away') === h ? 'V' : 'D'; const d = h ? r.hs - r.as : r.as - r.hs; return d > 0 ? 'V' : d < 0 ? 'D' : 'N'; };
-const ACC = {Feminine: 'Féminine', Feminines: 'Féminines', Regionale: 'Régionale', Regional: 'Régional', Pre: 'Pré', Medoc: 'Médoc', Departementale: 'Départementale', Departemental: 'Départemental', Etudiants: 'Étudiants', Elite: 'Élite', Equipe: 'Équipe', Prenationale: 'Prénationale', Premiere: 'Première', Deuxieme: 'Deuxième', Beglais: 'Béglais', Leognan: 'Léognan', Menesterol: 'Ménestérol', Creonnais: 'Créonnais'};
+const ACC = {Medard: 'Médard', Teichois: 'Teichois', Begles: 'Bègles', Merignac: 'Mérignac', Feminine: 'Féminine', Feminines: 'Féminines', Regionale: 'Régionale', Regional: 'Régional', Pre: 'Pré', Medoc: 'Médoc', Departementale: 'Départementale', Departemental: 'Départemental', Etudiants: 'Étudiants', Elite: 'Élite', Equipe: 'Équipe', Prenationale: 'Prénationale', Premiere: 'Première', Deuxieme: 'Deuxième', Beglais: 'Béglais', Leognan: 'Léognan', Menesterol: 'Ménestérol', Creonnais: 'Créonnais'};
 const titleCase = s => s.toLowerCase().replace(/(^|[\s\-'(])([a-zà-ÿ])/g, (m, a, b) => a + b.toUpperCase()).replace(/[A-Za-zÀ-ÿ]+/g, w => ACC[w] || w);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const pct = x => (x >= 0.995 && x < 1 ? '>99' : x > 0 && x < 0.005 ? '<1' : Math.round(x * 100)) + '\u202f%';
-const pct1 = x => (x < 0.005 && x > 0 ? '<1' : x >= 0.995 && x < 1 ? '>99' : Math.round(x * 100)) + '\u202f%';
-const dV = v => v === 0 ? '±0\u202f%' : (v > 0 ? '+' : '−') + Math.abs(v) + '\u202f%';                        // écart de chance de victoire
+const pct = x => (x >= 0.995 && x < 1 ? '>99' : x > 0 && x < 0.005 ? '<1' : Math.round(x * 100)) + '\u00a0%';
+const pct1 = x => (x < 0.005 && x > 0 ? '<1' : x >= 0.995 && x < 1 ? '>99' : Math.round(x * 100)) + '\u00a0%';
+const dV = v => v === 0 ? '±0\u00a0%' : (v > 0 ? '+' : '−') + Math.abs(v) + '\u00a0%';                        // écart de chance de victoire
 const dP = v => v === 0 ? '±0 point' : (v > 0 ? '+' : '−') + Math.abs(v) + ' point' + (Math.abs(v) > 1 ? 's' : '');   // écart de présence
-const dashS = x => String(x ?? '').replace(/(\d)\s*[-:]\s*(\d)/g, '$1\u2009–\u2009$2');                       // « 28-25 » → « 28 – 25 »
-const hfr = h => String(h || '').replace(':', ' h ').replace(' h 00', ' h');
+const dashS = x => String(x ?? '').replace(/(?<![\d-])(\d+)\s*[-:]\s*(\d+)(?![\d-])/g, '$1\u2009–\u2009$2');   // « 28-25 » → « 28 – 25 » (pas « 5-1-0 »)
+const scHL = (sc, lieu) => { const x = String(sc ?? '').match(/^\s*(\d+)\s*[-:–]\s*(\d+)\s*$/); return x ? (lieu === 'ext' ? x[2] + '\u2009–\u2009' + x[1] : x[1] + '\u2009–\u2009' + x[2]) : dashS(sc); };   // score du club → équipe qui reçoit d'abord
+const DE = n => /^BEC\b/.test(n) ? 'du ' + n.replace(/ Handball$/, '') : 'de ' + n;       // « du BEC », « de Médoc Handball »
+const placeAff = x => titleCase(String(x || '')).replace(/(\S)\s+(De|Du|Des|La|Le|Les|Sur|En|Et|Lès)\b/g, (m, a, w) => a + ' ' + w.toLowerCase());                       // « 28-25 » → « 28 – 25 »
+const hfr = h => String(h || '').replace(':', '\u00a0h\u00a0').replace('\u00a0h\u00a000', '\u00a0h');
 document.documentElement.lang = 'fr';
 const sgn = x => (x > 0 ? '+' : x < 0 ? '−' : '±') + Math.abs(x).toFixed(1).replace('.', ',');
 const f1 = x => x == null ? '–' : x.toFixed(1).replace('.', ',');
@@ -1060,16 +1129,16 @@ document.getElementById('foot').innerHTML = `<p class="sign">Médoc Handball · 
 document.querySelectorAll('a[data-v="equipe"]').forEach(a => a.setAttribute('href', '#equipe-' + D.club));
 document.querySelectorAll('[data-acc]').forEach(a => {
   a.style.display = ON && (a.dataset.acc === 'compte' || ADMIN) ? '' : 'none';
-  if (a.dataset.acc === 'compte') { const l = a.querySelector('.acc-l') || a; l.textContent = CPT && CPT.profil ? 'Mon compte' : 'Connexion'; }
+  if (a.dataset.acc === 'compte') { const l = a.querySelector('.acc-l') || a; l.textContent = CPT && CPT.profil ? (a.closest('#nav') ? 'Compte' : 'Mon compte') : 'Connexion'; }
 });
 const c = document.getElementById('cta'), cm = D.next.find(m => isClub(m.home) || isClub(m.away));
 const fut = futClub();
 document.querySelector('.ctasel').hidden = !fut.length;
 if (fut.length) {
   const f0 = cm || fut[0], adv0 = f0.home === D.club ? f0.away : f0.home;
-  c.innerHTML = `<span class="cta-j"><span class="cta-p">Prochain match · </span><span class="cta-ps">Prochain · </span>J${f0.j || D.next_journee}</span><span class="cta-long"> · ${esc(name(adv0))}</span><span class="caret" aria-hidden="true">▾</span>`;
+  c.innerHTML = `<span class="cta-j"><span class="cta-p">Prochain match · </span><span class="cta-ps">Prochain · </span>J${f0.j || D.next_journee}</span><span class="cta-long">·&nbsp;${esc(name(adv0))}</span><span class="caret" aria-hidden="true">▾</span>`;
   c.removeAttribute('aria-label'); c.title = `Matchs à venir de ${name(D.club)}`;
-  document.getElementById('ctamenu').innerHTML = `<div class="hd">Les ${fut.length} prochains matchs de ${esc(name(D.club))} · cliquer pour l’analyse</div>` + fut.map(m => {
+  document.getElementById('ctamenu').innerHTML = `<div class="hd">Les ${fut.length} prochains matchs ${esc(DE(name(D.club)))} · cliquer pour l’analyse</div>` + fut.map(m => {
     const home = m.home === D.club, pw = home ? m.p[0] : m.p[2], adv = home ? m.away : m.home, isNext = D.next.some(x => x.rid === m.rid), has = !!findMatch(m.rid);
     return `<a role="menuitem" class="${isNext ? 'next' : ''}" href="${has ? '#match-' + m.rid : '#calendrier'}" data-cal="${has ? '' : '1'}">
       <span class="j">J${m.j}</span>
@@ -1082,7 +1151,7 @@ function buildMenu() {
   const menu = document.getElementById('teammenu'), bb = document.getElementById('brand'), one = ORDER.length < 2;
   bb.classList.toggle('one', one);
   if (one) { bb.removeAttribute('aria-haspopup'); bb.removeAttribute('aria-expanded'); bb.removeAttribute('title'); }
-  menu.innerHTML = ORDER.map(k => { const x = ALL.data[k]; return `<button type="button" role="menuitemradio" aria-checked="${k === CUR}" data-k="${k}"><b>${esc(x.team.label)}</b><span class="ck">${k === CUR ? '✓' : ''}</span><small>${esc(x.team.nom)} · ${esc(compAff(x.competition))}${x.poule && !/unique/i.test(x.poule) ? ' · ' + esc(x.poule) : ''}</small></button>`; }).join('');
+  menu.innerHTML = ORDER.map(k => { const x = ALL.data[k]; return `<button type="button" role="menuitemradio" aria-checked="${k === CUR}" data-k="${k}"><b>${esc(x.team.label)}</b><span class="ck">${k === CUR ? '✓' : ''}</span><small>${esc(x.team.nom)} · ${esc(compAff(x.competition))}${x.poule && !/unique/i.test(x.poule) ? ' · ' + esc(x.poule).replace(' ', '\u00a0') : ''}</small></button>`; }).join('');
   menu.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { closeMenu(); switchTeam(b.dataset.k, true); }));
 }
 const navBtn = document.getElementById('navbtn'), navEl = document.getElementById('nav');
@@ -1174,9 +1243,9 @@ function pbar(p, lid, rid, big, domL = true) {
     <div class="${cR}" style="flex:${l}" data-tip="Défaite ${esc(name(lid))} : <b>${pct1(l)}</b>" tabindex="0">${lab(l)}</div></div>
     <div class="plegend"><span><i style="background:${vL}"></i><span class="vl">Victoire </span>${esc(name(lid))} (${domL ? 'dom.' : 'ext.'})</span><span><i style="background:var(--draw)"></i>Nul</span><span><i style="background:${vR}"></i><span class="vl">Victoire </span>${esc(name(rid))}</span></div>`;
 }
-function formHtml(fm) {
+function formHtml(fm, tid) {
   if (!fm.length) return '<span class="sub">Aucun match joué</span>';
-  return `<div class="form" aria-label="Forme, du plus ancien au plus récent">${fm.slice().reverse().map(x =>
+  return `<div class="form${tid != null && !isClub(tid) ? ' nc2' : ''}" aria-label="Forme, du plus récent au plus ancien" title="Du plus récent (à gauche) au plus ancien">${fm.map(x =>
     `<span class="${x.res}" data-tip="${fdate(x.date)} · ${x.lieu === 'dom' ? 'dom.' : 'ext.'} · ${esc(shortClub(x.adv))} : <b>${x.forfait ? (x.res === 'V' ? 'gagné par forfait' : 'perdu par forfait') : x.lieu === 'dom' ? x.bp + '–' + x.bc : x.bc + '–' + x.bp}</b>">${x.res}</span>`).join('')}</div>`;
 }
 function resList(fm, tid) {
@@ -1191,7 +1260,7 @@ function recTable(rec) {
   <tbody>${recRow('Domicile', rec.dom)}${recRow('Extérieur', rec.ext)}${recRow('Total', rec.tot)}</tbody></table></div>`;
 }
 function presList(tid, n = 8, adj = null) {
-  const pl = TEAMS[tid].players.slice().sort((a, b) => b.bpm * b.mj - a.bpm * a.mj).slice(0, n);
+  const pl = TEAMS[tid].players.slice().sort((a, b) => b.bpm * b.mj - a.bpm * a.mj).slice(0, n).sort((a, b) => b.presence - a.presence);   // les plus utiles, de la plus probable à la moins probable
   if (adj) return `<div class="pres hx-pres">${pl.map(p => { const a = adj[p.nom] != null ? adj[p.nom] : p.presence, ch = Math.abs(a - p.presence) >= 0.05;
     return `<div class="row" data-tip="${esc(p.nom)} · ${pct(p.presence)} d’habitude${ch ? ` → ${pct(a)} avec cet horaire et ce trajet` : ''} · sur ${p.feuilles} feuilles · ${f1(p.bpm)} buts/match" tabindex="0">
     <span class="n">${esc(p.nom)} <span class="sub">${f1(p.bpm)} buts/m</span> ${brulBadge(tid, p)}${coachLinks(p.nom, p)}</span>
@@ -1207,7 +1276,7 @@ function presList(tid, n = 8, adj = null) {
 /* graphiques SVG */
 function lineChart(vals, labels, title, tipFn) {
   tipFn = tipFn || ((v, i) => `Après la ${esc(labels[i])} : <b>${sgn(v)} buts</b> par rapport à une équipe moyenne`);
-  const W = 560, H = 200, L = 40, R = 30, T = 16, B = 28;
+  const W = 560, H = 200, L = MQ.matches ? 58 : 40, R = 30, T = 16, B = 28;
   const lo = Math.min(-2, ...vals) - 1, hi = Math.max(2, ...vals) + 1;
   const step = (hi - lo) > 12 ? 4 : 2;
   const X = i => L + (vals.length === 1 ? (W - L - R) / 2 : i * (W - L - R) / (vals.length - 1));
@@ -1225,12 +1294,12 @@ function lineChart(vals, labels, title, tipFn) {
   </svg>`;
 }
 function placeChart(places, tid) {
-  const W = 560, H = 170, L = 36, R = 8, T = 18, B = 26, n = places.length;
+  const W = 560, H = 170, L = MQ.matches ? 66 : 36, R = 8, T = 18, B = 26, n = places.length;
   const mx = Math.max(...places), hi = mx > 0.5 ? 1 : mx > 0.25 ? 0.5 : 0.25;   // échelle ronde : 25, 50 ou 100 %
   const bw = (W - L - R) / n, Y = v => T + (1 - v / hi) * (H - T - B);
   const ticks = [0, hi / 2, hi];
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Probabilité de finir à chaque place">
-    ${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)"/><text x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${Math.round(t * 100)}\u202f%</text>`).join('')}
+    ${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)"/><text x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${Math.round(t * 100)}\u00a0%</text>`).join('')}
     ${places.map((v, i) => { const h = Y(0) - Y(v), x = L + i * bw + 2, w = bw - 4;
       return `<path d="M${x},${Y(0)} V${Y(v) + Math.min(4, h)} q0,-${Math.min(4, h)} ${Math.min(4, w / 2)},-${Math.min(4, h)} H${x + w - Math.min(4, w / 2)} q${Math.min(4, w / 2)},0 ${Math.min(4, w / 2)},${Math.min(4, h)} V${Y(0)} Z" fill="var(--ink-2)"/>
       ${v >= 0.05 ? `<text x="${x + w / 2}" y="${Y(v) - 5}" text-anchor="middle" style="fill:var(--ink-2);font-weight:600">${Math.round(v * 100)}</text>` : ''}
@@ -1333,11 +1402,11 @@ function viewHome() {
           <div class="sb-t r">${lieu(!o.dom)}<b>${esc(name(o.R))}</b></div>
           <div class="sb-p">${pbar(o.p, o.L, o.R, false, o.dom)}</div>
         </div></div>
-        <div class="foot"><a class="cta hero-go" href="#match-${club.rid}">Voir le match <b>${pct(pw)}</b></a><a class="hero-2" href="#match-${club.rid}" data-gocompo>${ok(2) ? '' : LOCK}Composer l’équipe</a></div>
+        <div class="foot"><a class="cta hero-go" href="#match-${club.rid}">Voir le match</a><a class="hero-2" href="#match-${club.rid}" data-gocompo>${ok(2) ? '' : LOCK}Composer l’équipe</a></div>
       </div></section>`;
   }
   const rest = futClub().filter(m => !club || m.rid !== club.rid);
-  const strip = rest.length ? `<section class="upnext mob-only" aria-label="Matchs suivants de ${esc(name(D.club))}">
+  const strip = rest.length ? `<section class="upnext mob-only" aria-label="Matchs suivants ${esc(DE(name(D.club)))}">
     <div class="uph"><p class="eyebrow">Les matchs suivants</p></div>
     <div class="uprow">${rest.map(m => { const home = m.home === D.club, pw = home ? m.p[0] : m.p[2], adv = home ? m.away : m.home, has = !!findMatch(m.rid);
       return `<a class="up" href="${has ? '#match-' + m.rid : '#calendrier'}"${has ? '' : ' data-cal="1"'}><span class="eyebrow">J${m.j} · ${m.estimee ? '≈ ' : ''}${fdate(m.date)}</span><b>${home ? '' : 'à '}${esc(name(adv))}</b><span class="sub">${home ? 'Domicile' : 'Extérieur'}</span><em class="${pw >= 0.5 ? 'fv' : 'ot'}">${pct1(pw)}</em></a>`; }).join('')}</div></section>` : '';
@@ -1345,7 +1414,7 @@ function viewHome() {
   const lastJ = Math.max(...D.journees_jouees);
   const ticker = D.results.filter(r => r.j === lastJ).map(r => {
     if (r.forfait) { const w = r.forfait === 'away' ? r.home : r.away, l = r.forfait === 'away' ? r.away : r.home;
-      return `<div class="rc"><span class="rn${r.forfait === 'away' ? ' wn' : ''}">${esc(name(r.home))}</span><span class="rs">forfait</span><span class="rn${r.forfait === 'home' ? ' wn' : ''}">${esc(name(r.away))}</span></div>`; }
+      return `<div class="rc"><span class="rn${r.forfait === 'away' ? ' wn' : ''}">${esc(name(r.home))}</span><span class="rs">forfait ${esc(name(r.forfait === 'away' ? r.away : r.home))}</span><span class="rn${r.forfait === 'home' ? ' wn' : ''}">${esc(name(r.away))}</span></div>`; }
     return `<div class="rc"><span class="rn${r.hs > r.as ? ' wn' : ''}">${esc(name(r.home))}</span><span class="rs">${sc2(r.hs, r.as, '', clubRes(r))}</span><span class="rn${r.as > r.hs ? ' wn' : ''}">${esc(name(r.away))}</span></div>`;
   }).join('');
   const cards = nx.filter(m => m !== club).map(m => matchCard(m, m === tight)).join('');
@@ -1360,7 +1429,7 @@ function viewHome() {
   const race = Object.values(TEAMS).sort((a, b) => b.sim.p1 - a.sim.p1).slice(0, 5);
   return `${searchBox()}${hero}${strip}
   ${ticker ? `<section class="rstrip" aria-label="Résultats de la journée ${lastJ}"><p class="eyebrow">Résultats de la J${lastJ}</p><div class="rrow" tabindex="0" role="region" aria-label="Résultats de la journée ${lastJ}, défilement horizontal">${ticker}</div></section>` : ''}
-  <section class="stack" style="padding-top:0"><p class="eyebrow">Les autres matchs de la J${D.next_journee}</p><h2>Le week-end dans la poule</h2><a class="more" href="#calendrier">Tous les matchs jusqu’en mai</a></section>
+  <section class="stack" style="padding-top:0"><p class="eyebrow">Les autres matchs de la J${D.next_journee} · scores probables</p><h2>Le week-end dans la poule</h2><a class="more" href="#calendrier">Tous les matchs jusqu’en mai</a></section>
   ${wkList}<section class="grid2 desk-only">${cards}</section>
   <section class="grid2">
     <div class="card stack">
@@ -1369,7 +1438,7 @@ function viewHome() {
       <a class="more" href="#classement">Classement et projection</a></div>
     <div class="card stack">
       <p class="eyebrow">Après J${Math.max(...D.journees_jouees)}</p><h2>${G('Meilleures marqueuses', 'Meilleurs marqueurs')} de la poule</h2>
-      <div class="res-list">${Object.keys(TEAMS).flatMap(tid => (TEAMS[tid].players || []).map(p => Object.assign({tid}, p))).sort((x, y) => y.buts - x.buts || y.bpm - x.bpm).slice(0, 6).map(p => `<div><span>${esc(p.nom)} <span class="sub">${esc(name(p.tid))}</span></span><b>${p.buts} buts · ${f1(p.bpm)} par match</b></div>`).join('')}</div>
+      <div class="res-list">${Object.keys(TEAMS).flatMap(tid => (TEAMS[tid].players || []).map(p => Object.assign({tid}, p))).sort((x, y) => y.buts - x.buts || y.bpm - x.bpm).slice(0, 6).map(p => `<div><span>${esc(p.nom)} <span class="sub">${esc(name(p.tid))}</span></span><b>${p.buts} buts · ${f1(p.bpm)}/match</b></div>`).join('')}</div>
       <a class="more" href="#stats">Toutes les stats</a></div>
   </section>`;
 }
@@ -1521,6 +1590,7 @@ function versus(m, o) {
   const L = o.L, R = o.R, TL = TEAMS[L], TR = TEAMS[R], sL = tstats(L), sR = tstats(R);
   const recL = o.dom ? TL.rec.dom : TL.rec.ext, recR = o.dom ? TR.rec.ext : TR.rec.dom;
   const last5 = t => { const f = TEAMS[t].forme; return f.length ? f.filter(x => x.res === 'V').length + '/' + f.length : '–'; };
+  const w5 = t => { const f = TEAMS[t].forme; return f.length ? f.filter(x => x.res === 'V').length / f.length : null; };
   const pr = r => r.j ? `${r.g}V ${r.n}N ${r.p}D` : '–';
   const par = t => { const p = TEAMS[t].parcours[0]; return p ? `${sgn(p.niveau)}` : '–'; };
   // [libellé, valeur gauche, valeur droite, affichage gauche, affichage droite, plus haut = mieux ?]
@@ -1534,13 +1604,13 @@ function versus(m, o) {
     ['Écart en 1re mi-temps', sL.m1, sR.m1, f1s(sL.m1), f1s(sR.m1), true],
     ['Écart en 2e mi-temps', sL.m2, sR.m2, f1s(sL.m2), f1s(sR.m2), true],
     [o.dom ? 'Bilan dom. / ext.' : 'Bilan ext. / dom.', recL.j ? recL.g / recL.j : null, recR.j ? recR.g / recR.j : null, pr(recL), pr(recR), true],
-    ['Victoires sur les derniers matchs', null, null, last5(L), last5(R), true],
+    ['Victoires sur les derniers matchs', w5(L), w5(R), last5(L), last5(R), true],
     ['Plus large victoire', sL.best ? sL.best.bp - sL.best.bc : null, sR.best ? sR.best.bp - sR.best.bc : null,
       sL.best && sL.best.bp > sL.best.bc ? `+${sL.best.bp - sL.best.bc}` : '–', sR.best && sR.best.bp > sR.best.bc ? `+${sR.best.bp - sR.best.bc}` : '–', true],
     ['Niveau la saison passée', TL.parcours[0] ? TL.parcours[0].niveau : null, TR.parcours[0] ? TR.parcours[0].niveau : null, par(L), par(R), true],
     ['Effectif conservé', TL.parcours[0] ? TL.parcours[0].continuite : null, TR.parcours[0] ? TR.parcours[0].continuite : null,
       TL.parcours[0] ? pct(TL.parcours[0].continuite) : '–', TR.parcours[0] ? pct(TR.parcours[0].continuite) : '–', true],
-    ['Chance de finir 1er', TL.sim.p1, TR.sim.p1, pct1(TL.sim.p1), pct1(TR.sim.p1), true]];
+    ['Chance de finir à la 1re place', TL.sim.p1, TR.sim.p1, pct1(TL.sim.p1), pct1(TR.sim.p1), true]];
   const cls = (a, b, hi) => a == null || b == null || a === b ? ['', ''] : ((hi ? a > b : a < b) ? ['best', ''] : ['', 'best']);
   return `<div class="vs"><div class="vh"><span>${esc(name(L))}</span><span></span><span>${esc(name(R))}</span></div>
     ${rows.map(([lab, a, b, da, db, hi]) => { const [ca, cb] = cls(a, b, hi); return `<div class="vr"><b class="${ca}">${da}</b><span>${lab}</span><b class="${cb}">${db}</b></div>`; }).join('')}</div>
@@ -1548,7 +1618,8 @@ function versus(m, o) {
 }
 
 function lineChart2(a, b, labels, nA, nB) {
-  const W = 600, H = 210, L = 40, R = 190, T = 16, B = 28, all = [...a, ...b];
+  const W = 600, H = 210, L = MQ.matches ? 58 : 40, R = 190, T = 16, B = 28, all = [...a, ...b];
+  nA = String(nA).length > 15 ? String(nA).slice(0, 14) + '…' : nA; nB = String(nB).length > 15 ? String(nB).slice(0, 14) + '…' : nB;
   const lo = Math.min(-2, ...all) - 1, hi = Math.max(2, ...all) + 1, step = (hi - lo) > 12 ? 4 : 2, n = labels.length;
   const X = i => L + (n === 1 ? (W - L - R) / 2 : i * (W - L - R) / (n - 1)), Y = v => T + (hi - v) / (hi - lo) * (H - T - B);
   const ticks = []; for (let t = Math.ceil(lo / step) * step; t <= hi; t += step) ticks.push(t);
@@ -1579,7 +1650,7 @@ function communs(o) {
   const aL = avg('a'), aR = avg('b');
   return `<div class="scroll"><table><thead><tr><th class="l">Adversaire</th><th>${esc(name(L))}</th><th>${esc(name(R))}</th></tr></thead><tbody>
     ${rows.map(r => `<tr><td class="l">${esc(name(r.x))}</td><td>${cell(r.a)}</td><td>${cell(r.b)}</td></tr>`).join('')}</tbody></table></div>
-    ${aL != null && aR != null ? `<p class="note">Face à ces ${nb(rows.length, 'adversaire')} : écart moyen ${f1s(aL)} pour ${esc(name(L))}, ${f1s(aR)} pour ${esc(name(R))}${Math.abs(aL - aR) >= 1 ? `, soit ${f1(Math.abs(aL - aR))} buts de mieux pour ${esc(name(aL > aR ? L : R))}` : ''}.</p>` : ''}`;
+    ${aL != null && aR != null ? `<p class="note">${rows.length > 1 ? `Face à ces ${rows.length} adversaires` : 'Face à cet adversaire'}${rows.flatMap(r => [...r.a, ...r.b]).some(g => g.d == null) ? ' (forfaits non comptés)' : ''} : écart moyen ${f1s(aL)} pour ${esc(name(L))}, ${f1s(aR)} pour ${esc(name(R))}${Math.abs(aL - aR) >= 1 ? `, soit ${f1(Math.abs(aL - aR))} buts de mieux pour ${esc(name(aL > aR ? L : R))}` : ''}.</p>` : ''}`;
 }
 
 function clesHtml(m, o, tid) {
@@ -1587,12 +1658,12 @@ function clesHtml(m, o, tid) {
   const venue = (tid === m.home) ? 'dom' : 'ext';
   const gk = T.players.filter(p => p.mj >= 2 && p.arrets_pm >= 3).sort((a, b) => b.arrets_pm - a.arrets_pm)[0];
   const body = lst.map(c => { const P = T.players.find(p => p.nom === c.nom) || {}, cp = clesP(m, c, tid), pl = o.dom ? cp[0] : cp[2], d = Math.round((pl - pL) * 100), off = m.live && !onSheet(m, tid, c.nom);
-    return `<div class="key"><div class="kh"><b>${esc(c.nom)}</b><span class="v">${f1(P.bpm)} <small>buts/m</small></span></div>
+    return `<div class="key"><div class="kh"><b>${esc(c.nom)}</b><span class="v">${f1(P.bpm)} <small>buts/match</small></span></div>
       <div class="kd"><span>${pct(P.part)} des buts</span><span>record ${P.max}</span><span>${venue === 'dom' ? 'à domicile' : 'à l’extérieur'} ${f1(P[venue])} buts/m</span><span>3 derniers : ${P.last3.join(' · ')}</span><span>présence ${pct(P.presence)}</span></div>
-      <div class="kd"><span>${off ? `Pas ${G('cochée', 'coché')} dans la composition choisie : son absence est déjà comptée.` : `${G('Sans elle', 'Sans lui')} : victoire ${nL} <b>${pct1(pl)}</b> (${dV(d)})`}</span></div></div>`; }).join('');
-  return `<div class="card stack"><h2>${esc(name(tid))}<span class="mob-only"> · ${G('joueuses clés', 'joueurs clés')}</span></h2>${body ||'<p class="sub">Feuilles de match non disponibles.</p>'}
-    ${gk ? `<div class="key"><div class="kh"><b>${esc(gk.nom)}</b><span class="v">${f1(gk.arrets_pm)} <small>arrêts/m</small></span></div><div class="kd"><span>${G('gardienne', 'gardien')} · ${gk.arrets} arrêts en ${gk.mj} matchs</span><span>présence ${pct(gk.presence)}</span></div>${(() => { const cg = (m.cles_gk || {})[tid]; if (!cg || cg.nom !== gk.nom) return ''; if (m.live && !onSheet(m, tid, cg.nom)) return `<div class="kd"><span>Pas ${G('cochée', 'coché')} dans la composition choisie.</span></div>`; const cp = clesP(m, cg, tid), pl = o.dom ? cp[0] : cp[2], d = Math.round((pl - pL) * 100);
-      return `<div class="kd"><span>${G('Sans elle', 'Sans lui')} : victoire ${nL} <b>${pct1(pl)}</b> (${dV(d)})</span></div>`; })()}</div>` : ''}</div>`;
+      <div class="kd"><span>${off ? `Pas ${G('cochée', 'coché')} dans la composition choisie : son absence est déjà comptée.` : `${G('Sans elle', 'Sans lui')} : victoire ${nL} <b>${pct1(pl)}</b> (${d === 0 && pl < pL - 0.0005 ? '−<1\u00a0%' : dV(d)})`}</span></div></div>`; }).join('');
+  return `<div class="card stack" data-keep><h2>${esc(name(tid))}<span class="mob-only"> · ${G('joueuses clés', 'joueurs clés')}</span></h2>${body ||'<p class="sub">Feuilles de match non disponibles.</p>'}
+    ${gk ? `<div class="key"><div class="kh"><b>${esc(gk.nom)}</b><span class="v">${f1(gk.arrets_pm)} <small>arrêts/match</small></span></div><div class="kd"><span>${G('gardienne', 'gardien')} · ${gk.arrets} arrêts en ${gk.mj} matchs</span><span>présence ${pct(gk.presence)}</span></div>${(() => { const cg = (m.cles_gk || {})[tid]; if (!cg || cg.nom !== gk.nom) return ''; if (m.live && !onSheet(m, tid, cg.nom)) return `<div class="kd"><span>Pas ${G('cochée', 'coché')} dans la composition choisie.</span></div>`; const cp = clesP(m, cg, tid), pl = o.dom ? cp[0] : cp[2], d = Math.round((pl - pL) * 100);
+      return `<div class="kd"><span>${G('Sans elle', 'Sans lui')} : victoire ${nL} <b>${pct1(pl)}</b> (${d === 0 && pl < pL - 0.0005 ? '−<1\u00a0%' : dV(d)})</span></div>`; })()}</div>` : ''}</div>`;
 }
 
 function h2hHtml(m, o) {
@@ -1623,7 +1694,7 @@ function slotAdj(p, slot) {
 }
 function hourBlock(m, o) {
   if (!isClub(m.home) && !isClub(m.away)) return '';
-  const fr = h => h.replace(':', ' h ').replace(' h 00', ' h');
+  const fr = h => hfr(h);
   if (!m.heure) return `<section class="card stack" data-keep><h2>L’horaire du match</h2><p class="sub">Horaire pas encore publié par la FFHB : l’effet du créneau sera calculé dès qu’il sera connu.</p></section>`;
   const slot = slotOf(m.date, m.heure), S = (D.histo || {}).slots || {}, T = (S.team || {})[slot];
   const pl = TEAMS[D.club].players;
@@ -1641,11 +1712,11 @@ function hourBlock(m, o) {
     <p class="sub">${fdate(m.date)} à ${fr(m.heure)} · créneau « ${SLOT_LAB[slot]} »</p>
     <div class="kpis">
       ${T && tot[1] ? `<div class="kpi"><b>${f1(T[0] / T[1])}</b><span>${G('joueuses', 'joueurs')} en moyenne sur la feuille à ce créneau (${f1(tot[0] / tot[1])} d’habitude, ${nb(T[1], 'match')})</span></div>` : `<div class="kpi"><b>–</b><span>aucun match de l’équipe à ce créneau depuis 2023</span></div>`}
-      <div class="kpi"><b class="${dpt > 0 ? 'dp' : dpt < 0 ? 'dm' : ''}">${dV(dpt)}</b><span>effet de l’horaire sur la victoire de ${esc(name(D.club))}</span></div>
+      <div class="kpi"><b class="${dpt > 0 ? 'dp' : dpt < 0 ? 'dm' : ''}">${dV(dpt)}</b><span>effet de l’horaire sur la victoire ${esc(DE(name(D.club)))}</span></div>
     </div>
     ${ch.length ? `<div class="res-list">${ch.map(x => `<div><span>${esc(x.p.nom)} <span class="sub">${x.a.on} ${x.a.on > 1 ? 'feuilles' : 'feuille'} sur ${x.a.n} à ce créneau</span></span><b style="white-space:nowrap" class="${x.a.adj > x.p.presence ? 'ok' : 'ko'}">${pct(x.p.presence)} → ${pct(x.a.adj)}</b></div>`).join('')}</div>`
       : `<p class="sub">${G('Aucune joueuse', 'Aucun joueur')} ne change nettement de présence à ce créneau.</p>`}
-    <p class="note">Calculé sur les feuilles de match de l’${esc(D.team.label.replace(/^Équipe\b/, 'équipe'))} depuis 2023 (${nb(S.n_matchs || 0, 'match')} avec horaire) : pour chaque ${G('joueuse', 'joueur')}, sa présence à ce créneau comparée à sa présence habituelle, ramenée vers celle-ci quand le créneau compte peu de matchs. Seuls les écarts d’au moins 5 points sont listés.</p></section>`;
+    <p class="note">Calculé sur les feuilles de match de l’${esc(D.team.nom ? 'équipe ' + D.team.nom : D.team.label)} depuis 2023 (${nb(S.n_matchs || 0, 'match')} avec horaire) : pour chaque ${G('joueuse', 'joueur')}, sa présence à ce créneau comparée à sa présence habituelle, ramenée vers celle-ci quand le créneau compte peu de matchs. Seuls les écarts d’au moins 3 points sont listés.</p></section>`;
 }
 /* composition choisie sur la fiche du match : pronostic recalculé (sinon, prono de base) */
 const probaH = (mu, sg) => { const ph = 1 - PHI((0.5 - mu) / sg), pa = PHI((-0.5 - mu) / sg); return [ph, Math.max(0, 1 - ph - pa), pa]; };
@@ -1674,19 +1745,19 @@ function matchDyn(m0) {
   const effC = m.p_effectif == null ? null : isClub(m.away) ? Math.max(0, 1 - m.p_effectif - m.p[1]) : m.p_effectif;
   const head = `${m.live ? `<p class="cp-live"><span class="badge club">Composition modifiée</span> pronostic recalculé avec ${m.live[0]} ${G('joueuses', 'joueurs')} contre ${m.live[1]} · <button type="button" class="lnk" data-act="goto-compo">voir</button> · <button type="button" class="lnk" data-act="reset-compo">revenir au prono de base</button></p>` : ''}
     <p class="eyebrow mx-ref">${m.live ? 'Pronostic avec ta composition' : 'Pronostic de base'} · <b>${esc(name(ref))} ${pct(wC(m))}</b> de chances de victoire</p>
-    <div class="teams"><div class="t">${tlink(v.L)}<small>Domicile · ${ord(H.classement.place)} · forme</small>${formHtml(H.forme)}</div>
+    <div class="teams"><div class="t">${tlink(v.L)}<small>Domicile · ${ord(H.classement.place)} ·\u00a0forme</small>${formHtml(H.forme, v.L)}</div>
       <div class="sc-w"><div class="score prev">${scP(v.s[0], v.s[1])}</div><small>score probable</small></div>
-      <div class="t r">${tlink(v.R)}<small>Extérieur · ${ord(A.classement.place)} · forme</small><div style="display:flex;justify-content:flex-end">${formHtml(A.forme)}</div></div></div>
+      <div class="t r">${tlink(v.R)}<small>Extérieur · ${ord(A.classement.place)} ·\u00a0forme</small><div style="display:flex;justify-content:flex-end">${formHtml(A.forme, v.R)}</div></div></div>
     ${pbar(v.p, v.L, v.R, true, true)}
     <div class="kpis">
       <div class="kpi"><b>${sgn(cs * m.mu)}</b><span>écart attendu pour ${esc(name(ref))}${m.live ? ` (${sgn(cs * m0.mu)} au prono de base)` : ''}</span></div>
       <div class="kpi"><b>± ${f1(D.model.sigma)}</b><span>incertitude (buts)</span></div>
       <div class="kpi"><b>${sgn(D.model.home)}</b><span>avantage du terrain dans la poule</span></div>
       ${m.live ? `<div class="kpi"><b>${dV(Math.round((wC(m) - wC(m0)) * 100))}</b><span>victoire ${esc(name(ref))} par rapport au prono de base (${pct(wC(m0))})</span></div>`
-        : effC == null ? '' : `<div class="kpi"><b>${dV(Math.round((effC - wC(m)) * 100))}</b><span>victoire ${esc(name(ref))} avec les effectifs probables (${pct(effC)})</span></div>`}
+        : effC == null ? '' : `<div class="kpi"><b>${dV(Math.round((effC - wC(m)) * 100))}</b><span>victoire ${esc(name(ref))} en comptant les absences possibles (${pct(effC)})</span></div>`}
     </div>`;
   return {m, o, head,
-    msum: `<span class="mn">J${m.j || D.next_journee} · ${esc(name(v.L))} – ${esc(name(v.R))}</span><span class="ms">${scP(v.s[0], v.s[1])}</span><span class="mp ${wC(m) >= 0.5 ? 'fv' : 'ot'}">${pct(wC(m))}</span>`,
+    msum: `<span class="mn">J${m.j || D.next_journee} · ${esc(name(v.L))} – ${esc(name(v.R))}</span><span class="ms"><small class="msp">prévu</small> ${scP(v.s[0], v.s[1])}</span><span class="mp ${wC(m) >= 0.5 ? 'fv' : 'ot'}">${pct(wC(m))}</span>`,
     ana: analyse(m, o).map(([t, x]) => `<li><b>${t}.</b> ${x}</li>`).join(''),
     scen: scenarios(m, o), cles: ok(1) ? clesHtml(m, o, o.L) + clesHtml(m, o, o.R) : ''};
 }
@@ -1700,7 +1771,7 @@ function matchRefresh() {
 function compoZone(m) {
   const t = compoTeams(m), fut = futClub().filter(x => findMatch(x.rid));
   return `<section class="card stack cp-zone" data-keep><h2 id="cp-zone">Composer l’équipe pour ce match</h2>
-    <p class="sub">Cochez qui sera sur la feuille de match, chez ${esc(name(D.club))} comme en face : le score, la chance de victoire, l’analyse, les scénarios et ${G('les joueuses clés', 'les joueurs clés')} de cette page se recalculent aussitôt. Au départ, les 12 plus probables de chaque côté. La présence indiquée est celle d’habitude, sans l’effet de l’horaire (voir les effectifs probables plus bas).</p>
+    <p class="sub">Coche qui sera sur la feuille de match, chez ${esc(name(D.club))} comme en face : le score, la chance de victoire, l’analyse, les scénarios et ${G('les joueuses clés', 'les joueurs clés')} de cette page se recalculent aussitôt. Au départ, les 12 plus probables de chaque côté : c’est le pronostic de base. La présence indiquée est celle d’habitude, sans l’effet de l’horaire (voir les effectifs probables plus bas).</p>
     ${clubMatchSelect(m.rid)}
     <div class="cp-res" id="cp-res"></div></section>
   <section class="grid2 cp-grid">${compoListCard('m', t.me)}${compoListCard('o', t.opp)}</section>`;
@@ -1716,7 +1787,7 @@ function renfortBlock(m) {
     if (!rows.length) return '';
     const base = rows[0].r.base;
     return `<details class="rf-d"><summary>Descentes possibles de ${esc(lab)} <small>${up ? 'joue aussi ce week-end' : 'ne joue pas ce week-end'}</small></summary>
-      <p class="sub">${up ? `${esc(lab)} joue aussi ce week-end (${fdate(up.date)}${up.heure ? ' à ' + up.heure.replace(':', ' h ').replace(' h 00', ' h') : ''})` : `${esc(lab)} ne joue pas ce week-end`}. Depuis 2023, dans ce cas, ${G('une joueuse', 'un joueur')} de l’équipe du dessus vient renforcer ${pct(base)} du temps en moyenne ; chaque probabilité ci-dessous part de ce taux et suit son propre historique.</p>
+      <p class="sub">${up ? `${esc(lab)} joue aussi ce week-end (${fdate(up.date)}${up.heure ? ' à ' + hfr(up.heure) : ''})` : `${esc(lab)} ne joue pas ce week-end`}. Depuis 2023, dans ce cas, ${G('une joueuse', 'un joueur')} de l’équipe du dessus vient renforcer ${pct(base)} du temps en moyenne ; chaque probabilité ci-dessous part de ce taux et suit son propre historique.</p>
       <div class="pres">${rows.map(({p, r}) => `<div class="row" data-tip="${esc(p.nom)} · ${r.n ? `${r.on} match${r.on > 1 ? 's' : ''} sur ${r.n} avec l’équipe du dessous ${r.conflit ? 'quand l’équipe du dessus jouait le même week-end' : 'quand l’équipe du dessus ne jouait pas'}` : 'pas encore d’historique : taux moyen'}<br>en ${esc(lab)} : ${f1(p.bpm)} buts/match, présence ${pct(p.presence)}" tabindex="0">
         <span class="n">${esc(p.nom)} <span class="sub">${f1(p.bpm)} buts/m en ${esc(lab)}</span> ${brulBadge(D.club, Object.assign({}, p, {from: lab, sib: k}))}</span>
         <span class="meter low"><i style="width:${Math.round(r.p * 100)}%"></i></span>
@@ -1740,7 +1811,7 @@ function clubMatchSelect(cur, lab = 'Autre match') {
   if (past.length + fut.length < 2) return '';
   const res = x => { const home = isClub(x.home), a = home ? x.hs : x.as, b = home ? x.as : x.hs;
     if (x.forfait) return ((x.forfait === 'away') === home ? 'V' : 'D') + ' par forfait';
-    return (a > b ? 'V' : a < b ? 'D' : 'N') + ' ' + x.hs + '–' + x.as; };
+    return (a > b ? 'V' : a < b ? 'D' : 'N') + ' ' + x.hs + '\u2009–\u2009' + x.as; };
   const opt = (x, t) => `<option value="${x.rid}"${x.rid === cur ? ' selected' : ''}>${esc(t)}</option>`;
   return `<div class="filters"><label for="cp-match">${lab}</label><select id="cp-match">
     ${past.length ? `<optgroup label="Matchs joués">${past.map(x => opt(x, compoMatchLabel(x) + ' · ' + res(x))).join('')}</optgroup>` : ''}
@@ -1789,14 +1860,15 @@ function viewPlayed(e) {
     ana.push(`<li><b>${G('Les buteuses', 'Les buteurs')}.</b> ${top(sh.h)} pour ${esc(name(h))} ; ${top(sh.a)} pour ${esc(name(a))}.</li>`); }
   const det = sh && [...sh.h, ...sh.a].some(r => r.length > 3);
   const sheetCard = (rows, tid) => `<div class="card stack" data-keep><h2>${esc(name(tid))}</h2>
-    ${rows && rows.length ? `<div class="scroll"><table data-m="0,2r" data-c="0,2${det ? ',3,6' : ''}"><thead><tr><th>${G('Joueuse', 'Joueur')}</th><th>N°</th><th>Buts</th>${det ? '<th>Tirs</th><th data-s="Réussite">Réussite</th><th>7 m</th><th>Arrêts</th><th>2 min</th>' : ''}</tr></thead><tbody>
+    ${rows && rows.length ? `<div class="scroll"><table class="fdm" data-m="0,2r" data-c="0,2${det ? ',3,6' : ''}"><thead><tr><th>${G('Joueuse', 'Joueur')}</th><th>N°</th><th>Buts</th>${det ? '<th>Tirs</th><th data-s="Réussite">Réussite</th><th>7 m</th><th>Arrêts</th><th>2 min</th>' : ''}</tr></thead><tbody>
       ${rows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '')}</td><td><b>${e.hide ? '–' : r[2]}</b></td>${det ? (r.length > 3 ? `<td>${r[3] || '–'}</td><td>${r[3] ? pct(r[2] / r[3]) : '–'}</td><td>${r[4] || '–'}</td><td>${r[5] || '–'}</td><td>${r[6] || '–'}</td>` : '<td>–</td><td>–</td><td>–</td><td>–</td><td>–</td>') : ''}</tr>`).join('')}
       ${e.hide ? '' : (() => { const S = i => rows.reduce((a, r) => a + (+r[i] || 0), 0), b = S(2), t = S(3);
-        return `<tr class="tot"><td>Équipe</td><td></td><td><b>${b}</b></td>${det ? `<td>${t || '–'}</td><td>${t ? pct(b / t) : '–'}</td><td>${S(4) || '–'}</td><td>${S(5) || '–'}</td><td>${S(6) || '–'}</td>` : ''}</tr>`; })()}
+        return `<tr class="tot"><td>Équipe</td><td></td><td><b>${b}</b></td>${det ? `<td>${t || '–'}</td><td>${t ? pct(b / t) : '–'}</td><td>${S(4)}</td><td>${S(5)}</td><td>${S(6)}</td>` : ''}</tr>`; })()}
     </tbody></table></div>` : '<p class="sub">Feuille de match non disponible.</p>'}</div>`;
   const srow = (lab, k, f = v => v) => `<tr><td>${lab}</td><td>${f(st.h, k)}</td><td>${f(st.a, k)}</td></tr>`;
   return `<section class="stack" id="mx-past"><p class="eyebrow crumbs"><a href="#calendrier">Calendrier</a> › Journée ${e.j} · ${fdate(e.date)} · ${club ? `${esc(name(me))} ${home ? 'à domicile' : 'à l’extérieur'}` : 'match de la poule'} · match joué</p>
-    <h1>${esc(name(h))} – ${esc(name(a))}</h1></section>
+    <h1>${esc(name(h))}\u00a0– ${esc(name(a))}</h1></section>
+  <div class="subnav" role="navigation" aria-label="Sections du match">${[['mx-past', 'Résultat'], ['mx-j-ana', 'Analyse'], ['mx-j-film', 'Film'], ['mx-j-stats', 'Stats'], ['mx-j-fdm', 'Feuille de match']].map(([id, l], i) => `<button type="button" class="subn${i ? '' : ' on'}" data-goto="${id}">${l}</button>`).join('')}</div>
   <div class="msum" id="mx-msum" aria-hidden="true"><span class="mn">J${e.j} · ${esc(name(h))} – ${esc(name(a))}</span><span class="ms">${e.forfait ? 'forfait' : sc2(e.hs, e.as, '', clubRes(e))}</span></div>
   <section class="card stack mhead">
     <div class="teams"><div class="t">${tlink(h)}<small>Domicile</small></div><div class="score" aria-label="Score final ${e.hs} à ${e.as}">${e.forfait ? 'forfait' : sc2(e.hs, e.as, '', clubRes(e))}</div><div class="t r">${tlink(a)}<small>Extérieur</small></div></div>
@@ -1805,16 +1877,16 @@ function viewPlayed(e) {
   </section>
   ${(D.rematch || {})[e.rid] ? `<section class="card stack" data-keep><h2>La vidéo du match</h2>${rematchCards([e.rid])}</section>` : ''}
   ${pr ? `<section class="card stack" data-keep><h2>Le prono d’avant-match</h2>${pbar(pr.p, h, a, false, true)}
-    <p class="sub">Prono ${esc(name(me))} ${pct(home ? pr.p[0] : pr.p[2])}${ok === null ? '' : ok ? ' · ✓ juste' : ' · × raté'} · score prévu ${scP(pr.s[0], pr.s[1])}, score final ${sc2(e.hs, e.as, '', clubRes(e))}. Calculé avec les seuls résultats connus avant la journée ${e.j}.</p></section>` : ''}
-  ${ana.length ? `<section class="card stack" data-keep><h2>L’analyse du match</h2><ul class="ana">${ana.join('')}</ul></section>` : ''}
-  ${e.tl ? `<section class="card stack"><h2>Le film du match</h2><p class="sub">Écart au score minute par minute : au-dessus de la ligne, ${esc(name(h))} mène ; en dessous, ${esc(name(a))}. Pointillés : la mi-temps.</p>${tlChart(e)}</section>` : ''}
+    <p class="sub">Prono ${esc(name(pr.p[2] > pr.p[0] ? a : h))} ${pct(Math.max(pr.p[0], pr.p[2]))}${ok === null ? '' : ok ? ' · ✓ juste' : ' · × raté'} · score prévu ${scP(pr.s[0], pr.s[1])}, score final ${sc2(e.hs, e.as, '', clubRes(e))}. Calculé avec les seuls résultats connus avant la journée ${e.j}.</p></section>` : ''}
+  ${ana.length ? `<section class="card stack" data-keep><h2 id="mx-j-ana">L’analyse du match</h2><ul class="ana">${ana.join('')}</ul></section>` : ''}
+  ${e.tl ? `<section class="card stack"><h2 id="mx-j-film">Le film du match</h2><p class="sub">Écart au score minute par minute : au-dessus de la ligne, ${esc(name(h))} mène ; en dessous, ${esc(name(a))}. Pointillés : la mi-temps.</p>${tlChart(e)}</section>` : ''}
   ${st ? (() => { const R = [['Buts', x => x.buts, true], ['Tirs', x => x.tirs || null, true], ['Réussite au tir', x => x.tirs ? x.buts / x.tirs : null, true, pct], ['Buts sur jet de 7 m', x => x.b7, true],
       ['Arrêts', x => x.arr, true], ['Avertissements', x => x.av, false], ['Exclusions de 2 minutes', x => x.d2, false], ['Disqualifications', x => x.dis, false]];
-    return `<section class="card stack" data-keep><h2>Les stats du match</h2><div class="vs"><div class="vh"><span>${esc(name(h))}</span><span></span><span>${esc(name(a))}</span></div>
+    return `<section class="card stack" data-keep><h2 id="mx-j-stats">Les stats du match</h2><div class="vs"><div class="vh"><span>${esc(name(h))}</span><span></span><span>${esc(name(a))}</span></div>
     ${R.map(([lab, f, hi, fmt]) => { const x = f(st.h), y = f(st.a), F = fmt || (v => v), ca = x != null && y != null && x !== y && (hi ? x > y : x < y), cb = x != null && y != null && x !== y && !ca;
       return `<div class="vr"><b class="${ca ? 'best' : ''}">${x == null ? '–' : F(x)}</b><span>${lab}</span><b class="${cb ? 'best' : ''}">${y == null ? '–' : F(y)}</b></div>`; }).join('')}</div>
     <p class="note">En clair, l’équipe qui a l’avantage sur la ligne. D’après la feuille de match PDF de la FFHB.</p></section>`; })() : ''}
-  <section class="stack"><h2>La feuille de match</h2>${e.hide ? `<p class="sub">Buts masqués sur les feuilles de cette compétition.</p>` : ''}</section>
+  <section class="stack"><h2 id="mx-j-fdm">La feuille de match</h2>${e.hide ? `<p class="sub">Buts masqués sur les feuilles de cette compétition.</p>` : ''}</section>
   <section class="grid2">${sheetCard(sh && sh.h, h)}${sheetCard(sh && sh.a, a)}</section>`;
 }
 function viewMatch(rid) {
@@ -1826,21 +1898,21 @@ function viewMatch(rid) {
   const labels = D.journees_jouees.map(j => 'J' + j);
   const sub = [['mx-top', 'Pronostic'], ['mx-ana-h', 'Analyse'], ...(club ? [['cp-zone', 'Composer l’équipe']] : []), ['mx-eff-h', 'Effectifs'], ...(ok(1) ? [['mx-reg-h', 'Régularité'], ['mx-scen-h', 'Scénarios'], ['mx-cles-h', G('Joueuses clés', 'Joueurs clés')]] : [['mx-scen-h', 'Scénarios']])];
   return `<section class="stack" id="mx-top"><p class="eyebrow crumbs"><a href="#calendrier">Calendrier</a> › Journée ${m.j || D.next_journee} · ${m.estimee ? 'date de journée, horaire à venir : ' : ''}${fdate(m.date)}${m.heure ? ' à ' + hfr(m.heure) : ''}${club ? ` · ${esc(name(D.club))} ${isClub(m.home) ? 'à domicile' : 'à l’extérieur'}` : ''}</p>
-    <h1>${esc(name(m.home))} – ${esc(name(m.away))}</h1>
+    <h1>${esc(name(m.home))}\u00a0– ${esc(name(m.away))}</h1>
 </section>
   <div class="subnav" role="navigation" aria-label="Sections du match">${sub.map(([id, l], i) => `<button type="button" class="subn${i === 0 ? ' on' : ''}" data-goto="${id}">${l}</button>`).join('')}</div>
   <div class="msum" id="mx-msum" aria-hidden="true">${X.msum}</div>
   <section class="card stack mhead"><div class="stack" id="mx-head" data-rid="${m0.rid}">${X.head}</div></section>
   <section class="card stack" data-keep><h2 id="mx-ana-h">L’analyse du match</h2>
     <ul class="ana" id="mx-ana">${X.ana}</ul></section>
-  ${club ? (ok(2) ? compoZone(m0) : lockCard(2, 'Composer l’équipe pour ce match', `Coche qui sera sur la feuille de match des deux équipes : score, chance de victoire et analyse se recalculent.`, 'cp-zone')) : ''}
+  ${club ? (ok(2) ? compoZone(m0) : lockCard(2, 'Composer l’équipe pour ce match', `Coche qui sera sur la feuille de match des deux équipes\u00a0: score, chance de victoire et analyse se recalculent.`, 'cp-zone')) : ''}
   ${ok(1) ? effCard(m0, o) : ''}
   ${regulBlock(o)}
-  <section class="grid2">
+  <section class="grid2 al-s">
     <div class="card stack"><h2 id="mx-scen-h">Les scénarios</h2><p class="sub">Probabilité de chaque écart final.</p><div id="mx-scen">${X.scen}</div></div>
     <div class="card stack"><h2 id="mx-vs-h">Face-à-face en chiffres</h2>${versus(m, o)}</div>
   </section>
-  <section class="grid2">
+  <section class="grid2 al-s">
     <div class="card stack"><h2 id="mx-niv-h">Niveau journée après journée</h2><p class="sub">Écart de buts attendu face à une équipe moyenne de la poule.</p>${lineChart2(H.hist, A.hist, labels, name(o.L), name(o.R))}</div>
     <div class="card stack"><h2>Adversaires communs</h2><p class="sub">Les résultats des deux équipes contre les mêmes adversaires cette saison.</p>${communs(o)}</div>
   </section>
@@ -1866,9 +1938,10 @@ function hxAdj(p, slot, lieu, tb, R, K = SLOT_K) {
   const fs = slot && r[slot] ? sh(r[slot], base) / base : 1;          // créneau
   const pl = r[lieu] ? sh(r[lieu], base) : base;                        // domicile / extérieur
   const pt = lieu === 'ext' && tb && r[tb] ? sh(r[tb], pl) : pl;        // trajet (matchs à l'extérieur)
-  let adj = Math.max(0.02, Math.min(0.99, p.presence * fs * pt / base));
-  const nS = ((slot && r[slot]) || [0, 0])[1] + ((r[lieu]) || [0, 0])[1], peu = nS < 4;
-  if (peu) adj = Math.max(p.presence - 0.2, Math.min(p.presence + 0.2, adj));     // peu de données : écart limité à 20 points
+  const ratio = Math.max(0.67, Math.min(1.5, fs * pt / base));                  // jamais plus de × 1,5 ni moins de × 0,67
+  let adj = Math.max(0.02, Math.min(0.99, p.presence * ratio));
+  const ns = [slot && r[slot] ? r[slot][1] : 99, r[lieu] ? r[lieu][1] : 99, lieu === 'ext' && tb && r[tb] ? r[tb][1] : 99], peu = Math.min(...ns) < 3;
+  if (peu) adj = Math.max(p.presence - 0.15, Math.min(p.presence + 0.15, adj));   // peu de matchs comparables : écart limité à 15 points
   return {adj, peu, slot: slot ? r[slot] : null, lieu: r[lieu], tr: tb ? r[tb] : null};
 }
 function hxSide(rows, pl) {          // effet en buts d'écart d'une équipe (buts + meilleure gardienne présente)
@@ -1908,28 +1981,28 @@ function hxBestHtml(m) {
   const R = hxBest(m), b = R[0], on = r => HX[m.rid] && HX[m.rid].date === r.d && HX[m.rid].heure === r.h;
   const hi = Math.max(...R.map(r => r.X.dpt)), lo = Math.min(...R.map(r => r.X.dpt));
   if (hi - lo <= 1) return `<h3 class="hx-l">Heure optimale pour jouer ce match</h3>
-    <p class="sub">L’horaire ne change presque rien : ${hi === lo ? dV(hi) : `entre ${dV(lo)} et ${dV(hi)}`} sur la victoire de ${esc(name(D.club))} selon le créneau du week-end.</p>`;
+    <p class="sub">L’horaire ne change presque rien : ${hi === lo ? dV(hi) : `entre ${dV(lo)} et ${dV(hi)}`} sur la victoire ${esc(DE(name(D.club)))} selon le créneau du week-end.</p>`;
   const btn = r => `<button type="button" class="cp-b hx-try" data-hxtry="${r.d}|${r.h}"${on(r) ? ' disabled' : ''}>${on(r) ? 'Affiché' : 'Essayer'}</button>`;
   return `<h3 class="hx-l">Heure optimale pour jouer ce match</h3>
-    <div class="hx-opt"><div><b>${SLOT_LAB[b.sl]}</b><span>${fdate(b.d)} vers ${hfr(b.h)} · victoire de ${esc(name(D.club))} <b>${pct(b.X.w1)}</b> (${dV(b.X.dpt)} par rapport au prono de base : ${dV(b.X.dptM)} par nos présences, ${dV(b.X.dptO)} par les absences en face)</span></div>
+    <div class="hx-opt"><div><b>${SLOT_LAB[b.sl]}</b><span>${fdate(b.d)} vers ${hfr(b.h)} · victoire ${esc(DE(name(D.club)))} <b>${pct(b.X.w1)}</b> (${dV(b.X.dpt)} par rapport au prono de base : ${dV(b.X.dptM)} par nos présences, ${dV(b.X.dptO)} par les présences en face)</span></div>
       ${btn(b)}</div>
     <div class="res-list hx-slots">${R.slice(1).map(r => `<div><span>${SLOT_LAB[r.sl]} <span class="sub">${fdate(r.d)} vers ${hfr(r.h)}</span></span><span class="hx-sr"><b>${pct(r.X.w1)}</b> <span class="sub">${dV(r.X.dpt)}</span> ${btn(r)}</span></div>`).join('')}</div>
     <p class="note">Chaque créneau du week-end est essayé avec la présence ${G('des joueuses', 'des joueurs')} des deux équipes à ce créneau (lieu et trajet du match inchangés) ; écarts par rapport au prono de base.</p>`;
 }
 function hxTable(X, side) {
   const me = side === 'm', rows = me ? X.rows : X.rowsO, tid = me ? D.club : X.oid, lieu = me ? X.lieu : X.lieuO;
-  const all = rows.filter(x => x.a && x.p.mj).sort((a, b) => (a.a.adj - a.p.presence) - (b.a.adj - b.p.presence) || b.p.presence - a.p.presence);
-  const title = `<h3 class="hx-l">Présence ${G('des joueuses', 'des joueurs')} de ${esc(name(tid))} avec cet horaire${me ? ' et ce trajet' : ''}</h3>`;
+  const all = rows.filter(x => x.a && x.p.mj).sort((a, b) => Math.abs(b.a.adj - b.p.presence) - Math.abs(a.a.adj - a.p.presence) || b.p.presence - a.p.presence);   // plus gros écarts d'abord
+  const title = `<h3 class="hx-n">${esc(name(tid))}</h3><h4 class="hx-l">Présence avec cet horaire${me ? ' et ce trajet' : ''}</h4>`;
   if (!all.length) return title + `<p class="sub">Pas assez de feuilles de match${me ? ' avec horaire' : ' cette saison'} pour calculer l’effet sur la présence.</p>`;
   const det = a => [a.slot ? `${a.slot[0]} ${a.slot[0] > 1 ? 'feuilles' : 'feuille'} sur ${a.slot[1]} à ce créneau` : '',
     me && a.tr ? `${a.tr[0]} sur ${nb(a.tr[1], 'match')} ${TR_LAB[X.tb]}` : a.lieu ? `${a.lieu[0]} sur ${a.lieu[1]} ${lieu === 'dom' ? 'à domicile' : 'à l’extérieur'}` : ''].filter(Boolean).join(' · ');
-  const n5 = all.filter(x => Math.abs(x.a.adj - x.p.presence) >= 0.05).length;
-  const big = all.filter(x => Math.abs(x.a.adj - x.p.presence) >= 0.03), rest = all.filter(x => Math.abs(x.a.adj - x.p.presence) < 0.03);
-  const tab = l => `<div class="scroll"><table class="hx-tab" data-m="0,3r" data-c="0,1,2,3"><thead><tr><th class="l">${G('Joueuse', 'Joueur')}</th><th data-s="Hab.">D’habitude</th><th data-s="Horaire">Avec l’horaire</th><th data-s="Écart">Écart (points)</th><th class="l">Pourquoi</th></tr></thead><tbody>
-    ${l.map(x => { const d = x.a.adj - x.p.presence, bg = Math.abs(d) >= 0.05;
-      return `<tr class="${bg ? 'hx-big' : 'sub'}"><td class="l">${esc(x.p.nom)}</td><td>${pct(x.p.presence)}</td><td><b>${pct(x.a.adj)}</b></td><td><b>${Math.round(d * 100) === 0 ? '±0' : (d > 0 ? '+' : '−') + Math.abs(Math.round(d * 100))}</b>${bg ? (d > 0 ? ' ↗' : ' ↘') : ''}</td><td class="l sub">${det(x.a) || '–'}${me ? '' : ' (cette saison)'}${x.a.peu ? ' · peu de données' : ''}</td></tr>`; }).join('')}
+  const R3 = x => Math.abs(Math.round((x.a.adj - x.p.presence) * 100)) >= 3, n5 = all.filter(R3).length;   // un seul seuil : 3 points (valeur affichée)
+  const big = all.filter(R3), rest = all.filter(x => !R3(x));
+  const tab = l => `<div class="scroll"><table class="hx-tab" data-m="0,3r" data-c="0,1,2,3"><thead><tr><th class="l">${G('Joueuse', 'Joueur')}</th><th data-s="Hab.">D’habitude</th><th data-s="Horaire">Avec l’horaire</th><th data-s="Écart">Écart</th></tr></thead><tbody>
+    ${l.map(x => { const d = x.a.adj - x.p.presence, bg = Math.abs(Math.round(d * 100)) >= 3;
+      return `<tr class="${bg ? 'hx-big' : 'sub'}"><td class="l" data-tip="${esc(x.p.nom)} : ${esc(det(x.a) || 'pas de détail')}${me ? '' : ' (cette saison)'}" tabindex="0">${esc(x.p.nom)}${x.a.peu ? '<span class="hx-peu" title="Peu de matchs comparables : écart limité"> *</span>' : ''}</td><td>${pct(x.p.presence)}</td><td><b>${pct(x.a.adj)}</b></td><td><b>${Math.round(d * 100) === 0 ? '±0' : (d > 0 ? '+' : '−') + Math.abs(Math.round(d * 100))}</b>${bg ? (d > 0 ? ' ↗' : ' ↘') : ''}</td></tr>`; }).join('')}
     </tbody></table></div>`;
-  return title + `<p class="sub">${n5 ? `${nb(n5, G('joueuse change', 'joueur change'), G('joueuses changent', 'joueurs changent'))} d’au moins 5 points` : `${G('Aucune joueuse', 'Aucun joueur')} ne change d’au moins 5 points`} par rapport à d’habitude.${me ? '' : ` Feuilles de cette saison seulement : écarts ramenés vers la présence habituelle.${X.trO ? ` ${fmin(X.trO.min)} de route jusqu’à notre salle (non compté : pas d’historique de leurs déplacements).` : ''}`}</p>
+  return title + `<p class="sub">${n5 ? `${nb(n5, G('joueuse change', 'joueur change'), G('joueuses changent', 'joueurs changent'))} d’au moins 3 points` : `${G('Aucune joueuse', 'Aucun joueur')} ne change d’au moins 3 points`} par rapport à d’habitude.${me ? '' : ` Feuilles de cette saison seulement : écarts ramenés vers la présence habituelle.${X.trO ? ` ${fmin(X.trO.min)} de route jusqu’à notre salle (non compté : pas d’historique de leurs déplacements).` : ''}`}</p>
     ${big.length ? tab(big) : ''}
     ${rest.length ? `<details class="hx-more"><summary>Voir ${big.length ? (rest.length > 1 ? `les ${rest.length} autres` : 'l’autre') : `les ${nb(rest.length, G('joueuse', 'joueur'))}`} (moins de 3 points d’écart)</summary>${tab(rest)}</details>` : ''}`;
 }
@@ -1937,18 +2010,18 @@ function hxRes(m, X) {
   const S = X.S, avg = c => c && c[1] ? f1(c[0] / c[1]) : '–';
   const tot = Object.values(S.team || {}).reduce((a, v) => [a[0] + v[0], a[1] + v[1]], [0, 0]);
   const T = X.slot ? (S.team || {})[X.slot] : null, L = (S.lieu || {})[X.home ? 'dom' : (X.tb && (S.lieu || {})[X.tb] ? X.tb : 'ext')];
-  const lieuTxt = X.home ? 'À domicile' : X.tr ? `À l’extérieur · ${esc(titleCase(X.tr.salle || 'salle'))}${X.tr.ville ? ', ' + esc(titleCase(X.tr.ville)) : ''}${X.tr.estimee ? ' (salle habituelle du club qui reçoit : celle du match n’est pas encore publiée)' : ''} · <b>${fmin(X.tr.min)}</b> de route (${f1(X.tr.km).replace(',0', '')} km${X.tr.src === 'estime' ? ', estimé' : ''})` : 'À l’extérieur · salle pas encore connue : trajet non compté';
+  const lieuTxt = X.home ? 'À domicile' : X.tr ? `À l’extérieur · ${esc(placeAff(X.tr.salle || 'salle'))}${X.tr.ville ? ', ' + esc(placeAff(X.tr.ville)) : ''}${X.tr.estimee ? ' (salle habituelle du club qui reçoit : celle du match n’est pas encore publiée)' : ''} · <b>${fmin(X.tr.min)}</b> de route (${f1(X.tr.km).replace(',0', '')} km${X.tr.src === 'estime' ? ', estimé' : ''})` : 'À l’extérieur · salle pas encore connue : trajet non compté';
   const ch = X.rows.filter(x => x.a && Math.abs(x.a.adj - x.p.presence) >= 0.05).sort((a, b) => (a.a.adj - a.p.presence) - (b.a.adj - b.p.presence));
   const det = a => [a.slot ? `${a.slot[0]} ${a.slot[0] > 1 ? 'feuilles' : 'feuille'} sur ${a.slot[1]} à ce créneau` : '', a.tr ? `${a.tr[0]} sur ${nb(a.tr[1], 'match')} ${TR_LAB[X.tb]}` : a.lieu ? `${a.lieu[0]} sur ${a.lieu[1]} ${X.home ? 'à domicile' : 'à l’extérieur'}` : ''].filter(Boolean).join(' · ');
-  return `<p class="sub">${X.slot ? `${fdate(X.h.date)} à ${X.h.heure.replace(':', ' h ').replace(' h 00', ' h')} · créneau « ${SLOT_LAB[X.slot]} »` : `${fdate(X.h.date)} · heure à choisir pour compter le créneau`} · ${lieuTxt}</p>
-    ${hxTable(X, 'm')}
-    ${hxTable(X, 'o')}
+  return `<p class="sub">${X.slot ? `${fdate(X.h.date)} à ${hfr(X.h.heure)} · créneau « ${SLOT_LAB[X.slot]} »` : `${fdate(X.h.date)} · heure à choisir pour compter le créneau`} · ${lieuTxt}</p>
+    <div class="grid2 hx-face"><div class="stack hx-t">${hxTable(X, 'm')}</div><div class="stack hx-t">${hxTable(X, 'o')}</div></div>
+    <p class="note">Écart en points de présence par rapport à d’habitude. Passer sur un nom (ou le toucher) pour le détail : feuilles à ce créneau, à domicile ou à l’extérieur, selon le trajet. * peu de matchs comparables : écart limité à 15 points.</p>
     ${hxBestHtml(m)}
     <h3 class="hx-l">L’équipe</h3>
     <div class="kpis">
       ${X.slot ? `<div class="kpi"><b>${avg(T)}</b><span>${G('joueuses', 'joueurs')} en moyenne sur la feuille à ce créneau (${avg(tot)} d’habitude${T ? ', ' + nb(T[1], 'match') : ''})</span></div>` : ''}
       <div class="kpi"><b>${avg(L)}</b><span>${G('joueuses', 'joueurs')} en moyenne ${X.home ? 'à domicile' : X.tb && (S.lieu || {})[X.tb] ? TR_LAB[X.tb] : 'à l’extérieur'} (${avg(tot)} d’habitude)</span></div>
-      <div class="kpi"><b>${dV(X.dpt)}</b><span>effet de l’horaire et du trajet sur la victoire de ${esc(name(D.club))} (${pct(X.w0)} → ${pct(X.w1)}) : ${dV(X.dptM)} par nos présences, ${dV(X.dptO)} par celles d’en face</span></div>
+      <div class="kpi"><b>${dV(X.dpt)}</b><span>effet de l’horaire et du trajet sur la victoire ${esc(DE(name(D.club)))} (${pct(X.w0)} → ${pct(X.w1)}) : ${dV(X.dptM)} par nos présences, ${dV(X.dptO)} par celles d’en face</span></div>
     </div>
 `;
 }
@@ -1965,16 +2038,17 @@ function effCard(m0, o) {
   const vip = club && ok(3) && !!S.players, X = vip ? hxCalc(m0) : null, h = X && X.h;
   const lockV = club && !ok(3) && !!S.players ? `<p class="lock-l">${LOCK}<span>Horaire, trajet et heure optimale du match : réservé aux comptes VIP.${CPT && CPT.profil ? '' : ' <a href="#compte">Se connecter</a>'}</span></p>` : '';
   return `<section class="card stack hx" data-keep id="mx-eff"><h2 id="mx-eff-h">${vip ? 'Effectifs probables, horaire et trajet' : 'Les effectifs probables'}</h2>${lockV}
-    ${vip ? `<p class="sub">Change la date ou l’heure pour voir l’effet sur la présence ${G('des joueuses', 'des joueurs')} des deux équipes et sur la victoire de ${esc(name(D.club))}. Le lieu du match et le temps de trajet sont comptés.</p>
+    ${vip ? `<p class="sub">Change la date ou l’heure pour voir l’effet sur la présence ${G('des joueuses', 'des joueurs')} des deux équipes et sur la victoire ${esc(DE(name(D.club)))}. Le lieu du match et le temps de trajet sont comptés.</p>
     <div class="hx-ctl" data-rid="${esc(m0.rid)}"><label>Date<input type="date" id="hx-date" lang="fr" value="${esc(h.date)}"></label>
       <label>Heure<input type="time" id="hx-heure" lang="fr" value="${esc(h.heure)}" step="900"></label>
       <button type="button" class="more hx-reset" data-hx="reset"${HX[m0.rid] ? '' : ' hidden'}>Horaire officiel</button></div>
     <div id="hx-res" aria-live="polite">${hxRes(m0, X)}</div>` : ''}
+    ${vip ? `<p class="note">Calculé sur les feuilles de match de l’${esc(D.team.nom ? 'équipe ' + D.team.nom : D.team.label)} depuis 2023 (${nb(S.n_matchs || 0, 'match')} avec horaire) : pour chaque ${G('joueuse', 'joueur')}, sa présence à ce créneau, ${G('à domicile ou à l’extérieur', 'à domicile ou à l’extérieur')} et selon la durée du trajet, comparée à sa présence habituelle, ramenée vers celle-ci quand il y a peu de matchs. Trajet en voiture depuis la salle habituelle du club ; si la salle d’un match n’est pas publiée, celle où le club qui reçoit joue le plus souvent. Les écarts d’au moins 3 points sont en clair dans le tableau.</p>` : ''}
     ${vip ? (() => { const rf = ok(2) ? [o.L, o.R].map(tid => isClub(tid) ? renfortBlock(m0) : renfortBlockOpp(m0, tid)).filter(Boolean) : [];
       return (rf.length ? `<h3 class="hx-l">Renforts possibles</h3><div class="grid2 hx-teams">${rf.map(x => `<div class="stack hx-t">${x}</div>`).join('')}</div>` : '')
         + `<div class="grid2 hx-teams">${[m0.home, m0.away].map(tid => `<div class="stack hx-t"><h3 class="hx-n">${esc(name(tid))}</h3><h4 class="hx-l">Derniers résultats</h4>${resList(TEAMS[tid].forme, tid)}<a class="more" href="#equipe-${tid}">Fiche de l’équipe</a></div>`).join('')}</div>`; })()
       : `<div class="grid2 hx-teams" id="hx-teams">${hxTeams(m0, o, X)}</div>`}
-    ${vip ? `<p class="note">Calculé sur les feuilles de match de l’${esc(D.team.label.replace(/^Équipe\b/, 'équipe'))} depuis 2023 (${nb(S.n_matchs || 0, 'match')} avec horaire) : pour chaque ${G('joueuse', 'joueur')}, sa présence à ce créneau, ${G('à domicile ou à l’extérieur', 'à domicile ou à l’extérieur')} et selon la durée du trajet, comparée à sa présence habituelle, ramenée vers celle-ci quand il y a peu de matchs. Trajet en voiture depuis la salle habituelle du club ; si la salle d’un match n’est pas publiée, celle où le club qui reçoit joue le plus souvent. Les écarts d’au moins 5 points sont en clair dans le tableau.</p>` : ''}
+
   </section>`;
 }
 function hxPaint() {
@@ -2023,7 +2097,7 @@ function viewTeam(tid) {
   const labels = D.journees_jouees.map(j => 'J' + j);
   const pl = T.players;
   const m = T.mercato;
-  return `<section class="stack"><p class="eyebrow">${ord(c.place)} · ${c.pts} pts · ${c.g}V ${c.n}N ${c.p}D${T.penalite ? ` · ${nb(T.penalite, 'point retiré', 'points retirés')} au classement` : ''}</p>
+  return `<section class="stack"><p class="eyebrow"><span class="nc">${ord(c.place)}</span> · ${c.pts} pts · ${c.g}-${c.n}-${c.p}${T.penalite ? ` · ${nb(T.penalite, 'point retiré', 'points retirés')} au classement` : ''}</p>
     <h1>${esc(name(tid))}</h1>
     <div class="kpis">
       <div class="kpi"><b>${sgn(T.rating)}</b><span>niveau estimé (buts / équipe moyenne)</span></div>
@@ -2037,7 +2111,7 @@ function viewTeam(tid) {
   </section>
   ${!ok(1) ? lockCard(1, G('Les joueuses', 'Les joueurs')) : `<section class="card stack" data-keep><h2>${G('Les joueuses', 'Les joueurs')}</h2>
     ${T.hidden ? '<p class="note">Buts masqués sur les feuilles de cette compétition.</p>' : ''}
-    <div class="scroll"><table data-m="0,3r" data-c="0,1,2,3" data-cd="0,1,2,3,4,10" data-nm="0"><thead><tr><th>${G('Joueuse', 'Joueur')}</th><th>MJ</th><th>Buts</th><th data-s="B/m">Buts/m</th><th>3 derniers</th><th>Dom</th><th>Ext</th><th>Part</th><th>Arrêts</th><th>2025-26</th><th>Présence</th></tr></thead><tbody>
+    <div class="scroll"><table data-m="0,3r" data-c="0,1,2,3" data-cd="0,1,2,3,4,10" data-nm="0"><thead><tr><th>${G('Joueuse', 'Joueur')}</th><th>MJ</th><th>Buts</th><th data-s="Buts/m">Buts/m</th><th>3 derniers</th><th>Dom</th><th>Ext</th><th>Part</th><th>Arrêts</th><th>2025-26</th><th>Présence</th></tr></thead><tbody>
     ${pl.map(p => `<tr><td>${esc(p.nom)}${p.recrue ? ' <span class="badge">recrue</span>' : ''}${coachLinks(p.nom, p)}</td><td>${p.mj}</td><td>${p.buts}</td><td><b>${f1(p.bpm)}</b></td><td>${p.last3.join('·') || '–'}</td><td>${f1(p.dom)}</td><td>${f1(p.ext)}</td><td>${pct(p.part)}</td><td>${p.arrets || '–'}</td><td>${p.n1 == null ? '–' : f1(p.n1) + ' buts/m'}</td><td>${pct(p.presence)}</td></tr>`).join('')}
     </tbody></table></div>
     <p class="note">MJ = matchs joués dans cette poule. Présence = probabilité d’être sur la feuille du prochain match. 2025-26 (dans le détail de chaque ligne) = buts par match la saison dernière, toutes équipes du club.</p></section>`}
@@ -2047,7 +2121,7 @@ function viewTeam(tid) {
   </section>
   <section class="grid2">
     <div class="card stack"><h2>Domicile / extérieur</h2>${recTable(T.rec)}</div>
-    <div class="card stack"><h2>Forme</h2>${formHtml(T.forme)}${resList(T.forme, tid)}
+    <div class="card stack"><h2>Forme <span class="sub">· du plus récent au plus ancien</span></h2>${formHtml(T.forme, tid)}${resList(T.forme, tid)}
       <h3>Prochains matchs</h3><div class="res-list">${T.prochains.map(x => `<div><span>J${x.j} · ${fdate(x.date)}${x.estimee ? ' (date de journée)' : ''}</span><span>${x.home === tid ? 'dom. ' + esc(name(x.away)) : 'ext. ' + esc(name(x.home))}</span></div>`).join('') || '<div class="sub">Saison terminée</div>'}</div></div>
   </section>
   <section class="card stack"><h2>D’où vient-elle ? ${T.parcours.length + 1} saisons de parcours</h2>
@@ -2066,16 +2140,16 @@ function viewTeam(tid) {
       : '<p class="sub">Saison 2025-26 introuvable pour ce club : mercato non calculable.</p>'}
   </section>
   ${!ok(1) ? lockCard(1, 'Les vidéos Rematch') : (() => { const rids = (D.results || []).filter(r => r.home === tid || r.away === tid).sort((a, b) => b.date.localeCompare(a.date)).map(r => r.rid), rc = rematchCards(rids);
-    return `<section class="card stack" data-keep><h2>Les vidéos Rematch</h2>${rc || `<p class="sub">Aucune vidéo Rematch publiée pour les matchs de ${esc(name(tid))} cette saison.</p>`}
-      <p class="note">Vidéos des matchs de la poule publiées sur Rematch et reliées aux matchs sur le site de la FFHB. Cliquer sur une vignette lance la vidéo ici.</p></section>`; })()}`;
+    return `<section class="card stack" data-keep><h2>Les vidéos Rematch</h2>${rc || `<p class="sub">Aucune vidéo Rematch publiée pour les matchs ${esc(DE(name(tid)))} cette saison.</p>`}
+      ${rc ? `<p class="note">Vidéos des matchs de la poule publiées sur Rematch et reliées aux matchs sur le site de la FFHB. ${MQ.matches ? 'Toucher' : 'Cliquer sur'} une vignette lance la vidéo ici.</p>` : ''}</section>`; })()}`;
 }
 function viewClassement() {
   const rows = Object.values(TEAMS).sort((a, b) => a.classement.place - b.classement.place);
   const maxR = Math.max(...rows.map(t => Math.abs(t.rating)));
   return `<section class="stack"><p class="eyebrow">${esc(compAff(D.competition))} · ${esc(D.poule)} · après J${Math.max(...D.journees_jouees)}</p>
     <h1>Classement et projection</h1>
-    <p class="lead">Le classement officiel à gauche, ce que disent les résultats à droite : niveau estimé et chances en fin de saison, sur ${D.n_journees} journées.</p></section>
-  <section class="card"><div class="scroll"><table data-m="0,1,2r" data-c="0,1,3,5,2"><thead><tr><th></th><th class="l">Équipe</th><th>Pts</th><th>J</th><th>V-N-D</th><th data-s="+/−">Diff</th><th class="l" data-s="Niveau">Niveau estimé</th><th data-s="1re">1re place</th><th>Podium</th><th>Dernière</th><th data-s="Projection">Pts projetés</th></tr></thead><tbody>
+    <p class="lead"><span class="desk-only">Le classement officiel à gauche, ce que disent les résultats à droite : niveau estimé et chances en fin de saison, sur ${D.n_journees} journées.</span><span class="mob-only">Le classement officiel ; toucher une équipe pour son niveau estimé et ses chances en fin de saison (${D.n_journees} journées).</span></p></section>
+  <section class="card"><div class="scroll"><table data-m="0,1,2r" data-c="0,1,3,5,2"><thead><tr><th></th><th class="l">Équipe</th><th>Pts</th><th>J</th><th>V-N-D</th><th data-s="+/−">Diff</th><th class="l" data-s="Niveau">Niveau estimé</th><th data-s="1re"><span class="nc">1re</span> place</th><th>Podium</th><th>Dernière</th><th data-s="Projection">Pts projetés</th></tr></thead><tbody>
   ${rows.map(t => { const c = t.classement, w = Math.round(Math.abs(t.rating) / maxR * 60);
     return `<tr class="${isClub(t.id) ? 'me' : ''}"><td>${c.place}</td><td class="l">${tlink(t.id)}${t.penalite ? ` <span class="badge" title="Points retirés">−${t.penalite} pt${t.penalite > 1 ? 's' : ''}</span>` : ''}</td><td><b>${c.pts}</b></td><td>${c.j}</td><td>${c.g}-${c.n}-${c.p}</td><td>${sgn(c.bp - c.bc).replace(',0', '')}</td>
     <td class="l"><span class="nbar" style="display:inline-flex;align-items:center;gap:8px;width:120px"><span style="width:60px;display:flex;justify-content:flex-end">${t.rating < 0 ? `<span class="bar" style="width:${w}px;background:var(--muted);border-radius:4px 0 0 4px"></span>` : ''}</span><span style="width:60px">${t.rating >= 0 ? `<span class="bar" style="width:${w}px"></span>` : ''}</span></span> ${sgn(t.rating)}</td>
@@ -2103,21 +2177,21 @@ function viewStats() {
   const fdc = (p, i) => p.fd ? (p.fd[i] || '–') : '–';
   const cols = ['Rang', G('Joueuse', 'Joueur'), ...(all ? ['Équipe'] : []), 'MJ', 'Buts', 'B/m', 'Max', '3 derniers', 'Dom', 'Ext', 'Part', 'Arrêts', 'Arr./m', 'Tirs', 'Réussite', '7 m', '2 min', 'Avert.', 'Présence'];
   const SC = {buts: 'Buts', bpm: 'B/m', mj: 'MJ', max: 'Max', part: 'Part', arrets: 'Arrêts', tir: 'Réussite', b7: '7 m', d2: '2 min', pres: 'Présence'}, sIdx = cols.indexOf(SC[stSort]), bIdx = cols.indexOf('Buts');
-  const cKeep = all ? [0, 1, sIdx] : [0, 1, sIdx === bIdx ? cols.indexOf('B/m') : bIdx, sIdx].filter((x, i, a) => a.indexOf(x) === i);
+  const cKeep = (all ? [0, 1, sIdx] : [0, 1, sIdx === bIdx ? cols.indexOf('B/m') : bIdx, sIdx].filter((x, i, a) => a.indexOf(x) === i)).sort((a, b) => a - b);
   const tr = rows.map(p => `<tr class="${all && isClub(p.tid) ? 'me' : ''}" title="${p._rk}${p._rk === 1 ? 're' : 'e'} place : ${esc(SL[stSort].toLowerCase())}"><td><span class="rkv">${p._rk}</span></td><td>${esc(p.nom)}${p.recrue ? ' <span class="badge">recrue</span>' : ''}${coachLinks(p.nom, p)}</td>${all ? `<td class="l">${tlink(p.tid)}</td>` : ''}
-    <td>${p.mj}</td><td><b>${p.buts}</b></td><td>${f1(p.bpm)}</td><td>${p.max || '–'}</td><td>${(p.last3 || []).join('·') || '–'}</td><td>${f1(p.dom)}</td><td>${f1(p.ext)}</td><td>${pct(p.part || 0)}</td>
+    <td>${p.mj}</td><td><b>${p.buts}</b></td><td>${f1(p.bpm)}</td><td>${p.max || '–'}</td><td>${(p.last3 || []).join('·') || '–'}</td><td>${f1(p.dom)}</td><td>${f1(p.ext)}</td><td>${p.part ? pct(p.part) : '–'}</td>
     <td>${p.arrets || '–'}</td><td>${p.arrets ? f1(p.arrets_pm) : '–'}</td><td>${fdc(p, 1)}</td><td>${rate(p) == null ? '–' : pct(rate(p))}</td><td>${fdc(p, 3)}</td><td>${fdc(p, 6)}</td><td>${fdc(p, 5)}</td><td>${pct(p.presence || 0)}</td></tr>`).join('');
   const mt = Object.fromEntries((D.fun.mitemps || []).map(x => [x.team, x]));
   const teamRows = tids.slice().sort((a, b) => ((TEAMS[a].classement || {}).place || 99) - ((TEAMS[b].classement || {}).place || 99)).map(tid => { const c = TEAMS[tid].classement || {}, j = c.j || 0, m = mt[tid];
     const pl = TEAMS[tid].players || [], det = pl.reduce((s, p) => s + (p.fd ? p.fd[1] : 0), 0), but = pl.reduce((s, p) => s + (p.fd ? p.fd[2] : 0), 0);
     return `<tr class="${isClub(tid) ? 'me' : ''}"><td>${tlink(tid)}</td><td>${c.place || '–'}</td><td>${j}</td><td>${c.g || 0}-${c.n || 0}-${c.p || 0}</td><td>${j ? f1(c.bp / j) : '–'}</td><td>${j ? f1(c.bc / j) : '–'}</td><td>${j ? sgn((c.bp - c.bc) / j) : '–'}</td><td>${m ? sgn(m.mt1) : '–'}</td><td>${m ? sgn(m.mt2) : '–'}</td><td>${pl.length}</td></tr>`; }).join('');
   return `<section class="stack"><p class="eyebrow">Après J${Math.max(...D.journees_jouees)} · ${esc(compAff(D.competition))} · ${esc(D.poule)}</p><h1>Stats de la poule</h1>
-    <p class="lead">Toutes les stats ${G('des joueuses', 'des joueurs')}, tirées des feuilles de match de la FFHB. Les stats rigolotes de ${esc(name(D.club))} sont dans l’<a href="#historique">Historique</a> et sur chaque fiche ${G('joueuse', 'joueur')}.</p></section>
+    <p class="lead">Toutes les stats ${G('des joueuses', 'des joueurs')}, tirées des feuilles de match de la FFHB. Les stats rigolotes ${esc(DE(name(D.club)))} sont dans l’<a href="#historique">Historique</a> et sur chaque fiche ${G('joueuse', 'joueur')}.</p></section>
   <section class="card stack" data-keep><h2>${G('Les joueuses', 'Les joueurs')}</h2>
     <div class="filters"><label for="st-team">Équipe</label><select id="st-team"><option value="all"${all ? ' selected' : ''}>Toute la poule</option>${tids.map(t => `<option value="${t}"${t === stTeam ? ' selected' : ''}>${esc(name(t))}</option>`).join('')}</select>
       <label for="st-sort">Trier par</label><select id="st-sort">${Object.entries(SL).filter(([k]) => !all || !CLUBONLY.includes(k)).map(([k, l]) => `<option value="${k}"${k === stSort ? ' selected' : ''}>${l}</option>`).join('')}</select></div>
     <div class="scroll"><table data-m="1,${sIdx}r" data-c="${cKeep.join(',')}" data-nm="1" data-hint="Cliquer sur une ligne pour le détail : 3 derniers matchs, domicile, extérieur, arrêts par match, avertissements." data-cd="${[...new Set([...(all ? [0, 1, 2, 3, 4, 5, 6, 10, 11, 13, 14, 15, 16, 18] : [0, 1, 2, 3, 4, 5, 9, 10, 12, 13, 14, 15, 17]), sIdx])].sort((a, b) => a - b).join(',')}"><thead><tr>${cols.map((c, i) => `<th${i === 0 ? ' data-s="#"' : i === 2 && all ? ' class="l"' : ''}${i === sIdx ? ` class="srt" aria-sort="descending" data-s="${c} ▾"` : ''}>${i === 0 ? '#' : c}${i === sIdx ? ' ▾' : ''}</th>`).join('')}</tr></thead><tbody>${tr}</tbody></table></div>
-    <p class="note">Trié par ${esc(SL[stSort].toLowerCase())} (▾). MJ = matchs joués · B/m = buts par match · Arr./m (dans le détail de chaque ligne) = arrêts par match joué dans les buts (matchs avec au moins un arrêt) · Max = record sur un match · Part = part des buts de l’équipe · Présence = probabilité d’être sur la prochaine feuille. Tirs, réussite (5 tirs au moins), buts sur 7 m, exclusions et avertissements : d’après les feuilles de match PDF de la FFHB, lues pour ${D.n_fdm != null ? `${D.n_fdm} des ${D.results.filter(r => !r.forfait).length} matchs joués (hors forfaits)` : 'les matchs'} de la poule.</p></section>
+    <p class="note">Trié par ${esc(SL[stSort].toLowerCase())} (▾).<span class="mob-only"> Sur téléphone, toucher une ligne pour les autres colonnes.</span> MJ = matchs joués · B/m = buts par match · Arr./m (dans le détail de chaque ligne) = arrêts par match joué dans les buts (matchs avec au moins un arrêt) · Max = record sur un match · Part = part des buts de l’équipe · Présence = probabilité d’être sur la prochaine feuille. Tirs, réussite (5 tirs au moins), buts sur 7 m, exclusions et avertissements : d’après les feuilles de match PDF de la FFHB, lues pour ${D.n_fdm != null ? `${D.n_fdm} des ${D.results.filter(r => !r.forfait).length} matchs joués (hors forfaits)` : 'les matchs'} de la poule.</p></section>
   <section class="card stack"><h2>Les équipes</h2>
     <div class="scroll"><table data-m="0,1r" data-c="0,1,3,6"><thead><tr><th>Équipe</th><th>Place</th><th>J</th><th>V-N-D</th><th data-s="Pour/m">Buts pour / m</th><th data-s="Contre/m">Buts contre / m</th><th>Écart / m</th><th data-s="1re MT">1re mi-temps</th><th data-s="2e MT">2e mi-temps</th><th data-s="Effectif">${G('Joueuses', 'Joueurs')} utilisé${G('es', 's')}</th></tr></thead><tbody>${teamRows}</tbody></table></div>
     <p class="note">Mi-temps = écart de buts moyen par mi-temps, par match.</p></section>`;
@@ -2163,41 +2237,42 @@ function viewPronos() {
   </section>
   ${(() => { const bt = {}, br = t => { const o = t.hs > t.as ? [1, 0, 0] : t.hs < t.as ? [0, 0, 1] : [0, 1, 0]; return t.p.reduce((a, v, i) => a + (v - o[i]) ** 2, 0); };
     D.track.forEach(t => { for (const tid of [t.home, t.away]) { const x = bt[tid] || (bt[tid] = {n: 0, ok: 0, br: 0, sur: 0}); x.n++; x.ok += t.ok ? 1 : 0; x.br += br(t); x.sur += !t.ok && Math.max(t.p[0], t.p[2]) >= 0.7 ? 1 : 0; } });
-    const rows = Object.entries(bt).filter(([tid]) => TEAMS[tid]).map(([tid, x]) => ({tid, ...x, b: x.br / x.n})).sort((a, b) => a.b - b.b);
+    const rows = Object.entries(bt).filter(([tid]) => TEAMS[tid]).map(([tid, x]) => ({tid, ...x, b: x.br / x.n})).sort((a, b) => a.b - b.b), anyS = rows.some(r => r.sur);
     if (!rows.length) return '';
     const lab = b => b < 0.35 ? 'très fiable' : b < 0.5 ? 'fiable' : b < 0.62 ? 'moyen' : 'peu fiable';
     return `<section class="card stack" data-keep><h2>Bilan par équipe</h2>
       <p class="sub">Avec quelles équipes le prono tombe juste : tous les matchs joués de chaque équipe cette saison, de la plus prévisible à la moins prévisible.</p>
-      <div class="scroll"><table data-m="1,4r" data-c="0,1,3,4"><thead><tr><th></th><th class="l">Équipe</th><th>Matchs</th><th data-s="Justes">Favoris qui gagnent</th><th data-s="Brier">Brier</th><th class="l" data-s="Fiab.">Fiabilité</th><th data-s="Surpr.">Grosses surprises</th></tr></thead><tbody>
-      ${rows.map((r, i) => `<tr class="${isClub(r.tid) ? 'me' : ''}"><td>${i + 1}</td><td class="l"><button type="button" class="lnk" data-prt="${esc(r.tid)}">${esc(name(r.tid))}</button></td><td>${r.n}</td><td>${r.ok}/${r.n} <span class="sub">(${pct(r.ok / r.n)})</span></td><td><b>${f1(r.b * 100)}</b></td><td class="l">${lab(r.b)}</td><td>${r.sur || '–'}</td></tr>`).join('')}</tbody></table></div>
-      <p class="note">Brier = écart moyen entre les probabilités annoncées et le résultat (0 = parfait, 66,7 = au hasard) : plus il est bas, plus les pronos sur cette équipe sont fiables. Grosse surprise = le favori à 70 % ou plus a perdu. Avec ${nb(Math.round(D.track.length * 2 / Math.max(1, rows.length)), 'match')} par équipe en moyenne, le classement bouge encore beaucoup. Cliquer sur une équipe filtre le tableau « Match par match ».</p></section>`; })()}
+      <div class="scroll"><table data-m="1,4r" data-c="0,1,3,4"><thead><tr><th></th><th class="l">Équipe</th><th>Matchs</th><th data-s="Justes">Favoris qui gagnent</th><th data-s="Brier">Brier</th><th class="l" data-s="Fiab.">Fiabilité</th>${anyS ? '<th data-s="Surpr.">Grosses surprises</th>' : ''}</tr></thead><tbody>
+      ${rows.map((r, i) => `<tr class="${isClub(r.tid) ? 'me' : ''}"><td>${i + 1}</td><td class="l"><button type="button" class="lnk" data-prt="${esc(r.tid)}">${esc(name(r.tid))}</button></td><td>${r.n}</td><td>${r.ok}/${r.n} <span class="sub">(${pct(r.ok / r.n)})</span></td><td><b>${f1(r.b * 100)}</b></td><td class="l">${lab(r.b)}</td>${anyS ? `<td>${r.sur || '–'}</td>` : ''}</tr>`).join('')}</tbody></table></div>
+      <p class="note">Brier = écart moyen entre les probabilités annoncées et le résultat (0 = parfait, 66,7 = au hasard) : plus il est bas, plus les pronos sur cette équipe sont fiables. ${anyS ? 'Grosse surprise = le favori à 70 % ou plus a perdu.' : 'Aucune grosse surprise cette saison (favori à 70 % ou plus battu).'} Avec ${nb(Math.round(D.track.length * 2 / Math.max(1, rows.length)), 'match')} par équipe en moyenne, le classement bouge encore beaucoup. ${MQ.matches ? 'Toucher' : 'Cliquer sur'} une équipe filtre le tableau « Match par match ».</p></section>`; })()}
   <section class="card stack" id="pr-mm" data-keep><h2>Match par match</h2>
     <div class="filters"><label for="pr-team">Équipe</label><select id="pr-team"><option value="">Toute la poule</option>${Object.keys(TEAMS).sort((a, b) => name(a).localeCompare(name(b), 'fr')).map(tid => `<option value="${esc(tid)}"${PRT === tid ? ' selected' : ''}>${esc(name(tid))}</option>`).join('')}</select></div>
     <div class="scroll"><table data-m="1,2r" data-c="0,1,2,4"><thead><tr><th>J</th><th class="l">Match</th><th>Score</th><th class="l">Prono avant match</th><th data-s="Prono"></th></tr></thead><tbody>
   ${Object.keys(byJ).sort((a, b) => b - a).flatMap(j => byJ[j].filter(t => !TEAMS[PRT] || t.home === PRT || t.away === PRT).map(t => { const favH = t.p[0] >= t.p[2];
-    return `<tr class="${isClub(t.home) || isClub(t.away) ? 'me' : ''}"><td>${t.j}</td><td class="l">${esc(name(t.home))} – ${esc(name(t.away))}</td><td><b>${sc2(t.hs, t.as, '', clubRes(t))}</b></td><td class="l">${(() => { const c = isClub(t.home) ? t.home : isClub(t.away) ? t.away : favH ? t.home : t.away; return `${esc(name(c))} ${pct(c === t.home ? t.p[0] : t.p[2])}`; })()}</td><td>${t.ok ? '<span class="pj">✓<span class="vt"> juste</span></span>' : '<span class="pj nok">×<span class="vt"> raté</span></span>'}</td></tr>`; })).join('')}
+    return `<tr class="${isClub(t.home) || isClub(t.away) ? 'me' : ''}"><td>${t.j}</td><td class="l">${esc(name(t.home))} – ${esc(name(t.away))}</td><td><b>${sc2(t.hs, t.as, '', clubRes(t))}</b></td><td class="l">${esc(name(favH ? t.home : t.away))} ${pct(favH ? t.p[0] : t.p[2])}${(() => { const c = isClub(t.home) ? t.home : isClub(t.away) ? t.away : null; return c && c !== (favH ? t.home : t.away) ? ` <span class="sub">(${esc(name(c))} ${pct(c === t.home ? t.p[0] : t.p[2])})</span>` : ''; })()}</td><td>${t.ok ? '<span class="pj">✓<span class="vt"> juste</span></span>' : '<span class="pj nok">×<span class="vt"> raté</span></span>'}</td></tr>`; })).join('')}
   </tbody></table></div></section>`;
 }
 
-function viewMedoc() {
+function viewMedoc() { return viewMedoc0().replace(/(\p{L})--(\p{L})/gu, '$1-$2'); }
+function viewMedoc0() {
   const H = D.histo, R = H.records;
   if (!H) return viewHome();
   const e1 = Object.values(H.seasons.filter(s => s.focus).reduce((a, s) => (a[s.saison] = s, a), {}));   // une valeur par saison : la dernière phase jouée
-  const lab = D.team.label, labM = lab.replace(/^Équipe\b/, 'équipe'), nSais = new Set(H.seasons.map(x => x.saison)).size;
-  const short = s => s.replace(/^Tq /, 'TQ ').replace(/ \d\d \d\d$/, '').replace(/\bU ?(1\d)\b/g, '-$1').replace('1Ere ', '1re ').replace(/(?<!\+)\b16 (Masculins|Feminine|Feminines|Garcons)/, '+16 $1').replace('Gironde · ', 'Gironde ').replace(/Pre Regionale/g, 'Pré-régionale').replace(/Regionale/g, 'régionale').replace(/Regional\b/g, 'régional').replace(/Feminines/g, 'féminines').replace(/Feminine/g, 'féminine').replace(/Feminin\b/g, 'féminin').replace(/Masculins/g, 'masculins').replace(/Masculine/g, 'masculine').replace(/Masculin\b/g, 'masculin').replace(/Garcons/g, 'garçons').replace('Territoriale', 'territoriale').replace(/Excellence régionale féminine/, 'ERF');
-  const mline = m => `${m.lieu === 'dom' ? 'contre' : 'à'} ${esc(clubAff(m.adv))} (${fdate(m.date, false)} ${m.date.slice(0, 4)}${m.mt ? `, ${dashS(m.mt)} à la pause` : ''})`;
+  const lab = D.team.label, labM = D.team.nom ? 'équipe ' + D.team.nom : lab.replace(/^Équipe\b/, 'équipe'), nSais = new Set(H.seasons.map(x => x.saison)).size;
+  const short = s => s.replace(/^Tq /, 'TQ ').replace(/ \d\d \d\d$/, '').replace(/\bU ?(1\d)\b/g, '-$1').replace('1Ere ', '1re ').replace(/(?<!\+)\b16 (Masculins|Feminine|Feminines|Garcons)/, '+16 $1').replace('Gironde · ', 'Gironde ').replace(/Pre Regionale/g, 'Pré-régionale').replace(/Regionale/g, 'régionale').replace(/Regional\b/g, 'régional').replace(/Feminines/g, 'féminines').replace(/Feminine/g, 'féminine').replace(/Feminin\b/g, 'féminin').replace(/Masculins/g, 'masculins').replace(/Masculine/g, 'masculine').replace(/Masculin\b/g, 'masculin').replace(/Garcons/g, 'garçons').replace('Territoriale', 'territoriale');
+  const mline = m => `${m.lieu === 'dom' ? 'contre' : /^Stade\b/.test(clubAff(m.adv)) ? 'au' : 'à'} ${esc(clubAff(m.adv))} (${fdate(m.date, false)} ${m.date.slice(0, 4)}${m.mt ? `, ${scHL(m.mt, m.lieu)} à la pause` : ''})`;
   const card = (t, fig, what, extra) => `<article class="card fun"><span class="title">${t}</span><span class="fig">${dashS(fig)}</span><p class="what">${what}</p>${extra || ''}</article>`;
   const cards = [];
-  if (R.plus_large_victoire) cards.push(card('La plus large victoire', R.plus_large_victoire.score, mline(R.plus_large_victoire) + '.'));
-  if (R.plus_lourde_defaite) cards.push(card('La plus lourde défaite', R.plus_lourde_defaite.score, mline(R.plus_lourde_defaite) + '.'));
+  if (R.plus_large_victoire) cards.push(card('La plus large victoire', scHL(R.plus_large_victoire.score, R.plus_large_victoire.lieu), mline(R.plus_large_victoire) + '.'));
+  if (R.plus_lourde_defaite) cards.push(card('La plus lourde défaite', scHL(R.plus_lourde_defaite.score, R.plus_lourde_defaite.lieu), mline(R.plus_lourde_defaite) + '.'));
   if (R.serie_victoires) cards.push(card('La série', R.serie_victoires.n, `victoires de suite, du ${fdate(R.serie_victoires.debut, false)} ${R.serie_victoires.debut.slice(0, 4)} au ${fdate(R.serie_victoires.fin, false)} ${R.serie_victoires.fin.slice(0, 4)}${R.serie_victoires.en_cours ? ', <b>toujours en cours</b>' : ''}. Record du club sur la période.`));
   if (R.forteresse) cards.push(card('La Forteresse', R.forteresse.n, `matchs sans défaite à domicile depuis le ${fdate(R.forteresse.debut, false)} ${R.forteresse.debut.slice(0, 4)}${R.forteresse.en_cours ? ', <b>série en cours</b>' : ''}.`));
-  if (R.remontada) cards.push(card('La Remontada', '−' + R.remontada.ecart, `buts à la pause, victoire ${dashS(R.remontada.score)} au bout ${mline(R.remontada)}.`));
-  if (R.craquage) cards.push(card('Le Craquage', '+' + R.craquage.ecart, `buts d’avance à la pause, défaite ${dashS(R.craquage.score)} ${mline(R.craquage)}.`));
-  if (R.festival) cards.push(card('Le Festival', R.festival.total, `buts dans un même match : ${dashS(R.festival.score)} ${mline(R.festival)}. Record de buts marqués par le club sur la période.`));
-  if (R.cadenas) cards.push(card('Le Cadenas', R.cadenas.total, `buts seulement dans le match le plus fermé : ${dashS(R.cadenas.score)} ${mline(R.cadenas)}.`));
-  if (R.hold_up) cards.push(card('Le Hold-up', pct(R.hold_up.p), `de chances avant le match selon le modèle, victoire ${dashS(R.hold_up.score)} ${mline(R.hold_up)}.`));
-  if (R.faux_pas) cards.push(card('Le Faux pas', pct(R.faux_pas.p), `de risque de défaite seulement, et pourtant ${dashS(R.faux_pas.score)} ${mline(R.faux_pas)}.`));
+  if (R.remontada) cards.push(card('La Remontada', '−' + R.remontada.ecart, `buts à la pause, victoire ${scHL(R.remontada.score, R.remontada.lieu)} au bout ${mline(R.remontada)}.`));
+  if (R.craquage) cards.push(card('Le Craquage', '+' + R.craquage.ecart, `buts d’avance à la pause, défaite ${scHL(R.craquage.score, R.craquage.lieu)} ${mline(R.craquage)}.`));
+  if (R.festival) cards.push(card('Le Festival', R.festival.total, `buts dans un même match : ${scHL(R.festival.score, R.festival.lieu)} ${mline(R.festival)}. Record de buts marqués par le club sur la période.`));
+  if (R.cadenas) cards.push(card('Le Cadenas', R.cadenas.total, `buts seulement dans le match le plus fermé : ${scHL(R.cadenas.score, R.cadenas.lieu)} ${mline(R.cadenas)}.`));
+  if (R.hold_up) cards.push(card('Le Hold-up', pct(R.hold_up.p), `de chances avant le match selon le modèle, victoire ${scHL(R.hold_up.score, R.hold_up.lieu)} ${mline(R.hold_up)}.`));
+  if (R.faux_pas) cards.push(card('Le Faux pas', pct(R.faux_pas.p), `de risque de défaite seulement, et pourtant ${scHL(R.faux_pas.score, R.faux_pas.lieu)} ${mline(R.faux_pas)}.`));
   if (R.adversaire_prefere) cards.push(card('L’Adversaire préféré', `${R.adversaire_prefere.g}-${R.adversaire_prefere.n}-${R.adversaire_prefere.p}`, `contre ${esc(clubAff(R.adversaire_prefere.adv))} en ${R.adversaire_prefere.j} matchs sur ${R.adversaire_prefere.saisons} saisons (${sgn(R.adversaire_prefere.gd).replace(',0', '')} buts au cumul).`));
   if (R.bete_noire) cards.push(card('La Bête noire', `${R.bete_noire.g}-${R.bete_noire.n}-${R.bete_noire.p}`, `contre ${esc(clubAff(R.bete_noire.adv))} en ${R.bete_noire.j} matchs : le pire bilan face à un adversaire croisé au moins 3 fois.`));
   const pcards = [];
@@ -2206,16 +2281,16 @@ function viewMedoc() {
   if (H.dix[0]) pcards.push(card('Le Club des 10', H.dix[0].n, `matchs à 10 buts ou plus pour ${esc(H.dix[0].nom)}.`, rankList(H.dix, x => esc(x.nom), (x, txt) => txt ? `${x.n} match${x.n > 1 ? 's' : ''}` : x.n)));
   if (H.fidele[0]) pcards.push(card(G('La Fidèle', 'Le Fidèle'), H.fidele[0].mj, `matchs avec l’${esc(labM)} pour ${esc(H.fidele[0].nom)} depuis 2023.`, rankList(H.fidele, x => esc(x.nom), (x, txt) => txt ? x.mj + ' matchs' : x.mj)));
   if (H.metronome[0]) pcards.push(card(G('La Métronome', 'Le Métronome'), f1(H.metronome[0].bpm), `buts par match pour ${esc(H.metronome[0].nom)} sur ${H.metronome[0].mj} matchs, ${G('la plus régulière', 'le plus régulier')} à plus de 4 buts (écart-type ${f1(H.metronome[0].sd)}).`));
-  if (H.murs[0]) pcards.push(card('Le Mur', f1(H.murs[0].pm), `arrêts par match pour ${esc(H.murs[0].nom)} en ${H.murs[0].saison} (${H.murs[0].arrets} en ${H.murs[0].mj} matchs dans les buts).`, rankList(H.murs, (x, grp) => esc(x.nom) + (grp ? '' : ` (${x.saison})`), x => f1(x.pm) + ' arrêts/m')));
+  if (H.murs[0]) pcards.push(card('Le Mur', f1(H.murs[0].pm), `arrêts par match pour ${esc(H.murs[0].nom)} en ${H.murs[0].saison} (${H.murs[0].arrets} en ${H.murs[0].mj} matchs dans les buts).`, rankList(H.murs, (x, grp) => esc(x.nom) + (grp ? '' : ` (${x.saison})`), x => f1(x.pm) + ' arrêts/match')));
   if (H.navette[0]) pcards.push(card('La Navette', `${H.navette[0].eq1}+${H.navette[0].eq2}`, `matchs avec l’${esc(labM)} et avec une autre équipe du club pour ${esc(H.navette[0].nom)} : ${G('la joueuse', 'le joueur')} qui fait le plus l’aller-retour.`));
-  if (H.effet[0]) pcards.push(card(G('L’Effet « elle est là »', 'L’Effet « il est là »'), sgn(H.effet[0].avec - H.effet[0].sans), `buts d’écart par match en ${H.effet[0].saison} avec ${esc(H.effet[0].nom)} sur la feuille (${sgn(H.effet[0].avec)} en ${H.effet[0].n_avec} m) que ${G('sans elle', 'sans lui')} (${sgn(H.effet[0].sans)} en ${H.effet[0].n_sans} m).`, rankList(H.effet, x => `${esc(x.nom)} (${x.saison})`, x => sgn(x.avec - x.sans))));
+  if (H.effet[0]) pcards.push(card(G('L’Effet « elle est là »', 'L’Effet « il est là »'), sgn(H.effet[0].avec - H.effet[0].sans), `buts d’écart par match en ${H.effet[0].saison} avec ${esc(H.effet[0].nom)} sur la feuille (${sgn(H.effet[0].avec)} en ${nb(H.effet[0].n_avec, 'match')}) que ${G('sans elle', 'sans lui')} (${sgn(H.effet[0].sans)} en ${nb(H.effet[0].n_sans, 'match')}).`, rankList(H.effet, x => `${esc(x.nom)} (${x.saison})`, x => sgn(x.avec - x.sans))));
   const sk = [...new Set(H.pantheon.flatMap(p => Object.keys(p.par_saison)))].sort();
   return `<section class="stack"><p class="eyebrow">${esc(name(D.club))} · 2023-24 → 2026-27</p><h1>${nSais} saisons de stats rigolotes</h1>
     <p class="lead">${H.n_matchs} matchs, ${H.n_feuilles} feuilles de match et ${H.n_joueuses} ${G('joueuses', 'joueurs')} de l’${esc(labM)}. Les saisons passées sont celles de l’équipe du club dont elle a repris l’effectif.</p></section>
   <section class="card stack" style="padding:0;border:0;background:none">
     <div class="card stack" data-keep><h2>Saison par saison</h2><div class="scroll"><table data-m="0,1,2r" data-c="0,1,2,3"><thead><tr><th>Saison</th><th class="l">Championnat</th><th>Place</th><th>V-N-D</th><th>Dom.</th><th>Ext.</th><th class="l">${G('Meilleure buteuse', 'Meilleur buteur')}</th></tr></thead><tbody>
       ${H.seasons.map(s => `<tr class="${s.focus ? '' : 'sub'}"><td>${s.saison}${s.focus ? '' : ' <span class="badge">autre équipe</span>'}</td><td class="l">${esc(short(s.comp))}${s.phase && !/unique/i.test(s.phase) ? ` <span class="sub">· ${esc(s.phase)}</span>` : ''}</td><td>${s.place ? s.place + '/' + s.n_eq : '–'}${s.en_cours ? '*' : ''}</td><td>${s.g}-${s.n}-${s.p}</td><td>${s.dom[0]}/${s.dom[1]}</td><td>${s.ext[0]}/${s.ext[1]}</td><td class="l">${s.top ? `${esc(s.top.nom)} <span class="sub">${s.top.buts}</span>` : '–'}</td></tr>`).join('')}
-      </tbody></table></div><p class="note">Une ligne par phase de championnat (brassage, niveaux, poule finale…). Dom./Ext. = victoires sur matchs joués. * saison en cours.</p></div>
+      </tbody></table></div><p class="note">Une ligne par phase de championnat (brassage, niveaux, poule finale…). Dom./Ext. = victoires sur matchs joués. * saison en cours.<span class="mob-only"> Toucher une ligne pour les autres colonnes.</span></p></div>
   </section>
   <section class="stack"><h2>Les records de l’équipe</h2><p class="sub mob-only">${cards.length} records</p></section>
   <section class="grid3 swipe">${cards.join('')}</section>
@@ -2233,7 +2308,7 @@ function viewMedoc() {
       ${H.pantheon.map(p => `<tr><td class="l">${esc(p.nom)}</td>${sk.map(k => `<td>${p.par_saison[k] ?? '–'}</td>`).join('')}<td><b>${p.buts}</b></td><td>${p.mj}</td></tr>`).join('')}
       </tbody></table></div><p class="note">Buts avec l’${esc(labM)} saison par saison, d’après les statistiques officielles.</p></div>
   </section>
-  <p class="note">${H.feuilles_ecartees} feuille(s) de match écartée(s) pour saisie incohérente (total des buts différent du score, ou ${G('une joueuse créditée', 'un joueur crédité')} de presque tous les buts).</p>`;
+  <p class="note">${nb(H.feuilles_ecartees, 'feuille de match écartée', 'feuilles de match écartées')} pour saisie incohérente (total des buts différent du score, ou ${G('une joueuse créditée', 'un joueur crédité')} de presque tous les buts).</p>`;
 }
 
 const CALJ = {};                                   // journée affichée dans le calendrier, par équipe suivie
@@ -2313,10 +2388,10 @@ let calTeam = null;
 // page de base de l'onglet : toute la poule, journée en cours (l'équipe choisie n'est plus gardée d'une visite à l'autre)
 document.addEventListener('click', e => { if (e.target.closest('a[data-v="calendrier"]')) { calTeam = 'all'; delete CALJ[CUR]; } }, true);
 function seasonBars(list, tid) {
-  const W = 1000, H = 190, L = 40, R = 10, T = 16, B = 30, n = list.length;
+  const W = 1000, H = 190, L = MQ.matches ? 112 : 40, R = 10, T = 16, B = 30, n = list.length;
   const bw = (W - L - R) / n, Y = v => T + (1 - v) * (H - T - B);
   return `<svg class="chart wide" viewBox="0 0 ${W} ${H}" role="group" aria-label="Probabilité de victoire match par match">
-    ${[0, .5, 1].map(v => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${v === .5 ? 'rgba(255,255,255,.28)' : 'var(--line)'}" ${v === .5 ? 'stroke-dasharray="4 4"' : ''}/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end">${v * 100}\u202f%</text>`).join('')}
+    ${[0, .5, 1].map(v => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${v === .5 ? 'rgba(255,255,255,.28)' : 'var(--line)'}" ${v === .5 ? 'stroke-dasharray="4 4"' : ''}/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end">${v * 100}\u00a0%</text>`).join('')}
     ${list.map((m, i) => { const home = m.home === tid, pw = home ? m.p[0] : m.p[2], x = L + i * bw + 3, w = Math.max(4, bw - 6), h = Y(0) - Y(pw), r = Math.min(4, h, w / 2);
       return `<path d="M${x},${Y(0)} V${Y(pw) + r} q0,-${r} ${r},-${r} H${x + w - r} q${r},0 ${r},${r} V${Y(0)} Z" fill="${pw >= .5 ? 'var(--fav)' : 'var(--other)'}"/>
       ${MQ.matches && n > 10 && i % 2 ? '' : `<text x="${x + w / 2}" y="${H - 10}" text-anchor="middle">J${m.j}</text>`}
@@ -2329,7 +2404,7 @@ const frange = xs => { const ds = [...new Set(xs.map(x => x.date))].sort(); if (
 function viewCalendar() {
   const ids = Object.values(TEAMS).sort((a, b) => a.classement.place - b.classement.place).map(t => t.id);
   const sel = calTeam === 'all' || !TEAMS[calTeam] ? 'all' : calTeam;
-  const list = D.calendar.filter(m => sel === 'all' || m.home === sel || m.away === sel);
+  const list = D.calendar.filter(m => sel === 'all' || m.home === sel || m.away === sel).slice().sort((a, b) => a.date.localeCompare(b.date) || String(a.heure || '').localeCompare(String(b.heure || '')));
   const js = [...new Set(list.map(m => m.j))].sort((a, b) => a - b);
   let summary = '';
   if (sel !== 'all') {
@@ -2341,8 +2416,8 @@ function viewCalendar() {
     summary = `<section class="card stack">
       <div class="kpis">
         <div class="kpi"><b>${f1(exp)} / ${list.length}</b><span>victoires attendues d’ici la fin de saison</span></div>
-        <div class="kpi"><b>${wins.filter(w => w >= .7).length}</b><span>matchs où elle est nettement favorite (70 % ou plus)</span></div>
-        <div class="kpi"><b>${wins.filter(w => w < .4).length}</b><span>matchs où elle part outsider (moins de 40 %)</span></div>
+        <div class="kpi"><b>${wins.filter(w => Math.round(w * 100) >= 70).length}</b><span>${wins.filter(w => Math.round(w * 100) >= 70).length > 1 ? 'matchs' : 'match'} où elle est nettement favorite (70 % ou plus)</span></div>
+        <div class="kpi"><b>${wins.filter(w => Math.round(w * 100) < 40).length}</b><span>${wins.filter(w => Math.round(w * 100) < 40).length > 1 ? 'matchs' : 'match'} où elle part outsider (moins de 40 %)</span></div>
         <div class="kpi"><b>${pct1(nolose)}</b><span>chance de finir la saison sans défaite</span></div>
       </div>
       <p class="sub">Le plus difficile sur le papier : J${hard.j}, ${hard.home === sel ? 'contre' : 'à'} ${tlink(hard.home === sel ? hard.away : hard.home)}, ${pct(hw)} de victoire.</p>
@@ -2355,7 +2430,10 @@ function viewCalendar() {
   const cj = CALJ[CUR] === 'all' ? 'all' : jAll.includes(CALJ[CUR]) ? CALJ[CUR] : jDef;
   const RS = raySet(), canRay = RAY_OK() && !!D.rayes;
   const shownDone = sel !== 'all' || cj === 'all' ? done : done.filter(r => r.j === cj);
-  const hasRk = canRay && shownDone.some(r => (D.rayes.m || {})[String(r.rid)]), rkc = canRay ? ' rk' : '';
+  const hasRk = canRay && shownDone.some(r => (D.rayes.m || {})[String(r.rid)]);
+  let rkc = '';                                     // colonne « Ne pas compter » : seulement dans les blocs qui ont un match joué
+  const rkOf = rs => canRay && rs.some(r => (D.rayes.m || {})[String(r.rid)]) ? ' rk' : '';
+  const byeT = (xs) => { const ids = Object.keys(TEAMS).filter(t => !xs.some(x => String(x.home) === t || String(x.away) === t)); return ids.length && xs.length ? `<p class="fx-bye">${ids.length > 1 ? 'Exemptes' : 'Exempte'} : ${ids.map(t => esc(name(t))).join(', ')}</p>` : ''; };
   const nForf = done.filter(r => r.forfait).length;
   return `<section class="stack"><p class="eyebrow">${done.length ? `${nb(done.length, 'match joué', 'matchs joués')}${nForf ? ` (dont ${nb(nForf, 'forfait')})` : ''} · ` : ''}${nb(list.length, 'match', 'matchs')} à venir</p><h1>Calendrier et résultats</h1>
     <p class="lead">Les matchs joués avec leur score et le prono d’avant-match, puis chaque match restant avec sa probabilité de victoire et son score probable, calculés avec le niveau actuel des équipes et recalculés après chaque journée.</p>
@@ -2363,7 +2441,7 @@ function viewCalendar() {
       <option value="all"${sel === 'all' ? ' selected' : ''}>Toute la poule</option>
       <optgroup label="Mon équipe"><option value="${D.club}"${sel === D.club ? ' selected' : ''}>★ ${esc(name(D.club))}</option></optgroup>
       <optgroup label="Les autres équipes">${ids.filter(id => !isClub(id)).map(id => `<option value="${id}"${sel === id ? ' selected' : ''}>${esc(name(id))}</option>`).join('')}</optgroup></select>
-      ${sel === 'all' ? `<label for="cal-j">Journée</label><span class="jsel"><button type="button" class="jnav" data-cj="-1" aria-label="Journée précédente"${cj === 'all' || jAll.indexOf(cj) <= 0 ? ' disabled' : ''}>‹</button><select id="cal-j"><option value="all"${cj === 'all' ? ' selected' : ''}>Toutes les journées</option>${jAll.map(j => `<option value="${j}"${cj === j ? ' selected' : ''}>J${j}${j === D.next_journee ? ' · prochaine' : ''}</option>`).join('')}</select><button type="button" class="jnav" data-cj="1" aria-label="Journée suivante"${cj === 'all' || jAll.indexOf(cj) >= jAll.length - 1 ? ' disabled' : ''}>›</button></span>` : ''}</div>
+      ${sel === 'all' ? `<span class="fgrp"><label for="cal-j">Journée</label><span class="jsel"><button type="button" class="jnav" data-cj="-1" aria-label="Journée précédente"${cj === 'all' || jAll.indexOf(cj) <= 0 ? ' disabled' : ''}>‹</button><select id="cal-j"><option value="all"${cj === 'all' ? ' selected' : ''}>Toutes les journées</option>${jAll.map(j => `<option value="${j}"${cj === j ? ' selected' : ''}>J${j}${j === D.next_journee ? ' · prochaine' : ''}</option>`).join('')}</select><button type="button" class="jnav" data-cj="1" aria-label="Journée suivante"${cj === 'all' || jAll.indexOf(cj) >= jAll.length - 1 ? ' disabled' : ''}>›</button></span></span>` : ''}</div>
     ${hasRk ? `<p class="note">Case <b>Ne pas compter</b> sur un match joué : son résultat sort du calcul des niveaux, des pronos et de la projection du classement (le classement officiel ne change pas). Gardé sur cet appareil seulement.</p>` : ''}
     ${rayOn() ? `<p class="ray-bar" role="status">${LOCKR}${nb([...RAY[CUR]].filter(r => (D.rayes.m || {})[r]).length, 'match rayé', 'matchs rayés')} : niveaux, pronos et projection recalculés sans ${[...RAY[CUR]].length > 1 ? 'eux' : 'lui'}. <button type="button" class="lnk" data-ray-all>Tout compter à nouveau</button></p>` : ''}</section>
   ${summary}
@@ -2375,7 +2453,7 @@ function viewCalendar() {
       const res = clubRes(r), tr = TR[r.rid], has = !!findPast(r.rid);
       const sc = r.forfait ? 'forfait' : sc2(r.hs, r.as, '', res);
       const rk = canRay && (D.rayes.m || {})[String(r.rid)], ry = rk && RS.has(String(r.rid));
-      const who = isClub(r.home) || isClub(r.away) ? D.club : tSel || (tr && tr.p[2] > tr.p[0] ? r.away : r.home), pw = tr ? (who === r.away ? tr.p[2] : tr.p[0]) : null;
+      const who = tr && tr.p[2] > tr.p[0] ? r.away : r.home, pw = tr ? (who === r.away ? tr.p[2] : tr.p[0]) : null;   // prono : le favori et son %
       const tres = tSel ? (r.forfait ? ((r.forfait === 'away') === (tSel === r.home) ? 'V' : 'D') : ((tSel === r.home ? r.hs - r.as : r.as - r.hs) > 0 ? 'V' : r.hs === r.as ? 'N' : 'D')) : null;
       return `<div class="fx played${rkc}${ry ? ' raye' : ''}"><span class="d">${withJ ? `<b>J${r.j}</b>` : ''}<span class="dt">${fdate(r.date)}</span></span>
         <span class="fh"><a href="#equipe-${r.home}" class="${meT(r.home) ? 'me' : ''}" style="color:inherit">${esc(name(r.home))}</a></span>
@@ -2385,32 +2463,35 @@ function viewCalendar() {
         ${rk ? `<label class="ray" title="Ne pas compter ce résultat dans les calculs"><input type="checkbox" data-ray="${esc(String(r.rid))}"${ry ? ' checked' : ''}><span>Ne pas compter</span></label>` : rkc ? '<span class="ray0"></span>' : ''}</div>`; };
     const nextRid = (list[0] || {}).rid, clubNext = (D.calendar.find(m => isClub(m.home) || isClub(m.away)) || {}).rid;
     const row = (m, withJ) => { const isNext = tSel ? m.rid === nextRid : m.rid === clubNext;
-      return `<div class="fx${rkc}${isNext ? ' next' : ''}"><span class="d">${withJ ? `<b>J${m.j}</b>` : ''}<span class="dt">${m.estimee ? '≈ ' : ''}${fdate(m.date)}${m.heure && !m.estimee ? ' · ' + hfr(m.heure) : ''}</span>${isNext ? '<span class="nx">Prochain match</span>' : ''}</span>
+      return `<div class="fx${rkc}${isNext ? ' next' : ''}"><span class="d">${withJ ? `<b>J${m.j}</b>` : ''}<span class="dt">${m.estimee ? '≈ ' : ''}${fdate(m.date)}${m.heure && !m.estimee ? '<span class="hr">' + hfr(m.heure) + '</span>' : ''}</span>${isNext ? '<span class="nx">Prochain match</span>' : ''}</span>
         <span class="fh"><a href="#equipe-${m.home}" class="${meT(m.home) ? 'me' : ''}" style="color:inherit">${esc(name(m.home))}</a></span>
         ${findMatch(m.rid) ? `<a class="s prev" href="#match-${m.rid}" data-tip="Score probable · voir l’analyse du match">${scP(m.score[0], m.score[1])}<span class="sr"> : score probable, voir l’analyse du match</span></a>` : `<span class="s prev" aria-label="Score probable">${scP(m.score[0], m.score[1])}</span>`}
         <span class="fa"><a href="#equipe-${m.away}" class="${meT(m.away) ? 'me' : ''}" style="color:inherit">${esc(name(m.away))}</a></span>
         <span class="pb">${pbarMini(m.p, m.home, m.away)}</span>${rkc ? '<span class="ray0"></span>' : ''}</div>`; };
     if (sel !== 'all') {
+      rkc = rkOf(done);
       const fj = list.length ? Math.min(...list.map(m => m.j)) : 99, bye = jAll.filter(j => !done.some(r => r.j === j) && !list.some(m => m.j === j));
       const byeRow = j => `<div class="fx bye"><span class="d"><b>J${j}</b></span><span class="fh"></span><span class="s bye-s">exempt</span><span class="fa sub">pas de match cette journée</span></div>`;
       const past = [...done.map(r => ({j: r.j, h: prow(r, true)})), ...bye.filter(j => j < fj).map(j => ({j, h: byeRow(j)}))].sort((a, b) => a.j - b.j);
       const next = [...list.map(m => ({j: m.j, h: row(m, true)})), ...bye.filter(j => j >= fj).map(j => ({j, h: byeRow(j)}))].sort((a, b) => a.j - b.j);
-      return `<section class="card jour"><header><h2>Le calendrier de ${esc(name(sel))}</h2><span class="eyebrow">Équipe qui reçoit à gauche · score en vert ou rouge : résultat de ${esc(name(D.club))} · ≈ date de journée</span></header>
+      return `<section class="card jour"><header><h2>Le calendrier ${esc(DE(name(sel)))}</h2><span class="eyebrow">Équipe qui reçoit à gauche · score en vert ou rouge : résultat ${esc(DE(name(D.club)))} · ≈\u00a0date de journée</span></header>
       ${past.length ? `<p class="fx-sep">Matchs joués</p>${past.map(x => x.h).join('')}<p class="fx-sep">À venir</p>` : ''}${next.map(x => x.h).join('')}</section>`; }
-    if (cj !== 'all') { const rs = done.filter(r => r.j === cj), ms = list.filter(m => m.j === cj), d0 = rs[0] || ms[0];
-      return `<section class="card jour jsingle"><header><b>J${cj}</b><span class="eyebrow">${d0 ? frange([...rs, ...ms]) : ''}${d0 && d0.estimee ? ' · date de journée, horaire à venir' : ''} · ${rs.length && ms.length ? 'résultats et pronos' : rs.length ? 'résultats et pronos d’avant-match' : cj === D.next_journee ? 'prochaine journée · pronos' : 'pronos'}</span></header>
+    if (cj !== 'all') { const rs = done.filter(r => r.j === cj), ms = list.filter(m => m.j === cj), d0 = rs[0] || ms[0]; rkc = rkOf(rs);
+      return `<section class="card jour jsingle"><header><b>J${cj}</b><span class="eyebrow">${d0 ? frange([...rs, ...ms]) : ''}${ms.length && ms.every(x => x.estimee) ? ' · date de journée, horaire à venir' : ms.some(x => x.estimee) ? ' · horaires en partie connus' : ''} · ${rs.length && ms.length ? 'résultats et pronos' : rs.length ? 'résultats et pronos d’avant-match' : cj === D.next_journee ? 'prochaine journée · pronos' : 'pronos'}</span></header>
         ${rs.length ? `${ms.length ? '<p class="fx-sep">Matchs joués</p>' : ''}${rs.map(r => prow(r, false)).join('')}` : ''}${ms.length ? `${rs.length ? '<p class="fx-sep">À venir</p>' : ''}${ms.map(m => row(m, false)).join('')}` : ''}
-        ${!rs.length && !ms.length ? '<p class="sub">Aucun match pour cette journée.</p>' : ''}</section>`; }
+        ${byeT([...rs, ...ms])}${!rs.length && !ms.length ? '<p class="sub">Aucun match pour cette journée.</p>' : ''}</section>`; }
     const jd = [...new Set(done.map(r => r.j))].sort((a, b) => a - b);
-    const jump = `<div class="jjump" role="navigation" aria-label="Aller à une journée">${[...jd, ...js].map(j => `<button type="button" class="subn" data-jj="${j}">J${j}</button>`).join('')}</div>`;
-    return jump + (jd.length ? `<details class="card jour jdone"><summary><b>Journées jouées</b><span class="eyebrow">J${jd[0]} → J${jd[jd.length - 1]} · résultats et pronos d’avant-match</span></summary>
-      ${jd.map(j => { const rs = done.filter(r => r.j === j); return `<p class="fx-sep" id="cal-j${j}">J${j} · ${frange(rs)}</p>${rs.map(r => prow(r, false)).join('')}`; }).join('')}</details>` : '')
-      + js.map((j, i) => { const ms = list.filter(m => m.j === j), d = ms[0];
-      return `<details class="card jour jfut${i === 0 ? ' jnext' : ''}" id="cal-j${j}"${i === 0 ? ' open' : ''}><summary><b>J${j}</b><span class="eyebrow">${i === 0 ? 'Prochaine journée · ' : ''}${frange(ms)}${d.estimee ? ' · date de journée, horaire à venir' : ''}</span></summary>${ms.map(m => row(m, false)).join('')}</details>`; }).join('');
+    const jump = `<div class="jjump" role="navigation" aria-label="Aller à une journée">${[...jd, ...js].map(j => `<button type="button" class="subn${j === js[0] ? ' on' : ''}" data-jj="${j}">J${j}</button>`).join('')}</div>`;
+    rkc = canRay ? ' rk' : '';
+    const doneH = (jd.length ? `<details class="card jour jdone"><summary><b>Journées jouées</b><span class="eyebrow">J${jd[0]} → J${jd[jd.length - 1]} · résultats et pronos d’avant-match</span></summary>
+      ${jd.map(j => { const rs = done.filter(r => r.j === j); return `<p class="fx-sep" id="cal-j${j}">J${j} · ${frange(rs)}</p>${rs.map(r => prow(r, false)).join('')}`; }).join('')}</details>` : '');
+    rkc = '';
+    return jump + doneH + js.map((j, i) => { const ms = list.filter(m => m.j === j), d = ms[0];
+      return `<details class="card jour jfut${i === 0 ? ' jnext' : ''}" id="cal-j${j}"${i === 0 ? ' open' : ''}><summary><b>J${j}</b><span class="eyebrow">${i === 0 ? 'Prochaine journée · ' : ''}${frange(ms)}${ms.every(x => x.estimee) ? ' · date de journée, horaire à venir' : ms.some(x => x.estimee) ? ' · horaires en partie connus' : ''}</span></summary>${ms.map(m => row(m, false)).join('')}${byeT(ms)}</details>`; }).join('');
   })()}`;
 }
 function pbarMini(p, lid, rid) {
-  const [w, n, l] = p, lab = x => x >= 0.14 ? pct(x) : '', cL = w >= l ? 'h' : 'a', cR = w >= l ? 'a' : 'h';
+  const [w, n, l] = p, lab = x => x >= 0.2 ? pct(x) : '', cL = w >= l ? 'h' : 'a', cR = w >= l ? 'a' : 'h';
   return `<div class="pbar" role="img" aria-label="Victoire ${esc(name(lid))} ${pct(w)}, nul ${pct(n)}, défaite ${pct(l)}">
     <div class="${cL}" style="flex:${w}" data-tip="Victoire ${esc(name(lid))} : <b>${pct1(w)}</b>">${lab(w)}</div>
     <div class="d" style="flex:${n}" data-tip="Nul : <b>${pct1(n)}</b>"></div>
@@ -2447,7 +2528,7 @@ let SIBINFO = {}; const SIBINFO_ALL = {};   // par équipe affichée
 const P12_DEFAULT = 0.99;
 let P12 = {}; try { P12 = JSON.parse(localStorage.getItem('compoP12') || '{}') || {}; } catch (e) { P12 = {}; }
 const invPhi = p => { let lo = -8, hi = 8; for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (PHI(mid) < p) lo = mid; else hi = mid; } return (lo + hi) / 2; };
-const fmtP = p => (Math.round(p * 1000) / 10).toFixed(p >= 0.995 || p < 0.6 ? 1 : 0).replace('.', ',').replace(/,0$/, '') + '\u202f%';
+const fmtP = p => (Math.round(p * 1000) / 10).toFixed(p >= 0.995 || p < 0.6 ? 1 : 0).replace('.', ',').replace(/,0$/, '') + '\u00a0%';
 const gapFromP = (p, sign) => sign * (0.5 + D.model.sigma * invPhi(p));          // écart de buts qui donne P % de victoire
 const teamNum = k => { const m = k.match(/(\d)$/); return m && /-?[12]$/.test(k) && k !== 'g18' ? +m[1] : 1; };
 // renforts d'une équipe au-dessus (SF1 → SF2…) : probabilité tirée de l'historique du club (build_players), selon que
@@ -2656,6 +2737,7 @@ function compoListCard(side, tid) {
     ${side === 'm' ? `<div class="cp-add"><label for="cp-q">Ajouter ${G('une joueuse', 'un joueur')}</label>
       <input id="cp-q" type="search" autocomplete="off" placeholder="Nom : fiche du club, ${G('plus vues', 'plus vus')}, adversaires…" aria-controls="cp-q-res">
       <div class="cp-q-res" id="cp-q-res" role="list"></div></div>` : ''}
+    <p class="sub cp-leg">À droite : effet sur la chance de victoire ${esc(DE(name(D.club)))} si on coche ou décoche la ligne.</p>
     <div class="cp-list" id="cp-list-${side}"></div></div>`;
 }
 function viewCompo() {
@@ -2664,7 +2746,7 @@ function viewCompo() {
   if (!fut.length) return head + `<p class="lead">Plus aucun match à venir cette saison pour ${esc(name(D.club))}.</p></section>`;
   if (!fut.some(x => x.rid === compoRid)) compoRid = fut[0].rid;
   const m = fut.find(x => x.rid === compoRid), t = compoTeams(m);
-  return head + `<p class="lead">Choisissez un match à venir, puis cochez qui sera sur la feuille de match, chez Médoc comme en face : la chance de victoire se recalcule aussitôt.</p>
+  return head + `<p class="lead">Choisis un match à venir, puis coche qui sera sur la feuille de match, chez Médoc comme en face : la chance de victoire se recalcule aussitôt.</p>
     <div class="filters"><label for="cp-match">Match</label><select id="cp-match">${fut.map(x => `<option value="${x.rid}"${x.rid === m.rid ? ' selected' : ''}>${esc(compoMatchLabel(x))}</option>`).join('')}</select></div></section>
   <div class="cp-sticky" id="cp-sticky" aria-hidden="true"></div>
   <section class="card stack cp-res" id="cp-res" data-keep></section>
@@ -2681,7 +2763,7 @@ function compoRows(m, st, side, cur) {
     const W = c => document.getElementById('mx-head') ? clubP(m, c).w : c.w, d = Math.round((W(compoCalc(m, alt)) - W(cur0)) * 100);
     return `<label class="cp-row${map[p.nom] ? ' on' : ''}"><input type="checkbox" data-side="${side}" data-pl="${esc(p.nom)}"${map[p.nom] ? ' checked' : ''}><span class="cp-sw" aria-hidden="true"></span>
       <span class="cp-n"><span class="cp-nl"><b>${esc(p.nom)}</b>${p.from ? ` <span class="badge">${esc(p.from)}</span>` : ''}${p.up ? ` <span class="badge">${esc(p.up)}</span>` : ''}${brulBadge(side === 'm' ? D.club : compoTeams(m).opp, p)}${coachLinks(p.nom, p)}</span><small>${p.up ? `renfort ${pct1(p.presence)}${p.rfo.n ? ` (${p.rfo.on} fois sur ${p.rfo.n})` : ''} · en ${esc(p.up)} : ${nb(p.mj, 'match')} · ${f1(p.bpm_up)} buts/m` : p.rf ? `renfort ${pct1(p.presence)}${p.rf.n ? ` (${p.rf.on} fois sur ${p.rf.n})` : ''}` : p.add ? G('ajoutée', 'ajouté') : `présence ${pct1(p.presence)}`}${p.up ? '' : p.from ? ` · en ${esc(p.from)} : ${nb(p.mj, 'match')} · ${f1(p.bpm)} buts/m` : p.add ? ` · ${esc(p.addLab)}${p.bpm0 != null && Math.abs(p.bpm - p.bpm0) >= 0.05 ? ` → ${f1(p.bpm)} buts/m ici` : ''}` : ` · ${nb(p.mj, 'match')} · ${f1(p.bpm)} buts/m`}${p.arrets_pm >= 3 ? ` · ${G('gardienne', 'gardien')} ${f1(p.arrets_pm)} arrêts/m` : ''}</small></span>
-      <span class="cp-i ${d > 0 ? 'dp' : d < 0 ? 'dm' : ''}" title="Chance de victoire de ${esc(name(D.club))} si ${G('elle', 'il')} change">${dV(d)}</span></label>`;
+      <span class="cp-i ${d > 0 ? 'dp' : d < 0 ? 'dm' : ''}" title="Chance de victoire ${esc(DE(name(D.club)))} si ${G('elle', 'il')} change">${dV(d)}</span></label>`;
   };
   // l'effectif d'abord ; les joueuses d'une autre équipe du club dans une partie repliable (descentes / montées possibles)
   const all = byPresence(roster(m, side));
@@ -2810,13 +2892,16 @@ function compactTable(t, heads) {
   t.querySelectorAll('tbody tr').forEach(tr => {
     const cells = []; let i = 0;
     [...tr.children].forEach(td => { cells[i] = td; i += td.colSpan || 1; });
-    const main = keep.map(k => cells[k] ? `<td class="${cls(k)}${k === nmK ? ' nm' : ''}">${cells[k].innerHTML}</td>` : '<td></td>').join('');
-    const rest = cells.map((td, k) => (!td || keep.includes(k) || !td.innerHTML.trim()) ? '' : (td.colSpan > 1 || !heads[k] ? `<span class="kv">${td.innerHTML}</span>` : `<span class="kv"><i>${esc(heads[k])}</i> ${td.innerHTML}</span>`)).join('');
-    body += `<tr class="cm${tr.classList.contains('me') ? ' me' : ''}${tr.classList.contains('sub') ? ' sub' : ''}${rest ? ' x' : ''}">${rest ? main.replace(/<\/td>$/, '<button type="button" class="cxb" aria-expanded="false" aria-label="Afficher le détail"></button></td>') : main}</tr>`
+    let rest = tr.classList.contains('tot') ? '' : cells.map((td, k) => (!td || keep.includes(k) || !td.innerHTML.trim()) ? '' : (td.colSpan > 1 || !heads[k] ? `<span class="kv">${td.innerHTML}</span>` : `<span class="kv"><i>${esc(heads[k])}</i> ${td.innerHTML}</span>`)).join('');
+    let lk = '';
+    const cellH = k => { const td = cells[k]; if (!rest || k !== nmK || !MQ.matches) return td.innerHTML; const c = td.cloneNode(true), a = c.querySelector('a[href]:not(.badge)'); if (!a) return td.innerHTML; lk = a.getAttribute('href'); a.replaceWith(document.createTextNode(a.textContent)); return c.innerHTML; };
+    const main = keep.map(k => cells[k] ? `<td class="${cls(k)}${k === nmK ? ' nm' : ''}">${cellH(k)}</td>` : '<td></td>').join('');
+    if (lk) rest += `<span class="kv"><a class="plk" href="${lk}">Voir la fiche →</a></span>`;
+    body += `<tr class="cm${tr.classList.contains('me') ? ' me' : ''}${tr.classList.contains('sub') ? ' sub' : ''}${tr.classList.contains('tot') ? ' tot' : ''}${rest ? ' x' : ''}">${rest ? main.replace(/<\/td>$/, '<button type="button" class="cxb" aria-expanded="false" aria-label="Afficher le détail"></button></td>') : main}</tr>`
       + (rest ? `<tr class="cd" hidden><td colspan="${keep.length}"><div class="tlx">${rest}</div></td></tr>` : '');
   });
   const w = document.createElement('div');
-  w.innerHTML = `<table class="ct"><thead><tr>${keep.map(k => `<th class="${cls(k)}">${esc(heads[k] || '')}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>`;
+  w.innerHTML = `<table class="ct ${t.className}"><thead><tr>${keep.map(k => `<th class="${cls(k)}">${esc(heads[k] || '')}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>`;
   return w.firstChild;
 }
 function mobTables() {
@@ -2892,6 +2977,7 @@ let msObs = null;
 function setupMsum() {
   if (msObs) { msObs.disconnect(); msObs = null; }
   const s = app.querySelector('.msum'), h = app.querySelector('.mhead');
+  app.classList.toggle('has-msum', !!s);
   if (!s || !h || !('IntersectionObserver' in window)) return;
   msObs = new IntersectionObserver(([e]) => s.classList.toggle('on', !e.isIntersecting && e.boundingClientRect.top < 0), {rootMargin: '-64px 0px 0px 0px'});
   msObs.observe(h);
@@ -2987,7 +3073,7 @@ function sansLui(k, J) {
   const win = mu => home ? 1 - PHI((0.5 - mu) / sg) : PHI((-0.5 - mu) / sg);
   const cg = (m.cles_gk || {})[club];
   const eff = cg && cg.nom === J.nom ? cg.eff : effOf(p) * (p.avg_presence ?? p.presence);
-  const base = win(m.mu), wo = win(m.mu - sign * eff);
+  const b0 = home ? m.p[0] : m.p[2], base = b0, wo = Math.max(0, Math.min(1, b0 + win(m.mu - sign * eff) - win(m.mu)));
   const adv = T.teams[home ? m.away : m.home];
   return {base, wo, d: Math.round((wo - base) * 100), adv: adv.short || SHORT[adv.nom] || titleCase(adv.nom), home, date: m.date, rid: m.rid, p};
 }
@@ -3007,10 +3093,10 @@ function viewPlayer(id) {
   const fd = J.fdm, last = J.saisons[J.saisons.length - 1];
   const cur = J.saisons.filter(s => s.sid === 22);
   const card = (t, fig, what) => `<article class="card fun"><span class="title">${t}</span><span class="fig">${fig}</span><p class="what">${what}</p></article>`;
-  const ml = m => `${m.lieu === 'dom' ? 'contre' : 'à'} ${e(clubAff(m.adv))} (${m.equipe}, ${fdate(m.date, false)} ${m.date.slice(0, 4)}, ${dashS(m.score)})`;
+  const ml = m => `${m.lieu === 'dom' ? 'contre' : 'à'} ${e(clubAff(m.adv))} (${m.equipe}, ${fdate(m.date, false)} ${m.date.slice(0, 4)}, ${scHL(m.score, m.lieu)})`;
   const C = [], B = [];
   if (J.record && J.record.buts > 0) C.push(card('Le record', J.record.buts, `buts sur un match, ${ml(J.record)}.`));
-  if (J.dix) C.push(card('Le Club des 10', J.dix, `match${J.dix > 1 ? 's' : ''} à 10 buts ou plus. Rare : seuls ${g('quelques joueuses', 'quelques joueurs')} du club y arrivent.`));
+  if (J.dix) C.push(card('Le Club des 10', J.dix, `match${J.dix > 1 ? 's' : ''} à 10 buts ou plus. Rare : ${g('seules quelques joueuses', 'seuls quelques joueurs')} du club y arrivent.`));
   else if (J.cinq) C.push(card('Le Club des 5', J.cinq, `match${J.cinq > 1 ? 's' : ''} à 5 buts ou plus sur ${J.n}.`));
   if (J.victime && J.victime.buts >= 3) C.push(card(g('La victime préférée', 'La victime préférée'), J.victime.buts, `buts en ${J.victime.mj} matchs contre ${e(clubAff(J.victime.adv))}, l’adversaire qu’${g('elle', 'il')} punit le plus.`));
   if (J.serie_but >= 3) C.push(card('La série', J.serie_but, `matchs de suite avec au moins un but.`));
@@ -3025,7 +3111,7 @@ function viewPlayer(id) {
     if (fd.gagne) { C.push(card('Le but de la gagne', fd.gagne, `fois ${g('elle', 'il')} a marqué le but qui donne l’avance définitive${fd.gagne_m ? `, la dernière ${ml(fd.gagne_m)}` : ''}.`)); B.push('Décisif'.replace('Décisif', g('Décisive', 'Décisif'))); }
     if (fd.money >= 2) C.push(card('Money time', fd.money, `buts dans les 5 dernières minutes de match.`));
     if (fd.ouvre >= 2) C.push(card(g('L’ouvreuse', 'L’ouvreur'), fd.ouvre, `fois ${g('elle', 'il')} a marqué le premier but du match pour le club.`));
-    if (fd.early != null && fd.early <= 180) C.push(card('Pressé' .replace('Pressé', g('Pressée', 'Pressé')), mmss(fd.early), `: son but le plus rapide dans un match. Pas le temps de s’échauffer.`));
+    if (fd.early != null && fd.early <= 180) C.push(card('Pressé' .replace('Pressé', g('Pressée', 'Pressé')), mmss(fd.early), `son but le plus rapide dans un match. Pas le temps de s’échauffer.`));
     if (fd.d2) { C.push(card(fd.d2 / fd.n >= 0.5 ? g('L’abonnée aux 2 minutes', 'L’abonné aux 2 minutes') : 'Le banc de pénalité', fd.d2, `exclusion${fd.d2 > 1 ? 's' : ''} de 2 minutes${fd.av ? ` et ${nb(fd.av, 'avertissement')}` : ''} en ${nb(fd.n, 'match')} détaillé${fd.n > 1 ? 's' : ''}${fd.dis ? `, plus ${nb(fd.dis, 'carton rouge', 'cartons rouges')}` : ''}.`)); if (fd.d2 / fd.n >= 0.5) B.push('Défense rugueuse'); }
     else if (fd.n >= 5) C.push(card('Fair-play', '0', `exclusion en ${fd.n} matchs détaillés. Rien à signaler pour les arbitres.`));
     if (fd.capt) { B.push(g('Capitaine', 'Capitaine')); if (fd.capt >= 2) C.push(card('Le brassard', fd.capt, `match${fd.capt > 1 ? 's' : ''} comme ${g('capitaine', 'capitaine')}.`)); }
@@ -3052,16 +3138,16 @@ function viewPlayer(id) {
     <p class="lead">${nb(J.n, 'match')} et ${nb(J.buts, 'but')} avec le club depuis ${MOIS[dt(J.debut).getUTCMonth()]} ${J.debut.slice(0, 4)}, ${f1(J.bpm)} par match. Présent${g('e', '')} sur ${pct(tot[0] / Math.max(1, tot[1]))} des matchs de ses équipes depuis son arrivée.</p>
     ${B.length ? `<p class="pbadges">${[...new Set(B)].map(b => { const t = BADGE_TIP(b, g); return `<span class="badge" title="${e(t)}" data-tip="${e(t)}" tabindex="0">${e(b)}</span>`; }).join(' ')}</p>` : ''}</section>
   ${imp ? `<section class="stack"><h2>Son impact cette saison</h2></section>${(J.equipes || []).length > 1 ? `<section class="grid2">${imp}</section>` : imp}` : ''}
-  ${!co.length && !nj ? '' : `<section class="card stack" data-keep><h2>Coach d’une équipe jeune ?</h2>
+  ${!co.length ? '' : `<section class="card stack" data-keep><h2>Coach d’une équipe jeune ?</h2>
     ${co.length ? `<div class="res-list">${co.map(c => `<div><span>${(c.urls || []).length ? c.urls.map((u, i) => `<a href="${e(u)}" target="_blank" rel="noopener">${e(c.equipe)}${c.urls.length > 1 ? ' (poule ' + (i + 1) + ')' : ''} ↗</a>`).join(' ') : e(c.equipe)} · ${c.saison}</span><span class="sub">${c.role === 'A' ? 'responsable d’équipe' : 'officiel'} sur ${c.n} match${c.n > 1 ? 's' : ''} sur ${c.sur}</span></div>`).join('')}</div>
       <p class="note">${g('Elle', 'Il')} figure comme officiel${co.some(c => c.role === 'A') ? ' (A = responsable d’équipe)' : ''} sur plus de la moitié des feuilles de match lues de ${co.length > 1 ? 'ces équipes' : 'cette équipe'}.</p>`
       : `<p class="sub">Pas d’équipe -11, -13, -15 ou -18 du club où ${g('elle', 'il')} figure comme officiel sur plus de la moitié des feuilles (${nb(nj, 'feuille')} de jeunes lues depuis 2025-26).</p>`}</section>`}
   ${C.length ? `<section class="stack"><h2>Stats rigolotes</h2><p class="sub mob-only">${C.length} stats</p></section><section class="grid3 swipe">${C.join('')}</section>` : ''}
   <section class="card stack" data-keep><h2>Saison par saison</h2><div class="scroll"><table data-m="0,1,4r" data-c="0,1,3,4,6"><thead><tr><th>Saison</th><th class="l">Équipe</th><th class="l">Championnat</th><th>Matchs</th><th>Buts</th><th>B/m</th><th>Présence</th><th>V-N-D</th><th>Écart avec / sans</th></tr></thead><tbody>
     ${J.saisons.slice().reverse().map(s => `<tr><td>${s.saison}</td><td class="l">${e(s.equipe)}</td><td class="l sub">${e(compAff(s.comp.replace(/^Gironde /, '')))}</td><td>${s.mj}</td><td>${s.buts}${s.arrets >= 2 * s.mj ? ` <span class="sub">· ${s.arrets} arr.</span>` : ''}</td><td>${f1(s.buts / s.mj)}</td><td>${s.presence != null ? pct(s.presence) : '–'}</td><td>${s.g}-${s.n}-${s.p}</td><td>${s.gd_avec != null ? f1s(s.gd_avec) : '–'} / ${s.gd_sans != null && s.n_sans ? f1s(s.gd_sans) : '–'}</td></tr>`).join('')}
-    </tbody></table></div><p class="note">Présence = feuilles de match ${g('de la joueuse', 'du joueur')} sur les matchs de l’équipe depuis sa première apparition dans la saison. Écart = buts d’écart moyen de l’équipe quand ${g('elle', 'il')} est sur la feuille / quand ${g('elle', 'il')} n’y est pas.</p></section>
+    </tbody></table></div><p class="note">Présence = feuilles de match ${g('de la joueuse', 'du joueur')} sur les matchs de l’équipe depuis sa première apparition dans la saison. Écart = buts d’écart moyen de l’équipe quand ${g('elle', 'il')} est sur la feuille / quand ${g('elle', 'il')} n’y est pas.<span class="mob-only"> Toucher une ligne pour les autres colonnes.</span></p></section>
   <section class="card stack" data-keep><h2>Ses 5 derniers matchs</h2><div class="res-list">
-    ${J.last.map(x => `<div><span>${fdate(x[0], false)} ${x[0].slice(0, 4)} · ${e(x[1])} ${x[3] === 'dom' ? 'contre' : 'à'} ${e(clubAff(x[2]))} <span class="sub">${dashS(x[4])}</span></span><b style="white-space:nowrap">${x[5]} but${x[5] > 1 ? 's' : ''}</b></div>`).join('')}</div></section>
+    ${J.last.map(x => `<div><span>${fdate(x[0], false)} ${x[0].slice(0, 4)} · ${e(x[1])} ${x[3] === 'dom' ? 'contre' : 'à'} ${e(clubAff(x[2]))} <span class="sub">${scHL(x[4], x[3])}</span></span><b style="white-space:nowrap">${x[5]} but${x[5] > 1 ? 's' : ''}</b></div>`).join('')}</div></section>
   <p class="note">D’après les feuilles de match FFHB des équipes ${g('seniors et -18', 'seniors et -18')} du club depuis 2023-24${fd ? ` ; tirs, 7 m, exclusions et déroulé du match d’après les ${nb(fd.n, 'feuille')} PDF détaillée${fd.n > 1 ? 's' : ''} où ${g('elle', 'il')} figure` : ''}.</p>`;
 }
 
@@ -3092,7 +3178,7 @@ function render() {
   const pv = v || (h.startsWith('match-') ? 'calendrier' : h.startsWith('joueur-') ? 'equipe' : h.startsWith('equipe-') ? 'classement' : '');
   document.querySelectorAll('#nav a, #tabbar a, #moresheet a').forEach(a => { if (a.dataset.v === pv) a.setAttribute('aria-current', v ? 'page' : 'true'); else a.removeAttribute('aria-current'); });
   { const cur = document.querySelector('#nav a[aria-current]'); document.getElementById('navbtn-l').textContent = cur ? cur.textContent : 'Menu'; }
-  document.getElementById('tb-more').toggleAttribute('aria-current', ['stats', 'pronos', 'historique'].includes(pv));
+  document.getElementById('tb-more').toggleAttribute('aria-current', ['stats', 'pronos', 'historique', 'compte', 'admin'].includes(pv));
   app.classList.toggle('acc-page', v === 'compte');
   if (h !== 'compo') linkPlayers(app);
   if (MQ.matches) mobTables(); else deskTables();
@@ -3131,11 +3217,11 @@ function viewCompte(sub) {
     const st = p.statut === 'valide' ? `Compte <b>${rangL(p)}</b> validé.` : p.statut === 'attente'
       ? 'Ton compte attend la validation de l’administrateur. En attendant, tu vois le site comme un invité.' : 'Ton inscription n’a pas été validée. Contacte le club si c’est une erreur.';
     const eq = (clubTeams().find(([k]) => k === p.equipe) || [])[1];
-    return `<section class="stack"><p class="eyebrow">${esc(p.email)}</p><h1>${esc(p.nom || 'Mon compte')}</h1></section>
+    return `<section class="stack"><p class="eyebrow nc">${esc(p.email)}</p><h1>${esc(p.nom || 'Mon compte')}</h1></section>
       ${CPT.maj ? '<section class="card stack" data-keep><p class="sub">Le site vient d’être mis à jour : tes données réservées arrivent dans quelques minutes. Recharge la page un peu plus tard.</p></section>' : ''}
       <section class="card stack" data-keep><h2>Mon accès</h2><p class="lead">${st}</p>
         <p class="sub">${eq ? `Équipe : ${esc(eq)}` : ''}${p.joueur ? ` · fiche : ${esc(p.joueur)}` : ''}</p>
-        <p class="acc-btns">${ADMIN ? '<a class="cta" href="#admin">Admin</a>' : ''}<button type="button" class="more acc-out-b" data-acc-act="logout">Se déconnecter</button></p></section>
+        <p class="acc-btns">${ADMIN ? '<a class="cta" href="#admin">Ouvrir la page Admin</a>' : ''}<button type="button" class="more acc-out-b" data-acc-act="logout">Se déconnecter</button></p></section>
       <section class="card stack" data-keep>${pw}</section>`;
   }
   if (sub === 'oubli') return `<section class="stack"><h1>Mot de passe oublié</h1></section>
@@ -3152,11 +3238,11 @@ function viewCompte(sub) {
       <label>E-mail<input type="email" name="email" autocomplete="email" required></label>
       <label>Mot de passe <span class="sub">(8 caractères minimum)</span><span class="pw"><input type="password" name="mdp" autocomplete="new-password" minlength="8" required><button type="button" class="pw-t" data-pw aria-label="Afficher le mot de passe" aria-pressed="false">Afficher</button></span></label>
       <label>Tu es<select name="demande" required><option value="" selected disabled>Choisir…</option><option value="joueur">${G('Joueuse', 'Joueur')}</option><option value="entraineur">Entraîneur</option><option value="supporter">Supporter</option><option value="benevole">Bénévole</option><option value="parent">Parent</option><option value="autre">Autre (partenaire…)</option></select></label>
-      <label>Ton équipe<select name="equipe" data-acc-eq required><option value="" selected disabled>Choisir…</option>${teams.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join('')}<option value="autre">Aucune de ces équipes</option></select></label>
+      <label data-acc-el hidden>Ton équipe<select name="equipe" data-acc-eq required><option value="" selected disabled>Choisir…</option>${teams.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join('')}<option value="autre">Aucune de ces équipes</option></select></label>
       <label data-acc-jl hidden>Ta fiche sur le site<select name="joueur" data-acc-j>${accJ('')}</select></label>
       <label class="acc-ck"><input type="checkbox" name="age" required> J’ai 15 ans ou plus, ou un de mes parents est d’accord pour cette inscription.</label>
       <p class="note">Ton nom, ton e-mail et ton équipe ne sont visibles que par l’administrateur du site. Pour supprimer ton compte, demande-le au club.</p>
-      <div class="acc-out" aria-live="polite"></div><button class="cta" type="submit">Créer mon compte</button>
+      <div class="acc-out" aria-live="polite"></div><button class="cta off" type="submit">Créer mon compte</button>
       <p class="sub">Déjà un compte ? <a href="#compte">Se connecter</a></p></form></section>`;
   }
   return `<section class="stack"><p class="eyebrow">${esc(name(D.club))}</p><h1>Connexion</h1></section>
@@ -3171,7 +3257,10 @@ function viewCompte(sub) {
 const accJ = k => `<option value="">Je ne suis pas dans la liste</option>` + accRoster(k).map(n => `<option>${esc(n)}</option>`).join('');
 const accReload = h => { try { history.replaceState(null, '', location.pathname + location.search + h); } catch (e) {} location.reload(); };
 app.addEventListener('change', e => { if (e.target.matches('[data-acc-eq]')) { const j = app.querySelector('[data-acc-j]'); if (j) j.innerHTML = accJ(e.target.value); }
-  if (e.target.name === 'demande' && e.target.closest('form[data-acc="creer"]')) { const l = app.querySelector('[data-acc-jl]'); if (l) l.hidden = e.target.value !== 'joueur'; } });
+  if (e.target.name === 'demande' && e.target.closest('form[data-acc="creer"]')) { const l = app.querySelector('[data-acc-jl]'); if (l) l.hidden = e.target.value !== 'joueur'; const q = app.querySelector('[data-acc-el]'); if (q) q.hidden = false; } });
+const accReady = f => { const b = f.querySelector('button[type="submit"]'); if (b) b.classList.toggle('off', ![...f.querySelectorAll('input[required], select[required]')].every(i => i.type === 'checkbox' ? i.checked : String(i.value || '').trim())); };
+app.addEventListener('input', e => { const f = e.target.closest('form[data-acc="creer"]'); if (f) accReady(f); });
+app.addEventListener('change', e => { const f = e.target.closest('form[data-acc="creer"]'); if (f) accReady(f); });
 app.addEventListener('click', e => { const b = e.target.closest('[data-pw]'); if (!b) return; const i = b.parentElement.querySelector('input'); const show = i.type === 'password';
   i.type = show ? 'text' : 'password'; b.textContent = show ? 'Masquer' : 'Afficher'; b.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe'); b.setAttribute('aria-pressed', String(show)); });
 app.addEventListener('click', async e => {
@@ -3321,6 +3410,11 @@ moreB.addEventListener('click', e => { e.stopPropagation(); closeMenu(); closeCt
 document.addEventListener('click', e => { if (!moreS.hidden && !e.target.closest('#moresheet')) moreClose(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !moreS.hidden) { moreClose(); moreB.focus(); } });
 window.addEventListener('hashchange', moreClose);
+{ let lastY = window.scrollY; const topEl = document.querySelector('.top');
+  window.addEventListener('scroll', () => { const y = window.scrollY, open = !menuEl.hidden || !ctaMenu.hidden || !moreS.hidden;
+    if (!MQ.matches || open || y < 120) document.body.classList.remove('top-off');
+    else if (y > lastY + 6) document.body.classList.add('top-off'); else if (y < lastY - 6) document.body.classList.remove('top-off');
+    lastY = y; }, {passive: true}); }
 const veil = document.getElementById('veil');
 const syncVeil = () => { veil.hidden = menuEl.hidden && ctaMenu.hidden && moreS.hidden; };
 { const vo = new MutationObserver(syncVeil); [menuEl, ctaMenu, moreS].forEach(el => vo.observe(el, {attributes: true, attributeFilter: ['hidden']})); }
